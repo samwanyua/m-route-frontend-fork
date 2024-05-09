@@ -5,6 +5,8 @@ import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import Navbar from "./components/Navbar";
+import SideBar from "./components/SideBar";
 
 const routeConfig = {
   "/": { title: "", metaDescription: "" },
@@ -41,6 +43,8 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/" element={<Navbar />} />
+      <Route path="/" element={<SideBar/>} />
       <Route path="/" element={<LandingPage />} />
       <Route path="/dashboardmanager" element={<Dashboard />} />
       <Route path="/settingspage" element={<Settings />} />
