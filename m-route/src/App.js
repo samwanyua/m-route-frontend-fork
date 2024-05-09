@@ -5,6 +5,8 @@ import SideBar from "./components/SideBar";
 import Footer from "./components/Footer";
 import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
+import LandingPage from "./components/LandingPage";
+
 
 const routeConfig = {
   "/": { title: "", metaDescription: "" },
@@ -13,6 +15,12 @@ const routeConfig = {
   "/signup": { title: "", metaDescription: "" },
   "/login": { title: "", metaDescription: "" },
   "/footer": { title: "", metaDescription: "" },
+  "/reviews": {title: "", metaDescription: ""},
+  "/routesplan": {title: "", metaDescription: ""},
+  "/home": {title: "", metaDescription: ""}
+
+
+
 };
 
 function App() {
@@ -47,9 +55,13 @@ function App() {
       <div className="flex flex-1">
         <SideBar />
         <Routes className="flex-1">
+        <Route path="/home" element={<LandingPage />} />
+
           <Route path="/dashboardmanager" element={<Dashboard />} />
           <Route path="/settingspage" element={<Settings />} />
-          {/* Add other routes here */}
+          
+
+
         </Routes>
       </div>
 

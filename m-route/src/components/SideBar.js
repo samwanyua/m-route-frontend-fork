@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { RiHome2Line, RiMapPinLine, RiSettings2Line } from "react-icons/ri";
+import { FaRegMessage } from "react-icons/fa6";
+import { MdOutlineReviews } from "react-icons/md";
+import { FaInfoCircle } from "react-icons/fa";
 
 const SidebarItem = ({ icon, label, to }) => {
   return (
@@ -13,9 +16,16 @@ const SidebarItem = ({ icon, label, to }) => {
 
 const SideBar = () => {
   const sidebarItems = [
-    { icon: <RiHome2Line className="h-6 w-6 text-blue-600" />, label: "Home", to: "/" },
+    { icon: <RiHome2Line className="h-6 w-6 text-blue-600" />, label: "Home", to: "/home" },
     { icon: <RiMapPinLine className="h-6 w-6 text-blue-600" />, label: "Routes plan", to: "/routes" },
     { icon: <RiSettings2Line className="h-6 w-6 text-blue-600" />, label: "Settings", to: "/settings" },
+    { icon: <MdOutlineReviews className="h-6 w-6 text-blue-600" />, label: "Reviews", to: "/reviews" },
+    { icon: <FaInfoCircle className="h-6 w-6 text-blue-600" />, label: "About us", to: "/about" },
+    { icon: <FaRegMessage className="h-6 w-6 text-blue-600" />, label: "Contact Us", to: "/contacts" },
+
+
+
+    
   ];
 
   return (
