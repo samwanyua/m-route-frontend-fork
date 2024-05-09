@@ -1,0 +1,103 @@
+.icons3 {
+  height: 26px;
+  width: 26px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.routes-plan3 {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-block;
+  min-width: 64px;
+}
+.btns3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 36px;
+  gap: 13px;
+}
+.icons4 {
+  height: 26px;
+  width: 26px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.routes-plan4 {
+  position: relative;
+  font-size: 20px;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  font-family: Poppins;
+  color: #fff;
+  text-align: left;
+  display: inline-block;
+  min-width: 129px;
+}
+.btns4 {
+  cursor: pointer;
+  border: 0;
+  padding: 8px 16px;
+  background-color: #0053af;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 13px;
+  white-space: nowrap;
+}
+.btns4:hover {
+  background-color: #267ad6;
+}
+.icons5 {
+  height: 26px;
+  width: 26px;
+  position: relative;
+}
+.routes-plan5 {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-block;
+  min-width: 89px;
+}
+.btns5,
+.sidebar-links1 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.btns5 {
+  flex-direction: row;
+  padding: 8px 35px;
+  gap: 14px;
+}
+.sidebar-links1 {
+  flex-direction: column;
+  gap: 29px;
+  text-align: left;
+  font-size: 20px;
+  color: #0053af;
+  font-family: Poppins;
+}
+@media screen and (max-width: 450px) {
+  .routes-plan3,
+  .routes-plan5 {
+    font-size: 16px;
+    line-height: 37px;
+  }
+}

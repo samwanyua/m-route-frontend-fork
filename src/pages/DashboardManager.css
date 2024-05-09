@@ -1,0 +1,640 @@
+.sidebar1 {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  box-shadow: 6px 10px 4px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
+  width: 250px;
+  height: 954px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 50px 10px;
+  box-sizing: border-box;
+}
+.dashboard-manager-item {
+  position: absolute;
+  top: 102px;
+  left: 576px;
+  width: 495px;
+  height: 46px;
+  display: none;
+}
+.button5 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 101px;
+}
+.button4 {
+  width: 149px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.button7 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 113px;
+}
+.button6,
+.switch-page1 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.button6 {
+  border-radius: 8px;
+  background-color: #0153af;
+  justify-content: flex-start;
+  padding: 0 24px;
+  white-space: nowrap;
+  color: #fff;
+}
+.switch-page1 {
+  position: absolute;
+  top: 120px;
+  left: 321.5px;
+  box-shadow: 0 4px 15px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  background-color: #fff;
+  width: 642px;
+  overflow: hidden;
+  justify-content: space-between;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  gap: 20px;
+  max-width: 100%;
+  z-index: 1;
+  color: #0153af;
+}
+.route-plan-card1 {
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+}
+.date-range1st-june-30th,
+.merchandiser-name-oliver {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+}
+.span {
+  color: #000;
+}
+.in-progress {
+  color: #be1d13;
+}
+.statusin-progress {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.texts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #333;
+}
+.button9 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 30px;
+}
+.button8 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 21px 0 0;
+}
+.button11 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 96px;
+}
+.button10 {
+  height: 38px;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 10px 0 0;
+  box-sizing: border-box;
+}
+.button10,
+.card-btn,
+.route-plan-card {
+  display: flex;
+  align-items: flex-start;
+}
+.card-btn {
+  width: 194px;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  color: #0153af;
+}
+.route-plan-card {
+  position: absolute;
+  top: 255px;
+  left: 287px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 23px 16px 24px;
+  gap: 23px;
+}
+.route-plan-card3 {
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+}
+.date-range1st-june-30th1,
+.merchandiser-name-oliver1 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+}
+.span1 {
+  color: #000;
+}
+.in-progress1 {
+  color: #be1d13;
+}
+.statusin-progress1 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.texts1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #333;
+}
+.button13 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 30px;
+}
+.button12 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 21px 0 0;
+}
+.button15 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 96px;
+}
+.button14 {
+  height: 38px;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 10px 0 0;
+  box-sizing: border-box;
+}
+.button14,
+.card-btn1,
+.route-plan-card2 {
+  display: flex;
+  align-items: flex-start;
+}
+.card-btn1 {
+  width: 194px;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  color: #0153af;
+}
+.route-plan-card2 {
+  position: absolute;
+  top: 636.9px;
+  left: 282.5px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 23px 16px 24px;
+  gap: 23px;
+}
+.route-plan-card5 {
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+}
+.date-range1st-june-30th2,
+.merchandiser-name-oliver2 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+}
+.span2 {
+  color: #000;
+}
+.in-progress2 {
+  color: #be1d13;
+}
+.statusin-progress2 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.texts2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #333;
+}
+.button17 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 30px;
+}
+.button16 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 21px 0 0;
+}
+.button19 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 96px;
+}
+.button18 {
+  height: 38px;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 10px 0 0;
+  box-sizing: border-box;
+}
+.button18,
+.card-btn2,
+.route-plan-card4 {
+  display: flex;
+  align-items: flex-start;
+}
+.card-btn2 {
+  width: 194px;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  color: #0153af;
+}
+.route-plan-card4 {
+  position: absolute;
+  top: 260px;
+  left: 659.5px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 23px 16px 24px;
+  gap: 23px;
+}
+.route-plan-card7 {
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+}
+.date-range1st-june-30th3,
+.merchandiser-name-oliver3 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+}
+.span3 {
+  color: #000;
+}
+.in-progress3 {
+  color: #be1d13;
+}
+.statusin-progress3 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.texts3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #333;
+}
+.button21 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 30px;
+}
+.button20 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 21px 0 0;
+}
+.button23 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 96px;
+}
+.button22 {
+  height: 38px;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 10px 0 0;
+  box-sizing: border-box;
+}
+.button22,
+.card-btn3,
+.route-plan-card6 {
+  display: flex;
+  align-items: flex-start;
+}
+.card-btn3 {
+  width: 194px;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  color: #0153af;
+}
+.route-plan-card6 {
+  position: absolute;
+  top: 641.9px;
+  left: 655px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 23px 16px 24px;
+  gap: 23px;
+}
+.route-plan-card9 {
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+}
+.date-range1st-june-30th4,
+.merchandiser-name-oliver4 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+}
+.span4 {
+  color: #000;
+}
+.in-progress4 {
+  color: #be1d13;
+}
+.statusin-progress4 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.texts4 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #333;
+}
+.button25 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 30px;
+}
+.button24 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 21px 0 0;
+}
+.button27 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 96px;
+}
+.button26 {
+  height: 38px;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 10px 0 0;
+  box-sizing: border-box;
+}
+.button26,
+.card-btn4,
+.route-plan-card8 {
+  display: flex;
+  align-items: flex-start;
+}
+.card-btn4 {
+  width: 194px;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  color: #0153af;
+}
+.route-plan-card8 {
+  position: absolute;
+  top: 255px;
+  left: 1032px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 23px 16px 24px;
+  gap: 23px;
+}
+.route-plan-card11 {
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+}
+.date-range1st-june-30th5,
+.merchandiser-name-oliver5 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+}
+.span5 {
+  color: #000;
+}
+.in-progress5 {
+  color: #be1d13;
+}
+.statusin-progress5 {
+  position: relative;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.texts5 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #333;
+}
+.button29 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 30px;
+}
+.button28 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 21px 0 0;
+}
+.button31 {
+  position: relative;
+  text-decoration: underline;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 96px;
+}
+.button30 {
+  height: 38px;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 10px 0 0;
+  box-sizing: border-box;
+}
+.button30,
+.card-btn5,
+.route-plan-card10 {
+  display: flex;
+  align-items: flex-start;
+}
+.card-btn5 {
+  width: 194px;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  color: #0153af;
+}
+.route-plan-card10 {
+  position: absolute;
+  top: 637px;
+  left: 1027.5px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background-color: #fff;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px 23px 16px 24px;
+  gap: 23px;
+}
+.dashboard-manager1 {
+  width: 100%;
+  height: 1024px;
+  position: relative;
+  background-color: #fff;
+  overflow: hidden;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  font-size: 14px;
+  color: #407ec3;
+  font-family: Poppins;
+}
+@media screen and (max-width: 450px) {
+  .switch-page1 {
+    flex-wrap: wrap;
+  }
+  .dashboard-manager1 {
+    height: auto;
+    min-height: 1024;
+  }
+}
