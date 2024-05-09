@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
-import Dashboard from "./components/Dashboard";
-import Settings from "./components/Settings";
-import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import SideBar from "./components/SideBar";
-import Signup from "./components/Signup";
 import Footer from "./components/Footer";
+import Dashboard from "./components/Dashboard";
+import Settings from "./components/Settings";
 
 const routeConfig = {
   "/": { title: "", metaDescription: "" },
@@ -44,21 +41,19 @@ function App() {
   }, [pathname]);
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
 
-      <div className="flex">
-      <SideBar />
-        <Routes>
-          {/* <Route path="/" element={<LandingPage />} /> */}
+      <div className="flex flex-1">
+        <SideBar />
+        <Routes className="flex-1">
           <Route path="/dashboardmanager" element={<Dashboard />} />
           <Route path="/settingspage" element={<Settings />} />
-          {/* <Route path="/signup" element={<Signup />} /> */}
-          {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/footer" element={<Footer/>} />
-
+          {/* Add other routes here */}
         </Routes>
       </div>
+
+      <Footer />
     </div>
   );
 }

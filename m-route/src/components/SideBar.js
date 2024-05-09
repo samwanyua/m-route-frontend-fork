@@ -19,7 +19,7 @@ const SideBar = () => {
   ];
 
   return (
-    <div className="grid grid-rows-[auto,1fr] h-screen w-64 mr-12 p-8 shadow-lg">
+    <div className="grid grid-rows-[auto,1fr] h-screen w-64 mr-12 p-8 border-r border-gray-100 z-0">
       <div className="flex flex-col gap-8">
         {sidebarItems.map((item, index) => (
           <SidebarItem key={index} {...item} />
