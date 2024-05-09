@@ -6,6 +6,14 @@ import Settings from "./components/Settings";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 
+const routeConfig = {
+  "/": { title: "", metaDescription: "" },
+  "/dashboardmanager": { title: "", metaDescription: "" },
+  "/settingspage": { title: "", metaDescription: "" },
+  "/signup": { title: "", metaDescription: "" },
+  "/login": { title: "", metaDescription: "" },
+};
+
 function App() {
   const location = useLocation();
   const pathname = location.pathname;
@@ -15,41 +23,7 @@ function App() {
   }, [pathname]);
 
   useEffect(() => {
-    let title = "";
-    let metaDescription = "";
-
-    switch (pathname) {
-      case "/":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/dashboardmanager":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/dashboardmanager1":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/settingspage":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/dashboardlayout":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/signup":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/login":
-        title = "";
-        metaDescription = "";
-        break;
-      default:
-        break;
-    }
+    const { title, metaDescription } = routeConfig[pathname] || {};
 
     if (title) {
       document.title = title;
