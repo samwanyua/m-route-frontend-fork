@@ -3,10 +3,11 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
-import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import SideBar from "./components/SideBar";
+import Signup from "./components/Signup";
+import Footer from "./components/Footer";
 
 const routeConfig = {
   "/": { title: "", metaDescription: "" },
@@ -14,6 +15,7 @@ const routeConfig = {
   "/settingspage": { title: "", metaDescription: "" },
   "/signup": { title: "", metaDescription: "" },
   "/login": { title: "", metaDescription: "" },
+  "/footer": { title: "", metaDescription: "" },
 };
 
 function App() {
@@ -42,15 +44,22 @@ function App() {
   }, [pathname]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Navbar />} />
-      <Route path="/" element={<SideBar/>} />
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/dashboardmanager" element={<Dashboard />} />
-      <Route path="/settingspage" element={<Settings />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-    </Routes>
+    <div>
+      <Navbar />
+
+      <div className="flex">
+      <SideBar />
+        <Routes>
+          {/* <Route path="/" element={<LandingPage />} /> */}
+          <Route path="/dashboardmanager" element={<Dashboard />} />
+          <Route path="/settingspage" element={<Settings />} />
+          <Route path="/signup" element={<Signup />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/footer" element={<Footer/>} />
+
+        </Routes>
+      </div>
+    </div>
   );
 }
 

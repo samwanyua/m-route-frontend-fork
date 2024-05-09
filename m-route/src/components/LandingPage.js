@@ -6,10 +6,10 @@ const LandingPage = () => {
       <img
         className="w-full h-full absolute top-0 left-0 object-cover"
         alt=""
-        src=""
+        src="/nathanareboucas3ysdtzqnvtqunsplash-1@2x.png"
       />
       <div className="flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold mb-8">Merchandiser</h1>
+        <h1 className="text-4xl font-bold mb-8">Merchandiser.inc</h1>
         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
           <Link to="/login" className="text-white underline text-lg px-6 py-3 bg-blue-500 rounded-full">
             Sign in
