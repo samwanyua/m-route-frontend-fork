@@ -1,0 +1,139 @@
+.merchandiserinc4 {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 700;
+  font-family: inherit;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+  white-space: nowrap;
+}
+.merchandiserinc-frame {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+}
+.iconsolidbell1 {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.widget-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 7px 0 0;
+}
+.vector-icon1 {
+  width: 23px;
+  height: 23px;
+  position: relative;
+}
+.widget-label1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4px 0 0;
+}
+.eric-widget1 {
+  margin-bottom: -4px;
+  position: relative;
+  letter-spacing: 0.7px;
+  display: inline-block;
+  min-width: 50px;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+  white-space: nowrap;
+}
+.sidebar-links-btn {
+  height: 17px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+  box-sizing: border-box;
+}
+.developer1 {
+  position: relative;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  color: #80a9d7;
+  display: inline-block;
+  min-width: 67.5px;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+}
+.sidebar-links-btn-parent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.widget-label-parent {
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 11.9px;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+}
+.bell-icon,
+.header1,
+.navbar1,
+.widget-label-parent {
+  display: flex;
+  align-items: flex-start;
+}
+.bell-icon {
+  width: 157.9px;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 5.5px 0 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #003775;
+  font-family: Poppins;
+}
+.header1,
+.navbar1 {
+  flex-direction: row;
+  max-width: 100%;
+}
+.navbar1 {
+  width: 1152px;
+  justify-content: space-between;
+  gap: 20px;
+}
+.header1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
+  width: 100%;
+  justify-content: center;
+  padding: 16px 20px;
+  box-sizing: border-box;
+  z-index: 1;
+  text-align: left;
+  font-size: 36px;
+  color: #0053af;
+  font-family: "Post No Bills Colombo";
+}
+@media screen and (max-width: 450px) {
+  .sidebar-links-btn-parent {
+    display: none;
+  }
+}

@@ -1,0 +1,137 @@
+.merchandiserinc6 {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  letter-spacing: 0.7px;
+  line-height: 46px;
+  font-weight: 700;
+  font-family: inherit;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+  white-space: nowrap;
+}
+.merchandiserinc-wrapper2 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+}
+.iconsolidbell3 {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.f-r-a-m-e-i-c-o-n {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 7px 0 0;
+}
+.vector-icon3 {
+  width: 23px;
+  height: 23px;
+  position: relative;
+}
+.f-r-a-m-e-i-c-o-n1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4px 0 0;
+}
+.eric-widget3 {
+  margin-bottom: -4px;
+  position: relative;
+  letter-spacing: 0.7px;
+  display: inline-block;
+  min-width: 50px;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+  white-space: nowrap;
+}
+.i-n-s-t-a-n-c-e {
+  height: 17px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+  box-sizing: border-box;
+}
+.developer3 {
+  position: relative;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  color: #80a9d7;
+  display: inline-block;
+  min-width: 67.5px;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+}
+.i-n-s-t-a-n-c-e-parent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.f-r-a-m-e-i-c-o-n-parent {
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 12px;
+}
+.f-r-a-m-e,
+.f-r-a-m-e-i-c-o-n-parent,
+.header3,
+.navbar3 {
+  display: flex;
+  align-items: flex-start;
+}
+.f-r-a-m-e {
+  width: 157.9px;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 5.5px 0 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #003775;
+  font-family: Poppins;
+}
+.header3,
+.navbar3 {
+  flex-direction: row;
+  max-width: 100%;
+}
+.navbar3 {
+  width: 1152px;
+  justify-content: space-between;
+  gap: 20px;
+}
+.header3 {
+  margin-top: -80px;
+  align-self: stretch;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
+  justify-content: center;
+  padding: 16px 20px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  debug_commit: 1de1738;
+  top: -80;
+  z-index: 99;
+  position: sticky;
+  text-align: left;
+  font-size: 36px;
+  color: #0053af;
+  font-family: "Post No Bills Colombo";
+}
+@media screen and (max-width: 450px) {
+  .i-n-s-t-a-n-c-e-parent {
+    display: none;
+  }
+}

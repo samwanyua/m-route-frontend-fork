@@ -1,0 +1,84 @@
+.label-caption1,
+.label4 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+}
+.label-caption1 {
+  height: 16px;
+  font-size: 14px;
+  line-height: 16px;
+  display: none;
+}
+.label3 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+}
+.input-icon1,
+.placeholder1 {
+  height: 24px;
+  position: relative;
+}
+.placeholder1 {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-family: Montserrat;
+  font-size: 20px;
+  background-color: transparent;
+  flex: 1;
+  line-height: 24px;
+  color: #999;
+  text-align: left;
+  display: inline-block;
+  min-width: 250px;
+  max-width: 100%;
+  padding: 0;
+}
+.input-icon1 {
+  width: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: none;
+  min-height: 24px;
+}
+.input-field1,
+.input2,
+.input3 {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.input3 {
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  flex-direction: row;
+  padding: 14px 15px;
+  gap: 8px;
+}
+.input-field1,
+.input2 {
+  flex-direction: column;
+}
+.input-field1 {
+  gap: 8px;
+  text-align: left;
+  font-size: 20px;
+  color: #222;
+  font-family: Montserrat;
+}
+@media screen and (max-width: 450px) {
+  .label4,
+  .placeholder1 {
+    font-size: 16px;
+    line-height: 19px;
+  }
+}

@@ -1,0 +1,47 @@
+.label-caption2,
+.label6 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+}
+.label-caption2 {
+  height: 16px;
+  font-size: 14px;
+  line-height: 16px;
+  display: none;
+}
+.label5 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+}
+.input-field2,
+.input4 {
+  align-self: stretch;
+  max-width: 100%;
+  font-size: 20px;
+  font-family: Montserrat;
+}
+.input4 {
+  border: 0;
+  background-color: transparent;
+  color: #999;
+}
+.input-field2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  text-align: left;
+  color: #222;
+}
+@media screen and (max-width: 450px) {
+  .label6 {
+    font-size: 16px;
+    line-height: 19px;
+  }
+}
