@@ -53,7 +53,7 @@ function App() {
           {/* <Route path="/" element={<LandingPage />} /> */}
           <Route path="/dashboardmanager" element={<Dashboard />} />
           <Route path="/settingspage" element={<Settings />} />
-          <Route path="/signup" element={<Signup />} />
+          {/* <Route path="/signup" element={<Signup />} /> */}
           {/* <Route path="/login" element={<Login />} /> */}
           <Route path="/footer" element={<Footer/>} />
 
