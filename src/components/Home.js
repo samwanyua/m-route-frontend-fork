@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-scroll";
 
-const LandingPage = () => {
+const HomePage = () => {
   return (
     <div className="min-h-[70vh] flex flex-col md:flex-row md:justify-between items-center md:mx-32 mx-5 mt-10">
       <div className="md:w-2/4 text-left mr-8 ">
@@ -23,10 +23,10 @@ const LandingPage = () => {
       </div>
 
       <div className="w-full md:w-2/4 ml spa">
-        <img src="https://images.unsplash.com/photo-1548345680-f5475ea5df84?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="img" />
+        <img src="https://images.unsplash.com/photo-1548345680-f5475ea5df84?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Hand holding phone with map displayed" />
       </div>
     </div>
   );
 };
 
-export default LandingPage;
+export default HomePage;

@@ -5,7 +5,7 @@ import SideBar from "./components/SideBar";
 import Footer from "./components/Footer";
 import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
-import LandingPage from "./components/LandingPage";
+import HomePage from "./components/Home";
 
 
 const routeConfig = {
@@ -25,14 +25,14 @@ const routeConfig = {
 
 function App() {
   const location = useLocation();
-  const pathname = location.pathname;
+  const currentPath = location.pathname;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [currentPath]);
 
   useEffect(() => {
-    const { title, metaDescription } = routeConfig[pathname] || {};
+    const { title, metaDescription } = routeConfig[currentPath] || {};
 
     if (title) {
       document.title = title;
@@ -46,22 +46,20 @@ function App() {
         metaDescriptionTag.content = metaDescription;
       }
     }
-  }, [pathname]);
+  }, [currentPath]);
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
 
       <div className="flex flex-1">
-        <SideBar />
+        {currentPath !== '/home' && <SideBar />}
         <Routes className="flex-1">
-        <Route path="/home" element={<LandingPage />} />
 
-          <Route path="/dashboardmanager" element={<Dashboard />} />
-          <Route path="/settingspage" element={<Settings />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/dashboardmanager" element={<Dashboard />} />
+        <Route path="/settingspage" element={<Settings />} />
           
-
-
         </Routes>
       </div>
 
