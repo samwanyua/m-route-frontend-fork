@@ -112,7 +112,7 @@ const Location = (defaultLocation = null) =>{
                     setError("Server error, try again");
 
                 }else{
-                    setError("System experiencing some problem, try again later.")
+                    setError("System experiencing a problem, please try again later.")
                 }
                     
             } catch (error) {
