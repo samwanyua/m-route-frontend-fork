@@ -5,6 +5,7 @@ import { FaRegMessage } from "react-icons/fa6";
 import { MdOutlineReviews } from "react-icons/md";
 import { FaInfoCircle } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 const SidebarItem = ({ icon, label, to }) => {
   return (
@@ -25,6 +26,7 @@ const SideBar = () => {
   const sidebarItems = [
     { icon: <RiHome2Line className="h-6 w-6 text-blue-600" />, label: "Home", to: "/" },
     { icon: <RiMapPinLine className="h-6 w-6 text-blue-600" />, label: "Routes", to: "/routes" },
+    { icon: <FaRegCalendarAlt className="h-6 w-6 text-blue-600" />, label: "Calendar", to: "/calendar" },
     { icon: <RiSettings2Line className="h-6 w-6 text-blue-600" />, label: "Settings", to: "/settings" },
     { icon: <MdOutlineReviews className="h-6 w-6 text-blue-600" />, label: "Reviews", to: "/reviews" },
     { icon: <FaInfoCircle className="h-6 w-6 text-blue-600" />, label: "About us", to: "/about" },
