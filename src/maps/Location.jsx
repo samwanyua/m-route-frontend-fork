@@ -9,7 +9,7 @@ const Location = (defaultLocation = null) =>{
     const [error, setError] = useState("");
     const [token, setToken] = useState("");
     const [userId, setUserId] = useState(0);
-    const [success, setSuccess] = useState("")
+    const [success, setSuccess] = useState("");
 
     useEffect(() =>{
 
@@ -25,7 +25,7 @@ const Location = (defaultLocation = null) =>{
         const decodedToken = jwt_decode(accessToken);
         if (decodedToken) {
             setUserId(decodedToken.user_id);
-            
+
         } else {
             setError("Failed to decode access token.");
             return; // Stop further execution if decoding fails
