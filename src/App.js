@@ -5,7 +5,9 @@ import SideBar from "./components/SideBar";
 import Footer from "./components/Footer";
 import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
-import HomePage from "./components/Home";
+import Home from "./components/Home";
+import Reviews from "./components/Reviews";
+
 
 
 const routeConfig = {
@@ -17,7 +19,7 @@ const routeConfig = {
   "/footer": { title: "", metaDescription: "" },
   "/reviews": {title: "", metaDescription: ""},
   "/routesplan": {title: "", metaDescription: ""},
-  "/home": {title: "", metaDescription: ""}
+  // "/": {title: "", metaDescription: ""}
 
 
 
@@ -56,9 +58,10 @@ function App() {
         {currentPath !== '/home' && <SideBar />}
         <Routes className="flex-1">
 
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<Home />} />
         <Route path="/dashboardmanager" element={<Dashboard />} />
         <Route path="/settingspage" element={<Settings />} />
+        <Route path="/reviews" element={<Reviews />} />
           
         </Routes>
       </div>
