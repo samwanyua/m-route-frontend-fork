@@ -10,6 +10,7 @@ const Location = (defaultLocation = null) =>{
     const [token, setToken] = useState("");
     const [userId, setUserId] = useState(0);
     const [success, setSuccess] = useState("");
+    const [locateMerchandiser, setLocateMerchandiser] = useState(false);
 
     useEffect(() =>{
 
@@ -32,7 +33,11 @@ const Location = (defaultLocation = null) =>{
         }
 
         const intervalId = setInterval(() => {
-            getGeolocation();
+
+            // Only send merchandiser's location when they are at work
+            if (locateMerchandiser){
+                getGeolocation();
+            }
 
         }, 300000); // Every 5 minutes
 
@@ -122,7 +127,7 @@ const Location = (defaultLocation = null) =>{
         }
     }
 
-    return {isLoading, error, success}
+    return {isLoading, error, success, setLocateMerchandiser}
 }
 
 export default Location
