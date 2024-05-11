@@ -14,7 +14,7 @@ const Navbar = () => {
         <RiNotification2Line className="h-6 w-6 text-blue-600"
          onClick={() => setShowModal(true)}
         />
-        <Link to="/login">
+        <Link to="/profile">
           <MdAccountCircle className="h-8 w-8 text-blue-600" />
         </Link>
       <div className="flex flex-col">
