@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Home from "./components/Home";
 import Reviews from "./components/Reviews";
+import Login from "./components/Login";
 
 
 
@@ -62,6 +63,7 @@ function App() {
         <Route path="/dashboardmanager" element={<Dashboard />} />
         <Route path="/settingspage" element={<Settings />} />
         <Route path="/reviews" element={<Reviews />} />
+        <Route path="/login" element={<Login />} />
           
         </Routes>
       </div>

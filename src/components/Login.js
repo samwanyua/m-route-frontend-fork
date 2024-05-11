@@ -2,6 +2,8 @@ import { useState } from "react";
 import { AiOutlineClose, AiOutlineLock } from "react-icons/ai";
 import { FiMail } from "react-icons/fi";
 import { MdCheckBoxOutlineBlank, MdCheckBox } from "react-icons/md";
+import { Link } from "react-router-dom";
+
 
 const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
@@ -14,7 +16,10 @@ const Login = () => {
     <form className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-8 gap-4">
       <button className="flex items-center gap-2">
         <div className="close">
+
+        <Link to="/">
           <AiOutlineClose className="h-6 w-6" />
+          </Link>
         </div>
         <b className="text-blue-600 text-lg">Log In</b>
       </button>
