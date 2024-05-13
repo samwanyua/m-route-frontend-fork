@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 
 
@@ -56,7 +57,7 @@ const Map = () => {
 
     setToken(JSON.parse(accessToken));
 
-    const decodedToken = jwt_decode(accessToken);
+    const decodedToken = jwtDecode(accessToken);
     if (decodedToken) {
         setUserId(decodedToken.user_id);
 
