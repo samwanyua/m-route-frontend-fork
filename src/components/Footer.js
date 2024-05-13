@@ -31,37 +31,39 @@ const Footer = () => {
               <div className="w-full lg:w-4/12 px-4 ml-auto">
                 <span className="block uppercase text-white text-lg font-semibold mb-2">Useful Links</span>
                 <ul className="list-unstyled">
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">About Us</a>
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">Careers</a>
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">Data visualization</a>
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">Compliance</a>
                   </li>
                 </ul>
               </div>
+    
               <div className="w-full lg:w-4/12 px-4">
                 <span className="block uppercase text-white text-lg font-semibold mb-2">Other Resources</span>
                 <ul className="list-unstyled">
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">Geolocation Services</a>
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">Terms &amp; Conditions</a>
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">Privacy Policy</a>
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-2 md:mb-4">
                     <a className="text-white hover:text-white font-normal block text-md" href="#">Contact Us</a>
                   </li>
                 </ul>
               </div>
+
             </div>
           </div>
         </div>
