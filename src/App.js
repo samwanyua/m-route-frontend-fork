@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Reviews from "./components/Reviews";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import ContactUs from "./components/ContactUs";
 
 
 
@@ -21,6 +22,8 @@ const routeConfig = {
   "/footer": { title: "", metaDescription: "" },
   "/reviews": {title: "", metaDescription: ""},
   "/routesplan": {title: "", metaDescription: ""},
+  "/contactus": {title: "", metaDescription: ""},
+
   // "/": {title: "", metaDescription: ""}
 };
 
@@ -28,7 +31,7 @@ function App() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const [authorized, setAuthorized] = useState(false); // Initial state is false
+  const [authorized, setAuthorized] = useState(true); // Initial state is false
 
 
   useEffect(() => {
@@ -72,6 +75,8 @@ function App() {
               <Route path="/settingspage" element={<Settings />} />
               <Route path="/reviews" element={<Reviews />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/contactus" element={<ContactUs />} />
+
             </>
           ) : null}
           <Route path="/" element={<Home authorized={authorized} />} />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RiArrowDownSLine } from 'react-icons/ri'; // Import ChevronDown icon from react-icons
+import { RiArrowDownSLine } from 'react-icons/ri'; 
 import { Switch } from '@headlessui/react';
 
 export default function ContactUs() {
