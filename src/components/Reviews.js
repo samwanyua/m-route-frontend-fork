@@ -98,11 +98,11 @@ const Reviews = () => {
   
   return (
     <div className="mt-8 mb-10">
-      <h2 className="text-2xl font-bold mb-1 ml-12 text-blue-600"><MdReviews className="inline mr-4"/>Reviews</h2>
-      <div className="grid grid-cols-2 p-12 gap-4 space-y-6">
+      <h2 className="text-2xl font-bold mb-1 ml-6 lg:ml-12 text-blue-600"><MdReviews className="inline mr-4"/>Reviews</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-12">
         {reviewsData.map((review) => (
           <div key={review.id} className="bg-white rounded-md shadow-md p-4">
-            <p className="text-fourth ">
+            <p className="text-fourth">
               <IoMdContact className="inline mr-4 text-4xl"/>{review.merchandiser ? review.merchandiser.staff_id : 'Unknown Merchandiser'}
             </p>
             <p className="text-fourth text-md font-bold mt-2">
@@ -127,7 +127,7 @@ const Reviews = () => {
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="bg-white rounded-md shadow-md p-12 w-1/2 ml-12">
+      <form onSubmit={handleSubmit} className="bg-white rounded-md shadow-md p-4 lg:p-12 w-full lg:w-1/2 mx-auto lg:ml-12">
         <h3 className="text-lg font-bold mb-2">Review a merchandiser</h3>
         <input type="text" name="merchandiser" value={newReview.merchandiser.staff_id} onChange={handleInputChange} placeholder="Enter merchandiser's staff ID" className="border rounded-md p-2 mb-2 block w-full" />
         <input type="text" name="activity" value={newReview.activity.name} onChange={handleInputChange} placeholder="Enter Merchandiser's activity details ex. sales orders" className="border rounded-md p-2 mb-2 block w-full" />
