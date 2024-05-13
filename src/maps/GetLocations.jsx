@@ -116,7 +116,7 @@ const GetLocations = () =>{
 
     }
 
-    return {error, users, locations, userLocations};
+    return {error, userLocations};
 
 
 }
