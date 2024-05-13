@@ -5,7 +5,7 @@ const AboutUs = () => {
     <div className="bg-white rounded-md shadow-md p-6 mb-8">
       <div className="mb-6">
         <div className="bg-white rounded-md p-4">
-          <h2 className="text-2xl font-bold mb-2">About Merch Mate</h2>
+          <h2 className="text-2xl font-bold mb-2">About Us</h2>
           <p className="text-gray-700">
             Merch Mate is a leading provider of innovative solutions for tracking salespeople and optimizing route plans.
             Our mission is to revolutionize the way companies monitor their field operations, ensuring efficiency and transparency.

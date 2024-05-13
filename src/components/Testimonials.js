@@ -10,7 +10,7 @@ function Testimonials() {
         <figure className="mt-10">
           <blockquote className="text-center text-xl font-semibold leading-8 text-gray-900 sm:text-2xl sm:leading-9">
             <p>
-              “The Merch Mate system's seamless integration into our workflow has empowered our sales team, enabling them to provide detailed reports backed by indisputable evidence of their on-duty presence. We are truly grateful for the expertise and dedication demonstrated by [Your Company Name] in revolutionizing our sales monitoring process.”
+              “The Merch Mate system's seamless integration into our workflow has empowered our sales team, enabling them to provide detailed reports backed by indisputable evidence of their on-duty presence. We are truly grateful for the expertise and dedication demonstrated by Merch Mate in revolutionizing our sales monitoring process.”
             </p>
           </blockquote>
           <figcaption className="mt-10">

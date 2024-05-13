@@ -33,7 +33,7 @@ const Home = ({ authorized }) => {
           </div>
         </div>
       </div>
-      {/* <AboutUs /> */}
+      <AboutUs />
       <ContactUs />
       <Testimonials />
       <OurClients />
