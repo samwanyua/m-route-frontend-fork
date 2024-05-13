@@ -12,6 +12,7 @@ const GetLocations = () =>{
     const [users, setUsers] = useState([]);
     const [error, setError] = useState("");
     const [token, setToken] = useState("");
+    const [userLocations, setUserLocations] = useState([])
 
 
     useEffect(() =>{
@@ -35,6 +36,29 @@ const GetLocations = () =>{
         return () => clearInterval(intervalId);
 
     }, [])
+
+
+    useEffect(() => {
+        // Match users with locations and create userLocation array
+        const matchedUserLocations = users.map(user => {
+            const location = locations.find(loc => loc.merchandiser_id === user.id);
+            if (location) {
+                return {
+                    id: user.id,
+                    firstName: user.first_name,
+                    lastName: user.last_name,
+                    username: user.username,
+                    role: user.role,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    timestamp: location.timestamp
+                };
+            }
+            return null; // No location found for this user
+        }).filter(userLocation => userLocation !== null); // Filter out null values
+
+        setUserLocations(matchedUserLocations);
+    }, [users, locations]);
 
     const fetchLatestLocations = async () =>{
 
@@ -89,11 +113,10 @@ const GetLocations = () =>{
             setError("Failed to fetch users.")
         }
 
-        
 
     }
 
-    return {error, users, locations};
+    return {error, users, locations, userLocations};
 
 
 }
