@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Home from "./components/Home";
 import Reviews from "./components/Reviews";
+import Map from "./maps/Map";
 
 
 
@@ -62,7 +63,7 @@ function App() {
         <Route path="/dashboardmanager" element={<Dashboard />} />
         <Route path="/settingspage" element={<Settings />} />
         <Route path="/reviews" element={<Reviews />} />
-          
+        <Route path = "/map" element = {<Map /> } />
         </Routes>
       </div>
 
@@ -72,3 +73,6 @@ function App() {
 }
 
 export default App;
+
+
+
