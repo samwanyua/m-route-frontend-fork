@@ -1,39 +1,45 @@
-import React from "react";
-import { Link } from "react-scroll";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import AboutUs from './AboutUs';
+import ContactUs from './ContactUs';
+import Testimonials from './Testimonials';
+import OurClients from './OurClients';
 
 const Home = ({ authorized }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <div className="min-h-[70vh] flex flex-col lg:flex-row lg:justify-between items-center lg:mx-32 mx-5 mt-10">
-      <div className="lg:w-2/4 text-center lg:text-left mb-8 lg:mb-0">
-        <h2 className="text-3xl lg:text-4xl font-bold leading-tight">
-          Empowering Sales Teams with{" "}
-          <span className="text-black font-normal">Efficient Route Planning</span>
-        </h2>
-        <p className="text-lightText mt-5">
-          Welcome to our platform dedicated to optimizing route planning for sales professionals.
-          Join us on this journey as we revolutionize the way salespeople navigate through their
-          daily tasks and gather crucial product insights. Together, let's make route planning
-          smarter and more effective.
-        </p>
+    <div className="bg-white pt-14 lg:pt-20">
 
-        {!authorized && (
-          <Link to="/login">
-            <button className="bg-white py-2 px-5 rounded-full mt-4 outline hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:bg-blue-600 hover:text-white transition-all">
-              Login
-            </button>
-          </Link>
-        )}
+      <div className="relative isolate px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl">
+          <div className="text-left">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              Enhance accountability and efficiency with our merchandiser tracking microservice.
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Welcome to our innovative merchandiser tracking microservice, where accountability meets efficiency. With our cutting-edge solution, you can effortlessly monitor the movements of your sales team in real-time, ensuring that every action is accounted for. Say goodbye to uncertainties and hello to streamlined operations. Let us help you elevate your sales force's performance to new heights.
+            </p>
+            <div className="mt-10 flex items-center justify-start gap-x-6">
+              {!authorized && (
+                <Link
+                  to="/login"
+                  className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                >
+                  Get started
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
+      {/* <AboutUs /> */}
+      <ContactUs />
+      <Testimonials />
+      <OurClients />
 
-      <div className="w-full lg:w-2/4">
-        <img
-          className="w-full"
-          src="https://images.unsplash.com/photo-1548345680-f5475ea5df84?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Hand holding phone with map displayed"
-        />
-      </div>
     </div>
   );
-};
+}
 
 export default Home;
