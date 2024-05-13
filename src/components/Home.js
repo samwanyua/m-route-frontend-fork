@@ -1,36 +1,29 @@
-import React from "react";
-import { Link } from "react-scroll";
+// Home.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+import ContactUs from './ContactUs';
+import AboutUs from './AboutUs';
 
 const Home = ({ authorized }) => {
   return (
-    <div className="min-h-[70vh] flex flex-col lg:flex-row lg:justify-between items-center lg:mx-32 mx-5 mt-10">
-      <div className="lg:w-2/4 text-center lg:text-left mb-8 lg:mb-0">
-        <h2 className="text-3xl lg:text-4xl font-bold leading-tight">
-          Empowering Sales Teams with{" "}
-          <span className="text-black font-normal">Efficient Route Planning</span>
-        </h2>
-        <p className="text-lightText mt-5">
-          Welcome to our platform dedicated to optimizing route planning for sales professionals.
-          Join us on this journey as we revolutionize the way salespeople navigate through their
-          daily tasks and gather crucial product insights. Together, let's make route planning
-          smarter and more effective.
-        </p>
-
+    <div className="flex flex-col items-center justify-center flex-1 bg-cover bg-center" style={{ backgroundImage: 'url(https://docs.qgis.org/3.34/en/_images/decoration_layoutextents_example.png)', backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>      
+      <div className="max-w-4xl px-6 md:px-12 lg:px-24">
+        <h1 className="text-4xl md:text-xl lg:text-2xl font-bold text-black mb-4 text-center">Welcome to our Sales Tracking System</h1>
+        <p className="text-lg font-medium md:text-lg lg:text-xl text-black mb-8 text-center">Track your merchandisers' movements seamlessly.</p>
         {!authorized && (
-          <Link to="/login">
-            <button className="bg-white py-2 px-5 rounded-full mt-4 outline hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:bg-blue-600 hover:text-white transition-all">
-              Login
+          <div className="flex justify-center">
+            <Link to="/login">
+            <button className="bg-white text-black py-2 px-3 md:py-2 md:px-4 lg:py-3 lg:px-6 rounded-full outline hover:shadow-md hover:bg-blue-600 hover:text-white transition-all">
+              Get started
             </button>
-          </Link>
+
+            </Link>
+          </div>
         )}
       </div>
-
-      <div className="w-full lg:w-2/4">
-        <img
-          className="w-full"
-          src="https://images.unsplash.com/photo-1548345680-f5475ea5df84?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Hand holding phone with map displayed"
-        />
+      <div className=" mt-8">
+        <ContactUs /> 
+        <AboutUs /> 
       </div>
     </div>
   );
