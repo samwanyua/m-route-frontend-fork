@@ -7,8 +7,10 @@ import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Home from "./components/Home";
 import Reviews from "./components/Reviews";
+import Map from "./maps/Map";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+
 import ContactUs from "./components/ContactUs";
 
 
@@ -69,6 +71,7 @@ function App() {
           </>
         )}
         <Routes className="flex-1">
+
           {authorized ? (
             <>
               <Route path="/dashboardmanager" element={<Dashboard />} />
@@ -77,10 +80,12 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/contactus" element={<ContactUs />} />
 
+              <Route path = "/map" element = {<Map /> } />
             </>
           ) : null}
           <Route path="/" element={<Home authorized={authorized} />} />
           <Route path="/login" element={<Login />} />
+
         </Routes>
       </div>
       <Footer />
@@ -88,3 +93,6 @@ function App() {
   );
 }
 export default App;
+
+
+

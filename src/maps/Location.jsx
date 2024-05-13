@@ -114,6 +114,7 @@ const Location = (defaultLocation = null) =>{
                     setError(data.message)
 
                 }else if (data.status_code === 500){
+                    console.log(data.message)
                     setError("Server error, try again");
 
                 }else{
