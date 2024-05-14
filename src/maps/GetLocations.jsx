@@ -33,15 +33,15 @@ const GetLocations = () => {
             return;
         }
 
-        fetchLatestLocations();
-        fetchUsersData();
+        // fetchLatestLocations();
+        // fetchUsersData();
 
-        // const intervalId = setInterval(() => {
-        //     fetchLatestLocations();
-        //     fetchUsersData();
-        // }, 200000);
+        const intervalId = setInterval(() => {
+            fetchLatestLocations();
+            fetchUsersData();
+        }, 200000);
 
-        // return () => clearInterval(intervalId);
+        return () => clearInterval(intervalId);
     }, []);
 
 
@@ -153,7 +153,7 @@ const GetLocations = () => {
         >
             <MapContainer
                 center={[1.2921, 36.8219]}
-                zoom={20}
+                zoom={2}
                 style={{ height: "500px", width: "500px" }}
             >
                 <TileLayer
