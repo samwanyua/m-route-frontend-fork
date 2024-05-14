@@ -7,9 +7,9 @@ import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Home from "./components/Home";
 import Reviews from "./components/Reviews";
-import Map from "./maps/Map";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import GetLocations from "./maps/GetLocations";
 
 import ContactUs from "./components/ContactUs";
 
@@ -78,9 +78,11 @@ function App() {
               <Route path="/settingspage" element={<Settings />} />
               <Route path="/reviews" element={<Reviews />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path = "/map" element = {<GetLocations /> } />
               <Route path="/contactus" element={<ContactUs />} />
 
-              <Route path = "/map" element = {<Map /> } />
+
+
             </>
           ) : null}
           <Route path="/" element={<Home authorized={authorized} />} />
