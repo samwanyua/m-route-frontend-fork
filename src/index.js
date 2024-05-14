@@ -12,7 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <LoadScript
+
       googleMapsApiKey={process.env.GOOLE_MAP_API_KEY}
+
     >
       <BrowserRouter>
         <App />
