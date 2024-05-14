@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const LOCATION_URL = "https://m-route-backend.onrender.com/users/locations";
 
@@ -23,7 +24,7 @@ const Location = (defaultLocation = null) =>{
 
         setToken(JSON.parse(accessToken));
 
-        const decodedToken = jwt_decode(accessToken);
+        const decodedToken = jwtDecode(accessToken);
         if (decodedToken) {
             setUserId(decodedToken.user_id);
 
