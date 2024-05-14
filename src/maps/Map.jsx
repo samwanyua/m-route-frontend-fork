@@ -1,5 +1,7 @@
-// import { useState, useEffect } from "react";
-// import { jwtDecode } from "jwt-decode";
+
+import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+
 
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -8,7 +10,42 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 // const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com//users/route-plans";
 
+
 const Map = () => {
+
+  useEffect(() =>{
+
+    getRoutePlans();
+
+    const accessToken = localStorage.getItem("access_token");
+    
+    if (!accessToken) {
+
+      setErrorMessage("Access token is missing. Please log in.");
+        return; // Stop further execution if access token is missing
+    }
+
+    setToken(JSON.parse(accessToken));
+
+    const decodedToken = jwtDecode(accessToken);
+    if (decodedToken) {
+        setUserId(decodedToken.user_id);
+
+    } else {
+      setErrorMessage("Failed to decode access token.");
+        return; // Stop further execution if decoding fails
+    }
+  }, [])
+
+
+    // Check if last location is not more than 30 mins
+    const isRecentTimestamp = (timestamp) => {
+        const THIRTY_MINUTES = 30 * 60 * 1000; // 30 minutes in milliseconds
+        const currentTime = new Date().getTime();
+        const locationTime = new Date(timestamp).getTime();
+        return currentTime - locationTime <= THIRTY_MINUTES;
+    };
+
 
 
   return (
