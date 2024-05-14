@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 import GetLocations from "./maps/GetLocations";
 
 import ContactUs from "./components/ContactUs";
+// import AboutUs from "./components/AboutUs";
 
 
 
@@ -25,6 +26,8 @@ const routeConfig = {
   "/reviews": {title: "", metaDescription: ""},
   "/routesplan": {title: "", metaDescription: ""},
   "/contactus": {title: "", metaDescription: ""},
+  // "/aboutus": {title: "", metaDescription: ""},
+
 
   // "/": {title: "", metaDescription: ""}
 };
@@ -70,7 +73,7 @@ function App() {
             <SideBar />
           </>
         )}
-        <Routes className="flex-1">
+        <Routes className="flex-1 ml-4">
 
           {authorized ? (
             <>
@@ -80,12 +83,14 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path = "/map" element = {<GetLocations /> } />
               <Route path="/contactus" element={<ContactUs />} />
+              {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
 
 
 
             </>
           ) : null}
           <Route path="/" element={<Home authorized={authorized} />} />
+          <Route path="/contactus" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
 
         </Routes>
