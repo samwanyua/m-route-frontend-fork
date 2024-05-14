@@ -58,7 +58,7 @@ const SideBar = () => {
     { icon: <FaRegCalendarAlt className="h-6 w-6 text-blue-600" />, label: "Calendar", to: "/calendar" },
     { icon: <RiSettings2Line className="h-6 w-6 text-blue-600" />, label: "Settings", to: "/settings" },
     { icon: <MdOutlineReviews className="h-6 w-6 text-blue-600" />, label: "Reviews", to: "/reviews" },
-    { icon: <FaInfoCircle className="h-6 w-6 text-blue-600" />, label: "About us", to: "/about" },
+    // { icon: <FaInfoCircle className="h-6 w-6 text-blue-600" />, label: "About us", to: "/aboutus" },
     { icon: <FaRegMessage className="h-6 w-6 text-blue-600" />, label: "Contact Us", to: "/contactus" },
   ];
 
