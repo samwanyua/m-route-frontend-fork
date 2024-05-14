@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <LoadScript
-      googleMapsApiKey="AIzaSyBMMd346uZP3ldaVhVSb9bpOy4wdMN7ffM" // Replace with your API key
+      googleMapsApiKey={process.env.GOOGLE_MAP_API_KEY}
     >
       <BrowserRouter>
         <App />
@@ -17,3 +17,5 @@ root.render(
     </LoadScript>
   </React.StrictMode>
 );
+
+
