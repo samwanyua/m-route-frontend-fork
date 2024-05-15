@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// Modal component
 const Modal = ({ message, onClose }) => {
     return (
       <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -36,9 +35,6 @@ const Modal = ({ message, onClose }) => {
     );
   };
   
-
-
-
   const Signup = () => {
     const [formData, setFormData] = useState({
       first_name: "",
@@ -56,10 +52,14 @@ const Modal = ({ message, onClose }) => {
     const [loading, setLoading] = useState(false);
   
     const handleChange = (e) => {
-      const { name, value } = e.target;
-      const processedValue = (name === 'national_id_no' || name === 'staff_no') ? parseInt(value, 10) : value;
-      setFormData({ ...formData, [name]: processedValue });
-    };
+        let { name, value } = e.target;
+        if ((name === 'national_id_no' || name === 'staff_no') && value < 0) {
+            alert('Please enter a positive number.');
+            e.target.value = Math.max(0, value);
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
+      };
     
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -159,7 +159,7 @@ const Modal = ({ message, onClose }) => {
             </div>
             <div>
               <label htmlFor="national_id_no" className="block text-sm font-medium leading-6 text-gray-900">
-                National ID Number (Integer)
+                National ID Number
               </label>
               <div className="mt-2">
                 <input
@@ -174,7 +174,7 @@ const Modal = ({ message, onClose }) => {
             </div>
             <div>
               <label htmlFor="staff_no" className="block text-sm font-medium leading-6 text-gray-900">
-                Staff Number (Integer)
+                Staff Number
               </label>
               <div className="mt-2">
                 <input
