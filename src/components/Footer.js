@@ -3,7 +3,7 @@ import { FaTwitter, FaFacebookSquare, FaDribbble, FaLinkedin, FaPinterest, FaIns
 
 const Footer = () => {
   return (
-    <footer className="relative bg-black pt-8 pb-6 mt-auto border-t border-gray-100 z-50">
+    <footer className="relative dark:bg-gray-900 pt-8 pb-6 mt-auto border-t border-gray-100 z-50">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap text-center lg:text-left">
           <div className="w-full lg:w-6/12 px-4 mb-8 lg:mb-0">
@@ -72,7 +72,7 @@ const Footer = () => {
       <div className="flex flex-wrap items-center justify-center">
         <div className="w-full md:w-4/12 px-4 mx-auto text-center">
           <div className="text-sm text-white font-semibold py-1">
-            Copyright © <span id="get-current-year space-x-2">2024</span><a href="#" className="text-blue-600 hover:text-gray-800" target="_blank" rel="noopener noreferrer ml-2">Merch Mate Group</a>
+            Copyright © <span id="get-current-year space-x-2">2024</span><a href="#" className="text-white ml-2 hover:text-white" target="_blank" rel="noopener noreferrer ml-2">Merch Mate Group</a>
           </div>
         </div>
       </div>

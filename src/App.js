@@ -37,7 +37,7 @@ function App() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const [authorized, setAuthorized] = useState(false); // Initial state is false
+  const [authorized, setAuthorized] = useState(true); // Initial state is false
 
 
   useEffect(() => {
