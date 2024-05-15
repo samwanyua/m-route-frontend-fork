@@ -16,6 +16,8 @@ const Location = (defaultLocation = null) =>{
     useEffect(() =>{
 
         const accessToken = localStorage.getItem("access_token");
+        const userData = localStorage.getItem("user_data");
+        setUserId(userData.id)
         
         if (!accessToken) {
             setError("Access token is missing. Please log in.");
@@ -24,14 +26,6 @@ const Location = (defaultLocation = null) =>{
 
         setToken(JSON.parse(accessToken));
 
-        const decodedToken = jwtDecode(accessToken);
-        if (decodedToken) {
-            setUserId(decodedToken.user_id);
-
-        } else {
-            setError("Failed to decode access token.");
-            return; // Stop further execution if decoding fails
-        }
 
         const intervalId = setInterval(() => {
 

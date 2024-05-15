@@ -16,7 +16,7 @@ import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
 // import AboutUs from "./components/AboutUs";
 
-
+const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
 
 const routeConfig = {
   "/": { title: "", metaDescription: "" },
@@ -40,9 +40,44 @@ function App() {
 
 
   const [authorized, setAuthorized] = useState(false); 
-  const [roleCheck, setRoleCheck] = useState(0)
+  const [roleCheck, setRoleCheck] = useState(0);
+  const [token, setToken] = useState("");
 
+  
+  const logoutUser = async () =>{
+    
+    try {
 
+      const response = await fetch(LOGOUT_URL, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }, 
+        body: JSON.stringify({"access_token": token})
+      })
+
+      const data = await response.json();
+
+      if (data.status_code === 201){
+        setAuthorized(false);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user_data");
+
+      }else{
+        console.log(data.message || "There was an error loging out, try again")
+      }
+      
+    } catch (error) {
+      
+    }
+  
+  }
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    setToken(accessToken)
+  }, [])
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,39 +102,42 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-        {authorized && (
-          <>
-            <Navbar />
-          </>
-        )}
-    <div className="flex flex-1">
-        {authorized && (
-          <>
+      {authorized ? (
+        <>
+          <Navbar />
+          <div className="flex flex-1">
             <SideBar />
-          </>
-        )}
-        <Routes className="flex-1 ml-4">
 
-          {authorized ? (
-            <>
-              <Route path="/dashboardmanager" element={<Dashboard />} />
-              <Route path="/settingspage" element={<Settings />} />
-              <Route path="/reviews" element={<Reviews />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path = "/map" element = {<GetLocations /> } />
-              <Route path="/contactus" element={<ContactUs />} />
-              {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
-
-            </>
-          ) : null}
-          <Route path="/signup" element={<Signup />} />
+            <Routes className="flex-1 ml-4">
+              {roleCheck ? (
+                <>
+                  <Route path="/dashboardmanager" element={<Dashboard />} />
+                  <Route path="/settingspage" element={<Settings />} />
+                  <Route path="/reviews" element={<Reviews />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/map" element={<GetLocations />} />
+                  <Route path="/contactus" element={<ContactUs />} />
+                  <button onClick={logoutUser}>Logout</button>
+                  {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
+                </>
+              ) : (
+                <button onClick={logoutUser}>Logout</button>
+              ) } {/* Merchandiser contents} /> */}
+              <Route path="/" element={<Home authorized={authorized} />} />
+              <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />} />
+            </Routes>
+          </div>
+          <Footer />
+        </>
+      ):(
+        <Routes>
           <Route path="/" element={<Home authorized={authorized} />} />
-          <Route path="/contactus" element={<ContactUs />} />
           <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />} />
-
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Footer />
         </Routes>
-      </div>
-      <Footer />
+      )}
     </div>
   );
 }
