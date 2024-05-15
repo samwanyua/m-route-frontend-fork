@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AiOutlineClose, AiOutlineLock } from "react-icons/ai";
 import { FiMail } from "react-icons/fi";
 import { MdCheckBoxOutlineBlank, MdCheckBox } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 
 const LOGIN_URL = 'https://m-route-backend.onrender.com/users/login';
@@ -24,6 +24,24 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
   })
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      setAuthorized(true);
+
+      // Redirect to the previous route stored in localStorage
+      const previousRoute = localStorage.getItem("previous_route");
+      if (previousRoute) {
+        navigate(previousRoute);
+      }
+    }
+  }, [setAuthorized, navigate]);
+
+  useEffect(() => {
+    localStorage.setItem("previous_route", location.pathname);
+  }, [location.pathname]);
 
   const handleRememberMeChange = () => {
     setRememberMe(!rememberMe);
