@@ -37,7 +37,8 @@ function App() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const [authorized, setAuthorized] = useState(false); // Initial state is false
+  const [authorized, setAuthorized] = useState(false); 
+  const [roleCheck, setRoleCheck] = useState(0)
 
 
   useEffect(() => {
@@ -86,13 +87,11 @@ function App() {
               <Route path="/contactus" element={<ContactUs />} />
               {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
 
-
-
             </>
           ) : null}
           <Route path="/" element={<Home authorized={authorized} />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/login" element={<Login setAuthorized={setAuthorized} />} />
+          <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />} />
 
         </Routes>
       </div>
