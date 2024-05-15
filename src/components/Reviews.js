@@ -100,7 +100,7 @@ const Reviews = () => {
   
   return (
     <div className="mt-8 mb-10">
-      <h2 className="text-2xl font-bold mb-1 ml-6 lg:ml-12 text-blue-600"><MdReviews className="inline mr-4"/>Reviews</h2>
+      <h2 className="text-2xl font-bold mb-1 ml-6 lg:ml-12 text-gray-900"><MdReviews className="inline mr-4"/>Reviews</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-12">
         {/* Render existing reviews */}
         {reviewsData.map((review) => (
@@ -118,7 +118,7 @@ const Reviews = () => {
                 if (review.score >= starValue) {
                   return <FaStar key={index} className="text-fourth" />;
                 } else if (review.score + 0.5 === starValue) {
-                  return <FaStarHalfAlt key={index} className="text-yellow-400" />;
+                  return <FaStarHalfAlt key={index} className="text-gray-300" />;
                 } else {
                   return <FaStar key={index} className="text-gray-300" />;
                 }
@@ -132,25 +132,25 @@ const Reviews = () => {
         {/* Render newly added review */}
         {reviews.map((review, index) => (
           <div key={index} className="bg-white rounded-md shadow-md p-4">
-            <p className="text-fourth">
+            <p className="text-gray-900">
               <IoMdContact className="inline mr-4 text-4xl"/>{review.merchandiser ? review.merchandiser.staff_id : 'Unknown Merchandiser'}
             </p>
-            <p className="text-fourth text-md font-bold mt-2">
+            <p className="text-gray-900 text-md font-bold mt-2">
               {review.activity ? review.activity.name : 'Activity Name'}
             </p>
-            <p className="text-fourth italic text-sm mt-2 mb-2">"{review.comment}"</p>
+            <p className="text-gray-900 italic text-sm mt-2 mb-2">"{review.comment}"</p>
             <div className="flex items-center">
               {[...Array(5)].map((_, index) => {
                 const starValue = index + 1;
                 if (review.score >= starValue) {
-                  return <FaStar key={index} className="text-fourth" />;
+                  return <FaStar key={index} className="text-gray-900" />;
                 } else if (review.score + 0.5 === starValue) {
-                  return <FaStarHalfAlt key={index} className="text-yellow-400" />;
+                  return <FaStarHalfAlt key={index} className="text-gray-300" />;
                 } else {
                   return <FaStar key={index} className="text-gray-300" />;
                 }
               })}
-              <span className="text-sm text-fourth font-medium ml-1">
+              <span className="text-sm text-gray-900 font-medium ml-1">
                 ({review.score}/5)
               </span>
             </div>
@@ -171,7 +171,7 @@ const Reviews = () => {
             ({newReview.score}/5)
           </span>
         </div>
-        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">Submit</button>
+        <button type="submit" className="bg-gray-900 text-white font-bold py-2 px-4 rounded">Submit</button>
       </form>
     </div>
   );

@@ -6,20 +6,20 @@ import { MdAccountCircle } from "react-icons/md";
 const Navbar = () => {
   const [showModal, setShowModal] = React.useState(false);
   return (
-    <header className="bg-white shadow-md flex items-center justify-between px-6 py-4">
+    <header className="bg-gray-900 shadow-md flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-4">
-        <Link to="/" className="text-lg font-bold text-blue-600">Merch Mate</Link>
+        <Link to="/" className="text-lg font-bold text-white">Merch Mate</Link>
       </div>
       <div className="flex items-center gap-8">
-        <RiNotification2Line className="h-6 w-6 text-blue-600"
+        <RiNotification2Line className="h-6 w-6 text-white"
          onClick={() => setShowModal(true)}
         />
         <Link to="/profile">
-          <MdAccountCircle className="h-8 w-8 text-blue-600" />
+          <MdAccountCircle className="h-8 w-8 text-white" />
         </Link>
       <div className="flex flex-col">
-        <b className="text-base text-blue-600">Moses</b>
-        <div className="text-xs text-black">Manager</div>
+        <b className="text-base text-white">Moses</b>
+        <div className="text-xs text-white">Manager</div>
       </div>
       </div>
       <>

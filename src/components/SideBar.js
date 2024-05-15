@@ -25,7 +25,7 @@ const SidebarItem = ({ icon, label, to }) => {
   return (
     <Link to={to} className="flex items-center gap-4 py-2 pl-4">
       {icon}
-      {showLabel && <span className="text-lg font-semibold text-blue-600">{label}</span>}
+      {showLabel && <span className="text-lg font-semibold text-gray-900">{label}</span>}
     </Link>
   );
 };
@@ -53,20 +53,20 @@ const SideBar = () => {
   const menuText = showMenuText ? 'Menu' : '';
 
   const sidebarItems = [
-    { icon: <RiHome2Line className="h-6 w-6 text-blue-600" />, label: "Home", to: "/" },
-    { icon: <RiMapPinLine className="h-6 w-6 text-blue-600" />, label: "Routes", to: "/routes" },
-    { icon: <FaRegCalendarAlt className="h-6 w-6 text-blue-600" />, label: "Calendar", to: "/calendar" },
-    { icon: <RiSettings2Line className="h-6 w-6 text-blue-600" />, label: "Settings", to: "/settings" },
-    { icon: <MdOutlineReviews className="h-6 w-6 text-blue-600" />, label: "Reviews", to: "/reviews" },
-    // { icon: <FaInfoCircle className="h-6 w-6 text-blue-600" />, label: "About us", to: "/aboutus" },
-    { icon: <FaRegMessage className="h-6 w-6 text-blue-600" />, label: "Contact Us", to: "/contactus" },
+    { icon: <RiHome2Line className="h-6 w-6 text-gray-900" />, label: "Home", to: "/map" },
+    { icon: <RiMapPinLine className="h-6 w-6 text-gray-900" />, label: "Routes", to: "/routes" },
+    { icon: <FaRegCalendarAlt className="h-6 w-6 text-gray-900" />, label: "Calendar", to: "/calendar" },
+    { icon: <RiSettings2Line className="h-6 w-6 text-gray-900" />, label: "Settings", to: "/settings" },
+    { icon: <MdOutlineReviews className="h-6 w-6 text-gray-900" />, label: "Reviews", to: "/reviews" },
+    // { icon: <FaInfoCircle className="h-6 w-6 text-gray-900" />, label: "About us", to: "/aboutus" },
+    { icon: <FaRegMessage className="h-6 w-6 text-gray-900" />, label: "Contact Us", to: "/contactus" },
   ];
 
   return (
     <div className="lg:w-64 lg:mr-12 lg:p-8 lg:border-r lg:border-gray-100 lg:z-0">
       <div className="flex items-center mb-8 lg:hidden">
-        <IoMenu className="h-8 w-8 cursor-pointer text-blue-600" onClick={toggleSidebar} />
-        {isOpen && <span className="ml-4 text-blue-600 text-lg font-bold">{menuText}</span>}
+        <IoMenu className="h-8 w-8 cursor-pointer text-gray-900" onClick={toggleSidebar} />
+        {isOpen && <span className="ml-4 text-gray-900 text-lg font-bold">{menuText}</span>}
       </div>
       <div className={`flex flex-col gap-8 ${isOpen ? '' : 'hidden'} lg:flex lg:flex-col lg:gap-8 lg:flex-grow lg:overflow-auto`}>
         {sidebarItems.map((item, index) => (
