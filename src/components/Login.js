@@ -56,26 +56,31 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
         
         localStorage.setItem("access_token", accessToken);
         console.log(accessToken);
-  
-        const decript = await jwtDecode(accessToken);
+        
+        if (accessToken){
 
-        if (decript.role === "manager"){
-          setRoleCheck(true);
-          setAuthorized(true);
-        }
+          const decript = jwtDecode(accessToken);
 
-        const userData = {
-          "id": decript.user_id,
-          "role": decript.role,
-          "username": decript.username,
-          "email": decript.email,
-          "last_name": decript.last_name,
-          "avatar": decript.avatar
+          if (decript.role === "manager"){
+            setRoleCheck(true);
+            setAuthorized(true);
+          }
+
+          const userData = {
+            "id": decript.user_id,
+            "role": decript.role,
+            "username": decript.username,
+            "email": decript.email,
+            "last_name": decript.last_name,
+            "avatar": decript.avatar
+          }
+          
+          console.log(userData);
+          localStorage.setItem("user_data", JSON.stringify(userData));
+          navigate('/');
+          
         }
         
-        console.log(userData);
-        localStorage.setItem("user_data", JSON.stringify(userData));
-        navigate('/');
 
       }else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401){
         setError(data.message)
