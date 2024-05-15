@@ -3,7 +3,7 @@ import { AiOutlineClose, AiOutlineLock } from "react-icons/ai";
 import { FiMail } from "react-icons/fi";
 import { MdCheckBoxOutlineBlank, MdCheckBox } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 
 const LOGIN_URL = 'https://m-route-backend.onrender.com/users/login';
@@ -51,6 +51,9 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
       const data = await response.json();
 
       if (data.status_code === 201){
+        const accessToken = data.access_token
+        localStorage.setItem("access_token", accessToken);
+        console.log(accessToken);
   
         const decript = jwtDecode(data.access_token);
 
@@ -67,9 +70,8 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
           "last_name": decript.last_name,
           "avatar": decript.avatar
         }
+        
         console.log(userData);
-        console.log(data.access_token);
-        localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("user_data", JSON.stringify(userData));
         navigate('/');
 
