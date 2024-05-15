@@ -32,6 +32,7 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
 
   const handleLogin = async event => {
     event.preventDefault();
+    setError("");
   
     try {
       const requestBody = {
@@ -66,16 +67,25 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
           "last_name": decript.last_name,
           "avatar": decript.avatar
         }
+        console.log(userData);
+        console.log(data.access_token);
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("user_data", JSON.stringify(userData));
         navigate('/');
 
-      }else if (data.status_code === 400 || data.status_code === 404 || data.status_code === 409 || data.status_code === 401){
+      }else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401){
         setError(data.message)
 
       }else if (data.status_code === 403){
         setError(data.message);
         setPasswordExpired(true);
+
+      }else if (data.status_code === 404){
+        setError(data.message);
+
+        setTimeout(() =>{
+          navigate('/signup')
+        }, 2000)
 
       }else {
         console.log(data.message)
