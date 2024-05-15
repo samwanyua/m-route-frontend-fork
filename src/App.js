@@ -10,7 +10,8 @@ import Reviews from "./components/Reviews";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import GetLocations from "./maps/GetLocations";
-
+import { useNavigate } from "react-router-dom";
+import { navigate } from 'react-router-dom';
 import ContactUs from "./components/ContactUs";
 // import AboutUs from "./components/AboutUs";
 
@@ -36,7 +37,7 @@ function App() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const [authorized, setAuthorized] = useState(true); // Initial state is false
+  const [authorized, setAuthorized] = useState(false); // Initial state is false
 
 
   useEffect(() => {
@@ -91,7 +92,7 @@ function App() {
           ) : null}
           <Route path="/" element={<Home authorized={authorized} />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setAuthorized={setAuthorized} />} />
 
         </Routes>
       </div>
