@@ -40,7 +40,7 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
         password
       };
 
-      const response = await fetch('https://m-route-backend.onrender.com/users/login', {
+      const response = await fetch(LOGIN_URL, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
@@ -51,11 +51,13 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
       const data = await response.json();
 
       if (data.status_code === 201){
+
         const accessToken = data.access_token
+        
         localStorage.setItem("access_token", accessToken);
         console.log(accessToken);
   
-        const decript = jwtDecode(data.access_token);
+        const decript = await jwtDecode(accessToken);
 
         if (decript.role === "manager"){
           setRoleCheck(true);
