@@ -1,77 +1,112 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-
-const Signup = () => {
-  const [formData, setFormData] = useState({
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    national_id_no: "",
-    staff_no: "",
-    username: "",
-    email: "",
-    password: ""
-  });
-
-  const navigate = useNavigate();
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const processedValue = (name === 'national_id_no' || name === 'staff_no') ? parseInt(value, 10) : value;
-    setFormData({ ...formData, [name]: processedValue });
+// Modal component
+const Modal = ({ message, onClose }) => {
+    return (
+      <div className="fixed z-10 inset-0 overflow-y-auto">
+        <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+          </div>
+  
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+  
+          <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <h3 className="text-lg font-medium text-gray-900" id="modal-title">{message}</h3>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+              <button onClick={onClose} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    // console.log('Attempting to signup with the following data:', formData);
-  
-    try {
-      const response = await fetch('https://m-route-backend.onrender.com/users/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      const responseData = await response.json();
-  
-      if (response.ok) {
-        // console.log('Signup successful:', responseData);
-        alert(`Signup successful, you will be redirected to the login page to complete your login.`);
-        navigate('/login');
-        setLoading(false);
-      } else {
-        // console.error('Signup failed:', responseData.message);
-        alert(`Signup failed: ${responseData.message}`);
-        setLoading(false);
 
+
+
+  const Signup = () => {
+    const [formData, setFormData] = useState({
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      national_id_no: "",
+      staff_no: "",
+      username: "",
+      email: "",
+      password: ""
+    });
+  
+    const navigate = useNavigate();
+    const [message, setMessage] = useState(null);
+    const [loading, setLoading] = useState(false);
+  
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      const processedValue = (name === 'national_id_no' || name === 'staff_no') ? parseInt(value, 10) : value;
+      setFormData({ ...formData, [name]: processedValue });
+    };
+    
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+    
+      try {
+        const response = await fetch('https://m-route-backend.onrender.com/users/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+    
+        const responseData = await response.json();
+    
+        if (response.ok) {
+          setMessage("Signup successful, you will be redirected to the login page to complete your login.");
+          navigate('/login');
+        } else {
+          setMessage(`Signup failed: ${responseData.message}`);
+        }
+      } catch (error) {
+        setMessage(`Signup failed: ${error}`);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-    //   console.error('Error occurred during signup:', error);
-      alert(`Signup failed: ${error}`);
-      setLoading(false);
-    }
-  };
-
-  const [loading, setLoading] = useState(false);
-
-  return (
-    <>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-          <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-white"></div>
-        </div>
-      )}
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign up for an account
-          </h2>
-        </div>
+    };
+  
+    const closeModal = () => {
+      setMessage(null);
+    };
+  
+    return (
+      <>
+        {loading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+            <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-white"></div>
+          </div>
+        )}
+        {message && <Modal message={message} onClose={closeModal} />}
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+              Sign up for an account
+            </h2>
+          </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
