@@ -13,6 +13,7 @@ import GetLocations from "./maps/GetLocations";
 import { useNavigate } from "react-router-dom";
 import { navigate } from 'react-router-dom';
 import ContactUs from "./components/ContactUs";
+import Signup from "./components/Signup";
 // import AboutUs from "./components/AboutUs";
 
 
@@ -91,6 +92,7 @@ function App() {
 
             </>
           ) : null}
+          <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<Home authorized={authorized} />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />} />
