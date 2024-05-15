@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 
-const LOGIN_URL = 'https://m-route-backend.onrender.com/users/login'
+const LOGIN_URL = 'https://m-route-backend.onrender.com/users/login';
 
 const Login = ({ setAuthorized, setRoleCheck }) => {
 
@@ -39,7 +39,7 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
         password
       };
 
-      const response = await fetch(LOGIN_URL, {
+      const response = await fetch('https://m-route-backend.onrender.com/users/login', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
