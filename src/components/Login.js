@@ -115,7 +115,9 @@ const Login = ({ setAuthorized }) => {
         </button>
         <div className="flex items-center gap-1">
           <div className="text-sm text-gray-700">Don’t have an account?</div>
+          <Link to="/signup">
           <b className="text-blue-600 text-lg">Sign Up</b>
+          </Link>
         </div>
       </div>
     </form>
