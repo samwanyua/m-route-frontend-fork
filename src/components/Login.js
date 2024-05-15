@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineLock } from "react-icons/ai";
 import { FiMail } from "react-icons/fi";
 import { MdCheckBoxOutlineBlank, MdCheckBox } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
-const Login = ({ setAuthorized }) => {
+
+const LOGIN_URL = 'https://m-route-backend.onrender.com/users/login';
+
+const Login = ({ setAuthorized, setRoleCheck }) => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [passwordExpire, setPasswordExpired] = useState(false);
+  const [error, setError] = useState("")
+
   const navigate = useNavigate();
 
   const handleRememberMeChange = () => {
@@ -22,34 +30,76 @@ const Login = ({ setAuthorized }) => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async (event) => {
+  const handleLogin = async event => {
     event.preventDefault();
-    // console.log("Attempting to login with email:", email, "and password:", password);
+    setError("");
   
     try {
       const requestBody = {
         email,
         password
       };
-        const headers = {
-        'Content-Type': 'application/json'
-      };
 
-      const response = await fetch('https://m-route-backend.onrender.com/users/login', {
+      const response = await fetch(LOGIN_URL, {
         method: 'POST',
-        headers,
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(requestBody)
       });
-  
-      if (response.ok) {
-        setAuthorized(true);
+
+      const data = await response.json();
+
+      if (data.status_code === 201){
+
+        const accessToken = data.access_token
+        
+        localStorage.setItem("access_token", accessToken);
+        console.log(accessToken);
+        
+        
+
+        if (data.message.role === "manager"){
+          setRoleCheck(true);
+          setAuthorized(true);
+        }
+        const userData = {
+          "id": data.message.user_id,
+          "role": data.message.role,
+          "username": data.message.username,
+          "email": data.message.email,
+          "last_name": data.message.last_name,
+          "avatar": data.message.avatar,
+          "last_login": data.message.last_login
+        }
+        
+        console.log(userData);
+        localStorage.setItem("user_data", JSON.stringify(userData));
         navigate('/');
-      } else {
-        const errorMessage = await response.text();
-        console.error('Login failed:', errorMessage);
+
+      }else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401){
+        setError(data.message)
+
+      }else if (data.status_code === 403){
+        setError(data.message);
+        setPasswordExpired(true);
+
+      }else if (data.status_code === 404){
+        setError(data.message);
+
+        setTimeout(() =>{
+          navigate('/signup')
+        }, 2000)
+
+      }else {
+        console.log(data.message)
+        setError("There was an error logging, try again later")
+
       }
+  
     } catch (error) {
       console.error('An error occurred while logging in:', error);
+      setError("There was an error logging in, try again later");
     }
   };
   
@@ -107,6 +157,7 @@ const Login = ({ setAuthorized }) => {
         </div>
       </div>
       <div className="flex flex-col items-center gap-4 w-full">
+        <p>{error}</p>
         <button
           className="bg-blue-600 text-white px-6 py-3 rounded-full uppercase text-sm hover:bg-blue-700 transition duration-300"
           onClick={handleLogin}
