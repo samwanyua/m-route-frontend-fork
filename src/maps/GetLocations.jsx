@@ -30,20 +30,15 @@ const GetLocations = () => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
+    const userData = localStorage.getItem("user_data");
+        setUserId(userData.id)
     if (!accessToken) {
       setError("Access token is missing. Please log in.");
       return;
     }
-
     setToken(JSON.parse(accessToken));
 
-    const decodedToken = jwtDecode(accessToken);
-    if (decodedToken) {
-      setUserId(decodedToken.user_id);
-    } else {
-      setError("Failed to decode access token.");
-      return;
-    }
+    
 
     const intervalId = setInterval(() => {
       fetchLatestLocations();
