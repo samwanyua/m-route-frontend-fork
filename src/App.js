@@ -37,8 +37,10 @@ function App() {
   const location = useLocation();
   const currentPath = location.pathname;
 
+
   const [authorized, setAuthorized] = useState(false); 
   const [roleCheck, setRoleCheck] = useState(0)
+
 
 
   useEffect(() => {
