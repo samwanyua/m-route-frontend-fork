@@ -279,6 +279,24 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
             <div className="text-sm text-gray-700">Don’t have an account?</div>
             <b className="text-blue-600 text-lg">Sign Up</b>
           </div>
+
+          <div className="text-sm text-gray-700">Remember me</div>
+        </div>
+      </div>
+      <div className="flex flex-col items-center gap-4 w-full">
+        <p>{error}</p>
+        <button
+          className="bg-blue-600 text-white px-6 py-3 rounded-full uppercase text-sm hover:bg-blue-700 transition duration-300"
+          onClick={handleLogin}
+        >
+          Log In
+        </button>
+        <div className="flex items-center gap-1">
+          <div className="text-sm text-gray-700">Don’t have an account?</div>
+          <Link to="/signup">
+          <b className="text-blue-600 text-lg">Sign Up</b>
+          </Link>
+
         </div>
       </form>
       ):(

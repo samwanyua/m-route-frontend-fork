@@ -13,6 +13,7 @@ import GetLocations from "./maps/GetLocations";
 import { useNavigate } from "react-router-dom";
 import { navigate } from 'react-router-dom';
 import ContactUs from "./components/ContactUs";
+import Signup from "./components/Signup";
 // import AboutUs from "./components/AboutUs";
 
 const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
@@ -106,6 +107,7 @@ function App() {
           <Navbar />
           <div className="flex flex-1">
             <SideBar />
+
             <Routes className="flex-1 ml-4">
               {roleCheck ? (
                 <>
