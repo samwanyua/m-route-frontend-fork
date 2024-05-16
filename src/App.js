@@ -79,7 +79,7 @@ function App() {
           {authorized ? (
             <>
               <Route path="/dashboardmanager" element={<Dashboard />} />
-              <Route path="/settingspage" element={<Settings />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/reviews" element={<Reviews />} />
               <Route path="/profile" element={<Profile />} />
               <Route path = "/map" element = {<GetLocations /> } />
