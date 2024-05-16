@@ -18,11 +18,16 @@ const Navbar = ({userData}) => {
          onClick={() => setShowModal(true)}
         />
         <Link to="/profile">
-          <MdAccountCircle className="h-8 w-8 text-white" />
+          {userData.avatar ? (
+            <img src={userData.avatar} className="h-8 w-8" alt="profile" />
+          ) : (
+            <MdAccountCircle className="h-8 w-8 text-white" alt="profile" />
+          )}
         </Link>
+
       <div className="flex flex-col">
-        <b className="text-base text-white">{userData.username}</b>
-        <div className="text-xs text-white">{userData.role}</div>
+        <b className="text-base text-white capitalize">{userData.username}</b>
+        <div className="text-xs text-white capitalize">{userData.role}</div>
       </div>
       </div>
       <>
