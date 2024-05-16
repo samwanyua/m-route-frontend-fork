@@ -33,7 +33,7 @@ function App() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const [authorized, setAuthorized] = useState(false);
+  const [authorized, setAuthorized] = useState(true);
   const [roleCheck, setRoleCheck] = useState(0);
   const [token, setToken] = useState("");
 
