@@ -6,7 +6,7 @@ export default function ContactUs() {
   const [agreed, setAgreed] = useState(false);
 
   return (
-    <div className="bg-white px-6 py-12 sm:py-24 lg:px-8 mt-16 max-w-2xl mx-auto">
+    <div className="bg-white px-6 py-12 mb-12 sm:py-24 lg:px-8 mt-16 max-w-2xl mx-auto">
       <h2 className="text-3xl font-bold tracking-tight text-gray-900 text-center sm:text-4xl">Contact us</h2>
       <p className="mt-2 text-lg leading-8 text-gray-600 text-center">
         Unlock new opportunities by connecting with us today

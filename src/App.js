@@ -10,8 +10,6 @@ import Reviews from "./components/Reviews";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import GetLocations from "./maps/GetLocations";
-import { useNavigate } from "react-router-dom";
-import { navigate } from 'react-router-dom';
 import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
 // import AboutUs from "./components/AboutUs";
@@ -25,59 +23,49 @@ const routeConfig = {
   "/signup": { title: "", metaDescription: "" },
   "/login": { title: "", metaDescription: "" },
   "/footer": { title: "", metaDescription: "" },
-  "/reviews": {title: "", metaDescription: ""},
-  "/routesplan": {title: "", metaDescription: ""},
-  "/contactus": {title: "", metaDescription: ""},
+  "/reviews": { title: "", metaDescription: "" },
+  "/routesplan": { title: "", metaDescription: "" },
+  "/contactus": { title: "", metaDescription: "" },
   // "/aboutus": {title: "", metaDescription: ""},
-
-
-  // "/": {title: "", metaDescription: ""}
 };
 
 function App() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-
-  const [authorized, setAuthorized] = useState(false); 
+  const [authorized, setAuthorized] = useState(false);
   const [roleCheck, setRoleCheck] = useState(0);
   const [token, setToken] = useState("");
 
-  
-  const logoutUser = async () =>{
-    
+  const logoutUser = async () => {
     try {
-
       const response = await fetch(LOGOUT_URL, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }, 
-        body: JSON.stringify({"access_token": token})
-      })
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ access_token: token }),
+      });
 
       const data = await response.json();
 
-      if (data.status_code === 201){
+      if (data.status_code === 201) {
         setAuthorized(false);
         localStorage.removeItem("access_token");
         localStorage.removeItem("user_data");
-
-      }else{
-        console.log(data.message || "There was an error loging out, try again")
+      } else {
+        console.log(
+          data.message || "There was an error loging out, try again"
+        );
       }
-      
-    } catch (error) {
-      
-    }
-  
-  }
+    } catch (error) {}
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
-    setToken(accessToken)
-  }, [])
+    setToken(accessToken);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -111,7 +99,10 @@ function App() {
             <Routes className="flex-1 ml-4">
               {roleCheck ? (
                 <>
-                  <Route path="/dashboardmanager" element={<Dashboard />} />
+                  <Route
+                    path="/dashboardmanager"
+                    element={<Dashboard />}
+                  />
                   <Route path="/settingspage" element={<Settings />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
@@ -121,27 +112,32 @@ function App() {
                   {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
                 </>
               ) : (
-                <button onClick={logoutUser}>Logout</button>
-              ) } {/* Merchandiser contents} /> */}
+                <>
+                  <button onClick={logoutUser}>Logout</button>
+                </>
+              )}
               <Route path="/" element={<Home authorized={authorized} />} />
-              <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />} />
+              <Route
+                path="/login"
+                element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />}
+              />
             </Routes>
           </div>
-          <Footer />
         </>
-      ):(
+      ) : (
         <Routes>
           <Route path="/" element={<Home authorized={authorized} />} />
-          <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />} />
+          <Route
+            path="/login"
+            element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />}
+          />
           <Route path="/signup" element={<Signup />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Footer />
         </Routes>
       )}
+      <Footer />
     </div>
   );
 }
+
 export default App;
-
-
-
