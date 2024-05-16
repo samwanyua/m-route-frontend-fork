@@ -36,7 +36,7 @@ const GetLocations = () => {
       setError("Access token is missing. Please log in.");
       return;
     }
-    setToken(JSON.parse(accessToken));
+    setToken(accessToken);
 
     
 

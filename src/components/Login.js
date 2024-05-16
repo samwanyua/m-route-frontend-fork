@@ -7,7 +7,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 const LOGIN_URL = 'https://m-route-backend.onrender.com/users/login';
 const CHANGE_PASSWORD_URL = "https://m-route-backend.onrender.com/users/change-password"
 
-const Login = ({ setAuthorized, setRoleCheck }) => {
+const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -138,11 +138,19 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
         navigate('/');
 
 
+         if (data.message) {
+        console.log(` response data: ${data.message.username}`)}
+
+
+
 
         if (data.message.role === "manager") {
           setRoleCheck(true);
           setAuthorized(true);
+          
         }
+
+
         const userData = {
           "id": data.message.user_id,
           "role": data.message.role,
@@ -152,6 +160,10 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
           "avatar": data.message.avatar,
           "last_login": data.message.last_login
         };
+        setUserData(userData)
+
+
+
 
         localStorage.setItem("user_data", JSON.stringify(userData));
       } else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401) {
