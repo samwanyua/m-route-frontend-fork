@@ -13,6 +13,8 @@ import GetLocations from "./maps/GetLocations";
 import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
 import Calendar from "./components/Calendar";
+import MerchSideBar from "./components/MerchSideBar";
+
 // import AboutUs from "./components/AboutUs";
 
 const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
@@ -100,36 +102,31 @@ function App() {
         <>
           <Navbar userData ={userData} />
           <div className="flex flex-1">
-            <SideBar />
-
+            {roleCheck ? <SideBar /> : <MerchSideBar />}
             <Routes className="flex-1 ml-4">
               {roleCheck ? (
                 <>
-                  <Route
-                    path="/dashboardmanager"
-                    element={<Dashboard />}
-                  />
+                  {/* Manager routes */}
+                  <Route path="/" element={<Home />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/calendar" element={<Calendar />} />
-
-                  
-                  {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
                 </>
               ) : (
                 <>
-                  {/* <button onClick={logoutUser}>Logout</button> */}
+                  {/* Merchandiser routes */}
+                  <Route path="/" element={<Home authorized={authorized} />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/contactus" element={<ContactUs />} />
+                  <Route path="/calendar" element={<Calendar />} />
                 </>
               )}
-              <Route path="/" element={<Home authorized={authorized} />} />
-              {/* <Route
-                path="/login"
-                element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData}/>}
-              /> */}
+              <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} />
             </Routes>
+
           </div>
         </>
       ) : (
