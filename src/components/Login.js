@@ -214,10 +214,10 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         <div className="flex flex-col gap-4 w-full">
           <div className="flex flex-col gap-1">
             <div className="text-sm text-gray-700">Email</div>
-            <div className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500">
-              <FiMail className="h-5 w-5" />
+            <div className="border border-gray-300 px-3 py-2 rounded-md flex items-center">
+              <FiMail className="h-5 w-5 mr-2" />
               <input
-                className="pl-2 focus:outline-none"
+                className="pl-2 flex-grow bg-white focus:outline-none"
                 placeholder="mymail@gmail.com"
                 type="text"
                 value={email}
@@ -227,10 +227,10 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           </div>
           <div className="flex flex-col gap-1">
             <div className="text-sm text-gray-700">Password</div>
-            <div className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500">
-              <AiOutlineLock className="h-5 w-5" />
+            <div className="border border-gray-300 px-3 py-2 rounded-md flex items-center">
+              <AiOutlineLock className="h-5 w-5 mr-2" />
               <input
-                className="pl-2 focus:outline-none"
+                className="pl-2 flex-grow focus:outline-none"
                 placeholder="Password"
                 type="password"
                 value={password}
@@ -263,7 +263,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           </button>
           <div className="flex items-center gap-1">
             <div className="text-sm text-gray-700">Don’t have an account?</div>
-            <b className="text-gray-900 cursor-pointer text-lg ml-2">Sign Up</b>
+            <Link to="/signup" className="text-gray-900 cursor-pointer font-semibold text-lg ml-2">Sign Up</Link>
           </div>
         </div>
       </form>
