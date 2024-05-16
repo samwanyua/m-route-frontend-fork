@@ -25,7 +25,6 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     if (accessToken) {
-      setAuthorized(true);
       const previousRoute = localStorage.getItem("previous_route");
       if (previousRoute) {
         navigate(previousRoute);
@@ -130,10 +129,15 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
       const data = await response.json();
 
       if (data.status_code === 201) {
+
         const accessToken = data.access_token;
         localStorage.setItem("access_token", accessToken);
         setPassword("");
         setEmail("");
+        setAuthorized(true);
+        navigate('/');
+
+
 
         if (data.message.role === "manager") {
           setRoleCheck(true);
@@ -150,7 +154,6 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
         };
 
         localStorage.setItem("user_data", JSON.stringify(userData));
-        navigate('/');
       } else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401) {
         setError(data.message);
         setTimeout(() => {
