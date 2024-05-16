@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 import GetLocations from "./maps/GetLocations";
 import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
+import Calendar from "./components/Calendar";
 // import AboutUs from "./components/AboutUs";
 
 const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
@@ -26,7 +27,7 @@ const routeConfig = {
   "/reviews": { title: "", metaDescription: "" },
   "/routesplan": { title: "", metaDescription: "" },
   "/contactus": { title: "", metaDescription: "" },
-  // "/aboutus": {title: "", metaDescription: ""},
+  "/calendar": {title: "", metaDescription: ""},
 };
 
 function App() {
@@ -113,6 +114,8 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
                   <Route path="/contactus" element={<ContactUs />} />
+                  <Route path="/calendar" element={<Calendar />} />
+
                   
                   {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
                 </>
