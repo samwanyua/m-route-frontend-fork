@@ -113,7 +113,7 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
                   <Route path="/contactus" element={<ContactUs />} />
-                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/calendar" element={<Calendar  userData={userData}/>} />
                 </>
               ) : (
                 <>
@@ -121,7 +121,7 @@ function App() {
                   <Route path="/" element={<Home authorized={authorized} />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/contactus" element={<ContactUs />} />
-                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/calendar" element={<Calendar  userData={userData} />} />
                 </>
               )}
               <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} />
