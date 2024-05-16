@@ -108,12 +108,12 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
                   <Route path="/contactus" element={<ContactUs />} />
-                  <button onClick={logoutUser}>Logout</button>
+                  
                   {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
                 </>
               ) : (
                 <>
-                  <button onClick={logoutUser}>Logout</button>
+                  {/* <button onClick={logoutUser}>Logout</button> */}
                 </>
               )}
               <Route path="/" element={<Home authorized={authorized} />} />
