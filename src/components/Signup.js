@@ -96,7 +96,7 @@ const Signup = () => {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center py-10 mt-11 bg-gray-900 bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center py-36  bg-gray-900 bg-opacity-50 z-50">
           <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-white"></div>
         </div>
       )}
@@ -219,7 +219,7 @@ const Signup = () => {
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Sign up
               </button>

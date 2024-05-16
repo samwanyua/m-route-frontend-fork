@@ -112,7 +112,7 @@ function App() {
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
-                  <Route path="/contactus" element={<ContactUs />} />
+                  {/* <Route path="/contactus" element={<ContactUs />} /> */}
                   <Route path="/calendar" element={<Calendar  userData={userData}/>} />
                 </>
               ) : (

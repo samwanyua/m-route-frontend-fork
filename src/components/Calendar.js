@@ -107,7 +107,7 @@ function Calendar({userData}) {
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12 lg:px-8">
       {session ? (
         <>
-          <h2 className="text-2xl font-semibold mb-4">Hey there {userData.username}</h2>
+          <h2 className="text-2xl font-semibold mb-4">Hello, {userData.username}</h2>
           <h3 className="text-xl font-semibold mb-4">Route Plan</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 w-full max-w-3xl">
             <div>
