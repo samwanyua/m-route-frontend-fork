@@ -203,107 +203,70 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   };
 
   return (
-    <div>
-      {!passwordExpire ? (
-        <form className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-8 gap-4">
-          <button className="flex items-center gap-2">
-            <div className="close">
-              <Link to="/">
-                <AiOutlineClose className="h-6 w-6" />
-              </Link>
-            </div>
-            <b className="text-blue-600 text-lg">Log In</b>
-          </button>
-          <div className="flex flex-col gap-4 w-full">
-            <div className="flex flex-col gap-1">
-              <div className="text-sm text-gray-700">Email</div>
-              <div className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500">
-                <FiMail className="h-5 w-5" />
-                <input
-                  className="pl-2 focus:outline-none"
-                  placeholder="mymail@gmail.com"
-                  type="text"
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="text-sm text-gray-700">Password</div>
-              <div className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500">
-                <AiOutlineLock className="h-5 w-5" />
-                <input
-                  className="pl-2 focus:outline-none"
-                  placeholder="Password"
-                  type="password"
-                  value={password}
-                  onChange={handlePassword}
-                />
-              </div>
-              <div className="text-sm text-blue-600">Forgot password?</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div
-                className="w-5 h-5 border border-gray-300 flex items-center justify-center rounded-md cursor-pointer"
-                onClick={handleRememberMeChange}
-              >
-                {rememberMe ? (
-                  <MdCheckBox className="h-4 w-4" />
-                ) : (
-                  <MdCheckBoxOutlineBlank className="h-4 w-4" />
-                )}
-              </div>
-              <div className="text-sm text-gray-700">Remember me</div>
+    <div className="flex justify-center items-center min-h-screen bg-gray-900">
+      <form className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-8 gap-4 relative">
+        <div className="absolute top-0 right-0">
+          <Link to="/">
+            <AiOutlineClose className="h-6 w-6 text-gray-700 mt-2 mr-4" />
+          </Link>
+        </div>
+        <b className="text-gray-900 text-lg">Log In</b>
+        <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-1">
+            <div className="text-sm text-gray-700">Email</div>
+            <div className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500">
+              <FiMail className="h-5 w-5" />
+              <input
+                className="pl-2 focus:outline-none"
+                placeholder="mymail@gmail.com"
+                type="text"
+                value={email}
+                onChange={handleEmailChange}
+              />
             </div>
           </div>
-          <div className="flex flex-col items-center gap-4 w-full">
-            <p>{error}</p>
-            <button
-              className="bg-blue-600 text-white px-6 py-3 rounded-full uppercase text-sm hover:bg-blue-700 transition duration-300"
-              onClick={handleLogin}
+          <div className="flex flex-col gap-1">
+            <div className="text-sm text-gray-700">Password</div>
+            <div className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500">
+              <AiOutlineLock className="h-5 w-5" />
+              <input
+                className="pl-2 focus:outline-none"
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={handlePassword}
+              />
+            </div>
+            <div className="text-sm text-gray-900">Forgot password?</div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-5 h-5 border border-gray-300 flex items-center justify-center rounded-md cursor-pointer"
+              onClick={handleRememberMeChange}
             >
-              Log In
-            </button>
-            <div className="flex items-center gap-1">
-              <div className="text-sm text-gray-700">Don’t have an account?</div>
-              <b className="text-blue-600 text-lg">Sign Up</b>
+              {rememberMe ? (
+                <MdCheckBox className="h-4 w-4" />
+              ) : (
+                <MdCheckBoxOutlineBlank className="h-4 w-4" />
+              )}
             </div>
             <div className="text-sm text-gray-700">Remember me</div>
           </div>
-        </form>
-      ) : (
-        <form onSubmit={changePassword}>
-          <label>Email</label>
-          <input
-            className=""
-            placeholder="myemail@example.com"
-            name="email"
-            type="email"
-            value={passwordChange.email}
-            onChange={handleChangePassword}
-          />
-          <label>Old Password</label>
-          <input
-            className=""
-            placeholder="Old Password"
-            name="oldPassword"
-            type="password"
-            value={passwordChange.oldPassword}
-            onChange={handleChangePassword}
-          />
-          <label>New Password</label>
-          <input
-            className=""
-            placeholder="New Password"
-            name="newPassword"
-            type="password"
-            value={passwordChange.newPassword}
-            onChange={handleChangePassword}
-          />
+        </div>
+        <div className="flex flex-col items-center gap-4 w-full">
           <p>{error}</p>
-          <button type="submit">Submit</button>
-        </form>
-      )}
+          <button
+            className="bg-gray-900 text-white px-6 py-3 rounded-full uppercase text-sm hover:bg-gray-800 transition duration-300"
+            onClick={handleLogin}
+          >
+            Log In
+          </button>
+          <div className="flex items-center gap-1">
+            <div className="text-sm text-gray-700">Don’t have an account?</div>
+            <b className="text-gray-900 cursor-pointer text-lg ml-2">Sign Up</b>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };
