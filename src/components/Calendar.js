@@ -68,7 +68,7 @@ function Calendar({userData}) {
 
         const data = {
           manager_id: userData.user_id,
-          date_range: JSON.stringify({ start, end }),
+          date_range: { start_date: start.toISOString(), end_date: end.toISOString() },
           instructions: eventDescription,
           status: status, // Use selected status
           staff_no: staffNo,
