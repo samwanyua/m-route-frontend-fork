@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-import jwtDecode from "jwt-decode";
 
 const LOCATIONS_URL = "https://m-route-backend.onrender.com/users/locations";
-const USERS_URL = "https://m-route-backend.onrender.com/user/users";
+const USERS_URL = "https://m-route-backend.onrender.com/users";
 const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com/users/route-plans";
 
 const containerStyle = {
@@ -29,18 +28,16 @@ const GetLocations = () => {
   const [assignedMerchandisers, setAssignedMerchandisers] = useState([]);
 
   useEffect(() => {
+
     const accessToken = localStorage.getItem("access_token");
     const userData = localStorage.getItem("user_data");
-    if (userData) {
-      setUserId(JSON.parse(userData).id);
-    }
-
+    setUserId(userData.id)
+        
     if (!accessToken) {
       setError("Access token is missing. Please log in.");
       return;
     }
-
-    setToken(accessToken);  // Access token is already a string
+    setToken(JSON.parse(accessToken));
 
     const intervalId = setInterval(() => {
       fetchLatestLocations();
@@ -62,7 +59,7 @@ const GetLocations = () => {
 
     if (data.status_code === 200) {
       const merchandisersList = data.message.filter(manager => manager.manager_id === userId);
-      setAssignedMerchandisers(merchandisersList.map(merchandiser => merchandiser.merchandiser_id));
+      setAssignedMerchandisers(merchandisersList.merchandiser_id);
     } else if (data.status_code === 400 || data.status_code === 404) {
       setError(data.message);
     } else {
@@ -73,7 +70,7 @@ const GetLocations = () => {
 
   useEffect(() => {
     getRoutePlans();
-  }, [token, userId]);
+  }, []);
 
   const isRecentTimestamp = timestamp => {
     const THIRTY_MINUTES = 30 * 60 * 1000;
@@ -86,6 +83,7 @@ const GetLocations = () => {
     const matchedUserLocations = users.map(user => {
       const location = locations.find(loc => loc.merchandiser_id === user.id);
       if (location) {
+        
         return {
           id: user.id,
           firstName: user.first_name,
@@ -101,7 +99,7 @@ const GetLocations = () => {
     }).filter(userLocation => userLocation !== null);
 
     setUserLocations(matchedUserLocations);
-  }, [users, locations]);
+  }, []);
 
   const fetchLatestLocations = async () => {
     const response = await fetch(LOCATIONS_URL, {
@@ -134,7 +132,7 @@ const GetLocations = () => {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       }
-    });
+    })
 
     const data = await response.json();
 
@@ -146,7 +144,7 @@ const GetLocations = () => {
     } else {
       setError("Failed to fetch users.")
     }
-  };
+  }
 
   return (
     <div>
@@ -173,6 +171,9 @@ const GetLocations = () => {
       </GoogleMap>
     </div>
   );
-};
+}
 
 export default GetLocations;
+
+
+

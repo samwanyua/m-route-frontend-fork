@@ -131,7 +131,7 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
 
       if (data.status_code === 201) {
         const accessToken = data.access_token;
-        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("access_token", JSON.stringify(accessToken));
         setPassword("");
         setEmail("");
 
@@ -294,3 +294,6 @@ const Login = ({ setAuthorized, setRoleCheck }) => {
 };
 
 export default Login;
+
+
+
