@@ -118,13 +118,13 @@ function App() {
               ) : (
                 <>
                   {/* Merchandiser routes */}
-                  <Route path="/" element={<Home authorized={authorized} />} />
+                  {/* <Route path="/" element={<Home authorized={authorized} />} /> */}
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/calendar" element={<Calendar  userData={userData} />} />
                 </>
               )}
-              <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} />
+              {/* <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} /> */}
             </Routes>
 
           </div>
