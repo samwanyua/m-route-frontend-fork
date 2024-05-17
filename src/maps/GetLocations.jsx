@@ -31,14 +31,20 @@ const GetLocations = () => {
 
     const accessToken = localStorage.getItem("access_token");
     const userData = localStorage.getItem("user_data");
-    setUserId(JSON.parse(userData.id))
-        
-    if (!accessToken) {
-      setError("Access token is missing. Please log in.");
+
+    if (!accessToken || !userData) {
+      setError("Access token or user data is missing. Please log in.");
       return;
     }
 
-    setToken(JSON.parse(accessToken));
+    try {
+      setToken(JSON.parse(accessToken));
+      setUserId(JSON.parse(userData).id);
+      
+    } catch (e) {
+      setError("Failed to parse user data.");
+      return;
+    }
 
     const intervalId = setInterval(() => {
       fetchLatestLocations();

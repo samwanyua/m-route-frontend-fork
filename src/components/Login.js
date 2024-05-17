@@ -116,11 +116,15 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
     }
   };
 
+  useEffect(() =>{
+    console.log(localStorage.getItem("access_token"));
+    console.log(localStorage.getItem("user_data"));
+  }, [])
+
   const handleLogin = async event => {
     event.preventDefault();
     setError("");
     setLoading(true);
-
 
     try {
       const requestBody = {
@@ -141,7 +145,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
       if (data.status_code === 201) {
         setLoading(false);
         const accessToken = data.access_token;
-        localStorage.setItem("access_token", JSON.stringify(accessToken));
+        localStorage.setItem("access_token", JSON.parse(accessToken));
         setPassword("");
         setEmail("");
         setAuthorized(true);
@@ -164,7 +168,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         };
         setUserData(userData)
 
-        localStorage.setItem("user_data", JSON.stringify(userData));
+        localStorage.setItem("user_data", JSON.parse(userData));
       } else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401) {
         setLoading(false);
         setError(data.message);
