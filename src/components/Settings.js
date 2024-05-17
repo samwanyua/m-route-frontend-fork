@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BiToggleLeft, BiToggleRight } from 'react-icons/bi';
 import Location from '../maps/Location';
 
-const Settings = () => {
+const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
+
+const Settings = ({ setAuthorized }) => {
   const [notifications, setNotifications] = useState({
     routeUpdates: false,
     productInsights: false,
@@ -12,6 +14,7 @@ const Settings = () => {
   });
 
   const { setLocateMerchandiser } = Location();
+  const [token, setToken] = useState("");
 
   const handleSendLocationToggle = () => {
     setNotifications((prev) => {
@@ -22,6 +25,40 @@ const Settings = () => {
         currentLocation: newValue,
       };
     });
+  };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    setToken(accessToken);
+  }, []);
+
+  const logoutUser = async () => {
+    setAuthorized(false);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user_data");
+        
+    try {
+      const response = await fetch(LOGOUT_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ "access_token": token }),
+      });
+
+      const data = await response.json();
+
+      if (data.status_code === 201) {
+        setAuthorized(false);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user_data");
+      } else {
+        console.log(
+          data.message
+        );
+      }
+    } catch (error) {}
   };
 
   const toggleNotification = (key) => {
@@ -125,6 +162,7 @@ const Settings = () => {
           </div>
         </div>
       </div>
+      <button onClick={logoutUser}>Logout</button>
     </div>
   );
 };
