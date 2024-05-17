@@ -39,7 +39,7 @@ function App() {
   const [authorized, setAuthorized] = useState(false);
   const [roleCheck, setRoleCheck] = useState(0);
   const [token, setToken] = useState("");
-  const [userData, setUserData] = useState("")
+  const [userData, setUserData] = useState("");
 
   const logoutUser = async () => {
     try {
