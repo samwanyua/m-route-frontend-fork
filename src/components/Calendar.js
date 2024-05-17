@@ -68,7 +68,7 @@ function Calendar({userData}) {
 
         const data = {
           manager_id: userData.user_id,
-          date_range: JSON.stringify({ start, end }),
+          date_range: { start_date: start.toISOString(), end_date: end.toISOString() },
           instructions: eventDescription,
           status: status, // Use selected status
           staff_no: staffNo,
@@ -113,31 +113,19 @@ function Calendar({userData}) {
             <div>
               <p className="text-lg font-semibold">Set start time and date</p>
               <input
-                type="date"
+                type="datetime-local"
                 className="border border-gray-300 rounded p-2 w-full mb-2"
                 onChange={(e) => setStart(new Date(e.target.value))}
-                value={start.toISOString().slice(0, 10)}
-              />
-              <input
-                type="time"
-                className="border border-gray-300 rounded p-2 w-full mb-2"
-                onChange={(e) => setStart(new Date(`${start.toISOString().slice(0, 10)}T${e.target.value}`))}
-                value={start.toISOString().slice(11, 16)}
+                value={start.toISOString().slice(0, 16)}
               />
             </div>
             <div>
               <p className="text-lg font-semibold">Deadline: date and time</p>
               <input
-                type="date"
+                type="datetime-local"
                 className="border border-gray-300 rounded p-2 w-full mb-2"
                 onChange={(e) => setEnd(new Date(e.target.value))}
-                value={end.toISOString().slice(0, 10)}
-              />
-              <input
-                type="time"
-                className="border border-gray-300 rounded p-2 w-full mb-2"
-                onChange={(e) => setEnd(new Date(`${end.toISOString().slice(0, 10)}T${e.target.value}`))}
-                value={end.toISOString().slice(11, 16)}
+                value={end.toISOString().slice(0, 16)}
               />
             </div>
           </div>
