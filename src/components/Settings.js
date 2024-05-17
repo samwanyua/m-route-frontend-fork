@@ -7,6 +7,7 @@ const Settings = () => {
     productInsights: false,
     salesOrders: false,
     competitorActivities: false,
+    currentLocation: false,
   });
 
   const toggleNotification = (key) => {
@@ -30,9 +31,8 @@ const Settings = () => {
           /> */}
         </div>
         <input type="email" className="input-field" placeholder="Email" />
-        <input type="tel" className="input-field" placeholder="Phone number" />
-        <input type="password" className="input-field" placeholder="Password" />
-        <input type="password" className="input-field bg-gray-100" placeholder="Confirm password" />
+        <input type="password" className="input-field" placeholder="Old Password" />
+        <input type="password" className="input-field bg-gray-100" placeholder="New password" />
         <button className="text-white bg-gray-900 px-6 py-2 rounded-full">Save changes</button>
       </form>
       <div className="flex flex-col items-center lg:items-start justify-start gap-8 py-6 px-8 text-lg text-black font-poppins shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-xl">
@@ -91,6 +91,21 @@ const Settings = () => {
               <BiToggleLeft
                 className="text-gray-900 cursor-pointer text-3xl ml-2"
                 onClick={() => toggleNotification('competitorActivities')}
+              />
+              
+            )}
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="font-medium text-base">Sharing Current Location</div>
+            {notifications.currentLocation ? (
+              <BiToggleRight
+                className="text-gray-900 cursor-pointer text-3xl ml-2 "
+                onClick={() => toggleNotification('currentLocation')}
+              />
+            ) : (
+              <BiToggleLeft
+                className="text-gray-900 cursor-pointer text-3xl ml-2"
+                onClick={() => toggleNotification('currentLocation')}
               />
             )}
           </div>
