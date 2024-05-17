@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BiToggleLeft, BiToggleRight } from 'react-icons/bi';
+import Location from '../maps/Location';
 
 const Settings = () => {
   const [notifications, setNotifications] = useState({
@@ -9,6 +10,19 @@ const Settings = () => {
     competitorActivities: false,
     currentLocation: false,
   });
+
+  const { setLocateMerchandiser } = Location();
+
+  const handleSendLocationToggle = () => {
+    setNotifications((prev) => {
+      const newValue = !prev.currentLocation;
+      setLocateMerchandiser(newValue); 
+      return {
+        ...prev,
+        currentLocation: newValue,
+      };
+    });
+  };
 
   const toggleNotification = (key) => {
     setNotifications((prev) => ({
@@ -100,12 +114,12 @@ const Settings = () => {
             {notifications.currentLocation ? (
               <BiToggleRight
                 className="text-gray-900 cursor-pointer text-3xl ml-2 "
-                onClick={() => toggleNotification('currentLocation')}
+                onClick={() => handleSendLocationToggle()}
               />
             ) : (
               <BiToggleLeft
                 className="text-gray-900 cursor-pointer text-3xl ml-2"
-                onClick={() => toggleNotification('currentLocation')}
+                onClick={() => handleSendLocationToggle()}
               />
             )}
           </div>
@@ -116,3 +130,5 @@ const Settings = () => {
 };
 
 export default Settings;
+
+

@@ -1,77 +1,68 @@
 import { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 
 const LOCATION_URL = "https://m-route-backend.onrender.com/users/locations";
 
-const Location = (defaultLocation = null) =>{
+const Location = () => {
 
     const [isLoading, setIsLoading] = useState(false);
-    const [position, setPosition] = useState(defaultLocation);
+    const [position, setPosition] = useState(null);
     const [error, setError] = useState("");
     const [token, setToken] = useState("");
     const [userId, setUserId] = useState(0);
     const [success, setSuccess] = useState("");
     const [locateMerchandiser, setLocateMerchandiser] = useState(false);
 
-    useEffect(() =>{
-
+    useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
-        const userData = localStorage.getItem("user_data");
-        setUserId(userData.id)
-        
+        const userData = JSON.parse(localStorage.getItem("user_data"));
+        if (userData) {
+            setUserId(userData.id);
+        }
+
         if (!accessToken) {
             setError("Access token is missing. Please log in.");
-            return; // Stop further execution if access token is missing
+            return
         }
 
         setToken(JSON.parse(accessToken));
 
-
         const intervalId = setInterval(() => {
-
-            // Only send merchandiser's location when they are at work
-            if (locateMerchandiser){
+            if (locateMerchandiser) {
                 getGeolocation();
             }
-
-        }, 300000); // Every 5 minutes
+        }, 300000); 
 
         return () => clearInterval(intervalId);
+    }, [locateMerchandiser]);
 
-    }, [])
-
-
-    const getGeolocation = () =>{
-
-        if (!navigator.geolocation){
-            setError("Your broswer does not support geolocation");
+    const getGeolocation = () => {
+        if (!navigator.geolocation) {
+            setError("Your browser does not support geolocation");
+            return;
         }
 
         setIsLoading(true);
 
         navigator.geolocation.getCurrentPosition(
-            
             pos => {
-              setPosition({
-                latitude: pos.coords.latitude,
-                longitude: pos.coords.longitude,
-              });
-              setIsLoading(false);
-              postGeolocation();
+                setPosition({
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude,
+                });
+                setIsLoading(false);
+                postGeolocation(pos.coords.latitude, pos.coords.longitude);
             },
             error => {
-              setError(error.message);
-              setIsLoading(false);
+                setError(error.message);
+                setIsLoading(false);
             }
-          );
-    }
+        );
+    };
 
-
-    const postGeolocation = async () =>{
-
+    const postGeolocation = async (latitude, longitude) => {
         const currentTime = new Date();
         const year = currentTime.getFullYear();
-        const month = String(currentTime.getMonth() + 1).padStart(2, '0'); 
+        const month = String(currentTime.getMonth() + 1).padStart(2, '0');
         const day = String(currentTime.getDate()).padStart(2, '0');
         const hours = String(currentTime.getHours()).padStart(2, '0');
         const minutes = String(currentTime.getMinutes()).padStart(2, '0');
@@ -79,55 +70,39 @@ const Location = (defaultLocation = null) =>{
         const dateTimeString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 
         const newLocation = {
-
-            "latitude": position.latitude,
-            "longitude": position.longitude,
+            "latitude": latitude,
+            "longitude": longitude,
             "timestamp": dateTimeString,
             "merchandiser_id": userId
-        }
+        };
 
-        if (!isLoading && !error && position !== null){
-
+        if (!isLoading && !error && position !== null) {
             try {
-
                 const response = await fetch(LOCATION_URL, {
                     method: "POST",
-                    headers:{
+                    headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(newLocation)
-                })
+                });
 
                 const data = await response.json();
 
-                if (data.status_code === 201){
+                if (data.status_code === 201) {
                     console.log(data.message);
-                    setSuccess(data.message)
-
-                }else if (data.status_code === 400){
-                    setError(data.message)
-
-                }else if (data.status_code === 500){
-                    console.log(data.message)
-                    setError("Server error, try again");
-
-                }else{
-                    setError("System experiencing a problem, please try again later.")
+                    setSuccess(data.message);
+                } else {
+                    setError(data.message || "System experiencing a problem, please try again later.");
                 }
-                    
             } catch (error) {
                 console.log(error);
-                setError("Failed to post location.")
+                setError("Failed to post location.");
             }
         }
-    }
+    };
 
-    return {isLoading, error, success, setLocateMerchandiser}
-}
+    return { isLoading, error, success, setLocateMerchandiser };
+};
 
-export default Location
-
-
-
-
+export default Location;
