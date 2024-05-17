@@ -31,7 +31,7 @@ const GetLocations = () => {
 
     const accessToken = localStorage.getItem("access_token");
     const userData = localStorage.getItem("user_data");
-    setUserId(userData.id)
+    setUserId(JSON.parse(userData.id))
         
     if (!accessToken) {
       setError("Access token is missing. Please log in.");
