@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BiToggleLeft, BiToggleRight } from 'react-icons/bi';
 import Location from '../maps/Location';
+import { useNavigate } from "react-router-dom";
 
 const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
 
@@ -15,6 +16,9 @@ const Settings = ({ setAuthorized }) => {
 
   const { setLocateMerchandiser } = Location();
   const [token, setToken] = useState("");
+  const [userId, setUserId] = useState(0)
+
+  const navigate = useNavigate();
 
   const handleSendLocationToggle = () => {
     setNotifications((prev) => {
@@ -29,39 +33,52 @@ const Settings = ({ setAuthorized }) => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
-    setToken(accessToken);
+    const user = localStorage.getItem("user_data");
+    
+    if (accessToken) {
+      setToken(JSON.parse(accessToken));
+    }
+
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser && parsedUser.id) {
+        setUserId(parsedUser.id);
+      } else {
+        console.error("Invalid user data");
+      }
+    } else {
+      console.error("No user data found");
+    }
   }, []);
 
   const logoutUser = async () => {
-    setAuthorized(false);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("user_data");
-        
+      
     try {
       const response = await fetch(LOGOUT_URL, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ "access_token": token }),
+        body: JSON.stringify({ "user_id": userId }),
       });
 
-      const data = await response.json();
-
-      if (data.status_code === 201) {
+      if (response.ok){
+        const data = await response.json();
         setAuthorized(false);
+        navigate("/")
+        setToken("");
         localStorage.removeItem("access_token");
         localStorage.removeItem("user_data");
-      } else {
-        console.log(
-          data.message
-        );
+        console.log(data.message)
       }
-    } catch (error) {}
+
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  const toggleNotification = (key) => {
+  const toggleNotification = key => {
     setNotifications((prev) => ({
       ...prev,
       [key]: !prev[key],

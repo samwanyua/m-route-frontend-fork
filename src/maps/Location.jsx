@@ -14,7 +14,7 @@ const Location = () => {
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
-        const userData = JSON.parse(localStorage.getItem("user_data"));
+        const userData = localStorage.getItem("user_data");
         if (userData) {
             setUserId(userData.id);
         }
