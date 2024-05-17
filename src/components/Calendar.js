@@ -1,17 +1,22 @@
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function Calendar({userData}) {
+function Calendar({ userData }) {
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(new Date());
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [staffNo, setStaffNo] = useState("");
-  const [status, setStatus] = useState("pending"); // Added status state
-
+  const [status, setStatus] = useState("pending");
+  const [token, setToken] = useState(null);
   const session = useSession();
   const supabase = useSupabaseClient();
   const { isLoading } = useSessionContext();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    setToken(accessToken);
+  }, []);
 
   if (isLoading) {
     return <></>;
@@ -34,6 +39,21 @@ function Calendar({userData}) {
     await supabase.auth.signOut();
   }
 
+  const formatDate = (date) => {
+    if (!date) {
+      return null;
+    }
+    const options = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    };
+    return date.toLocaleString('en-GB', options).replace(',', '');
+  };
+
   async function createCalendarEvent() {
     console.log("Creating calendar event");
     const event = {
@@ -48,60 +68,71 @@ function Calendar({userData}) {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
     };
-
-    await fetch(
-      "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + session.provider_token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(event),
-      }
-    )
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error("Failed to create calendar event....");
-        }
-        const eventData = await response.json();
-
-        const data = {
-          manager_id: userData.user_id,
-          date_range: { start_date: start.toISOString(), end_date: end.toISOString() },
-          instructions: eventDescription,
-          status: status, // Use selected status
-          staff_no: staffNo,
-        };
-
-        await fetch("https://m-route-backend.onrender.com/users/route-plans", {
+  
+    console.log(event);
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        {
           method: "POST",
           headers: {
+            Authorization: "Bearer " + session.provider_token,
             "Content-Type": "application/json",
-            // "Authorization": `Bearer ${session.jwt}`,
           },
-          body: JSON.stringify(data),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Failed to create route plan");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log(data);
-            alert("Event created! Please check your Google Calendar.");
-          })
-          .catch((error) => {
-            console.error(error);
-            alert("Failed to create route plan");
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-        alert("Failed to create calendar event!");
+          body: JSON.stringify(event),
+        }
+      );
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Failed to create calendar event:", errorData);
+        throw new Error(errorData.message || "Failed to create calendar event.");
+      }
+  
+      const eventData = await response.json();
+  
+      const formattedStartDate = formatDate(start);
+      const formattedEndDate = formatDate(end);
+      console.log("Formatted Start Date:", formattedStartDate);
+      console.log("Formatted End Date:", formattedEndDate);
+  
+      const data = {
+        manager_id: userData.id,
+        date_range: {
+          start_date: formattedStartDate,
+          end_date: formattedEndDate
+        },
+        instructions: eventDescription,
+        status: status.toLowerCase(), // Ensure status is lowercase
+        staff_no: parseInt(staffNo), // Parse staffNo to integer
+      };
+  
+      console.log("Data to be sent to backend:", data);
+  
+      const routePlanResponse = await fetch("https://m-route-backend.onrender.com/users/route-plans", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
       });
+  
+      if (!routePlanResponse.ok) {
+        const errorData = await routePlanResponse.json();
+        console.error("Failed to create route plan:", errorData);
+        throw new Error(errorData.message || "Failed to create route plan.");
+      }
+  
+      const routePlanData = await routePlanResponse.json();
+      console.log(routePlanData);
+      alert("Event created! Please check your Google Calendar.");
+    } catch (error) {
+      console.error("Error creating event or route plan:", error);
+      alert(`Failed to create calendar event or route plan: ${error.message}`);
+    }
   }
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12 lg:px-8">
