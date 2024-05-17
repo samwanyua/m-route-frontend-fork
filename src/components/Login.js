@@ -138,19 +138,11 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         setAuthorized(true);
         navigate('/');
 
-
-         if (data.message) {
-        console.log(` response data: ${data.message.username}`)}
-
-
-
-
         if (data.message.role === "manager") {
           setRoleCheck(true);
           setAuthorized(true);
           
         }
-
 
         const userData = {
           "id": data.message.user_id,
@@ -162,9 +154,6 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           "last_login": data.message.last_login
         };
         setUserData(userData)
-
-
-
 
         localStorage.setItem("user_data", JSON.stringify(userData));
       } else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401) {

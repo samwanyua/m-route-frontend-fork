@@ -17,7 +17,6 @@ import MerchSideBar from "./components/MerchSideBar";
 
 // import AboutUs from "./components/AboutUs";
 
-const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
 
 const routeConfig = {
   "/": { title: "", metaDescription: "" },
@@ -38,38 +37,7 @@ function App() {
 
   const [authorized, setAuthorized] = useState(false);
   const [roleCheck, setRoleCheck] = useState(0);
-  const [token, setToken] = useState("");
   const [userData, setUserData] = useState("")
-
-  const logoutUser = async () => {
-    try {
-      const response = await fetch(LOGOUT_URL, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ access_token: token }),
-      });
-
-      const data = await response.json();
-
-      if (data.status_code === 201) {
-        setAuthorized(false);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("user_data");
-      } else {
-        console.log(
-          data.message || "There was an error loging out, try again"
-        );
-      }
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-    setToken(accessToken);
-  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -92,10 +60,6 @@ function App() {
     }
   }, [currentPath]);
 
-  useEffect(() => {
-    console.log(userData)
-  }, [userData])
-
   return (
     <div className="flex flex-col min-h-screen">
       {authorized ? (
@@ -108,7 +72,7 @@ function App() {
                 <>
                   {/* Manager routes */}
                   {/* <Route path="/" element={<Home />} /> */}
-                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
@@ -119,7 +83,7 @@ function App() {
                 <>
                   {/* Merchandiser routes */}
                   {/* <Route path="/" element={<Home authorized={authorized} />} /> */}
-                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/calendar" element={<Calendar  userData={userData} />} />
                 </>
