@@ -12,6 +12,9 @@ import Profile from "./components/Profile";
 import GetLocations from "./maps/GetLocations";
 import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
+import Calendar from "./components/Calendar";
+import MerchSideBar from "./components/MerchSideBar";
+
 // import AboutUs from "./components/AboutUs";
 
 const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
@@ -19,14 +22,14 @@ const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
 const routeConfig = {
   "/": { title: "", metaDescription: "" },
   "/dashboardmanager": { title: "", metaDescription: "" },
-  "/settingspage": { title: "", metaDescription: "" },
+  "/settings": { title: "", metaDescription: "" },
   "/signup": { title: "", metaDescription: "" },
   "/login": { title: "", metaDescription: "" },
   "/footer": { title: "", metaDescription: "" },
   "/reviews": { title: "", metaDescription: "" },
   "/routesplan": { title: "", metaDescription: "" },
   "/contactus": { title: "", metaDescription: "" },
-  // "/aboutus": {title: "", metaDescription: ""},
+  "/calendar": {title: "", metaDescription: ""},
 };
 
 function App() {
@@ -36,6 +39,7 @@ function App() {
   const [authorized, setAuthorized] = useState(false);
   const [roleCheck, setRoleCheck] = useState(0);
   const [token, setToken] = useState("");
+  const [userData, setUserData] = useState("")
 
   const logoutUser = async () => {
     try {
@@ -88,40 +92,41 @@ function App() {
     }
   }, [currentPath]);
 
+  useEffect(() => {
+    console.log(userData)
+  }, [userData])
+
   return (
     <div className="flex flex-col min-h-screen">
       {authorized ? (
         <>
-          <Navbar />
+          <Navbar userData ={userData} />
           <div className="flex flex-1">
-            <SideBar />
-
+            {roleCheck ? <SideBar /> : <MerchSideBar />}
             <Routes className="flex-1 ml-4">
               {roleCheck ? (
                 <>
-                  <Route
-                    path="/dashboardmanager"
-                    element={<Dashboard />}
-                  />
-                  <Route path="/settingspage" element={<Settings />} />
+                  {/* Manager routes */}
+                  <Route path="/" element={<Home />} />
+                  <Route path="/settings" element={<Settings />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
-                  <Route path="/contactus" element={<ContactUs />} />
-                  
-                  {/* <Route path="/aboutus" element={<AboutUs/>} /> */}
+                  {/* <Route path="/contactus" element={<ContactUs />} /> */}
+                  <Route path="/calendar" element={<Calendar  userData={userData}/>} />
                 </>
               ) : (
                 <>
-                  {/* <button onClick={logoutUser}>Logout</button> */}
+                  {/* Merchandiser routes */}
+                  <Route path="/" element={<Home authorized={authorized} />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/contactus" element={<ContactUs />} />
+                  <Route path="/calendar" element={<Calendar  userData={userData} />} />
                 </>
               )}
-              <Route path="/" element={<Home authorized={authorized} />} />
-              <Route
-                path="/login"
-                element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />}
-              />
+              <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} />
             </Routes>
+
           </div>
         </>
       ) : (
@@ -129,7 +134,7 @@ function App() {
           <Route path="/" element={<Home authorized={authorized} />} />
           <Route
             path="/login"
-            element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} />}
+            element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />}
           />
           <Route path="/signup" element={<Signup />} />
           <Route path="/contactus" element={<ContactUs />} />
