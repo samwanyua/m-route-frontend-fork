@@ -25,18 +25,23 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   const location = useLocation();
 
   useEffect(() => {
-    
     const accessToken = localStorage.getItem("access_token");
-    if (accessToken) {
-      const previousRoute = localStorage.getItem("previous_route");
+    const userData = localStorage.getItem("user_data");
+    const previousRoute = localStorage.getItem("previous_route");
+
+    if (accessToken && userData) {
+      setAuthorized(true);
+      setUserData(JSON.parse(userData));
       if (previousRoute) {
         navigate(previousRoute);
+      } else {
+        navigate('/');
       }
     }
-  }, [setAuthorized, navigate]);
+  }, [setAuthorized, setUserData, navigate]);
 
   useEffect(() => {
-    localStorage.setItem("previous_route", location.pathname);
+    localStorage.setItem("previous_route", JSON.stringify(location.pathname));
   }, [location.pathname]);
 
   const handleRememberMeChange = () => {
@@ -116,15 +121,11 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
     }
   };
 
-  useEffect(() =>{
-    console.log(localStorage.getItem("access_token"));
-    console.log(localStorage.getItem("user_data"));
-  }, [])
-
   const handleLogin = async event => {
     event.preventDefault();
     setError("");
     setLoading(true);
+
 
     try {
       const requestBody = {
@@ -145,7 +146,6 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
       if (data.status_code === 201) {
         setLoading(false);
         const accessToken = data.access_token;
-        localStorage.setItem("access_token", JSON.parse(accessToken));
         setPassword("");
         setEmail("");
         setAuthorized(true);
@@ -167,8 +167,9 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           "last_login": data.message.last_login
         };
         setUserData(userData)
-
-        localStorage.setItem("user_data", JSON.parse(userData));
+        localStorage.setItem("user_data", JSON.stringify(userData));
+        localStorage.setItem("access_token", JSON.stringify(accessToken));
+        
       } else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401) {
         setLoading(false);
         setError(data.message);
