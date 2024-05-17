@@ -39,6 +39,10 @@ const GetLocations = () => {
     }
 
     setToken(JSON.parse(accessToken));
+<<<<<<< HEAD
+=======
+
+>>>>>>> af9ad8cc6ae3a54267ad1d3ad550ab0e4701a8ff
 
     const intervalId = setInterval(() => {
       fetchLatestLocations();
