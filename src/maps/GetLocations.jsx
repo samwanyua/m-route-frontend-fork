@@ -40,7 +40,7 @@ const GetLocations = () => {
       return;
     }
 
-    setToken(accessToken);  // Access token is already a string
+    setToken(accessToken);
 
     const intervalId = setInterval(() => {
       fetchLatestLocations();
