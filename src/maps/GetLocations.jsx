@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-import { jwtDecode } from "jwt-decode";
 
 const LOCATIONS_URL = "https://m-route-backend.onrender.com/users/locations";
-const USERS_URL = "https://m-route-backend.onrender.com/user/users";
-const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com//users/route-plans";
+const USERS_URL = "https://m-route-backend.onrender.com/users";
+const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com/users/route-plans";
 
 const containerStyle = {
   width: "1250px",
@@ -29,16 +28,23 @@ const GetLocations = () => {
   const [assignedMerchandisers, setAssignedMerchandisers] = useState([]);
 
   useEffect(() => {
+
     const accessToken = localStorage.getItem("access_token");
     const userData = localStorage.getItem("user_data");
-        setUserId(userData.id)
-    if (!accessToken) {
-      setError("Access token is missing. Please log in.");
+
+    if (!accessToken || !userData) {
+      setError("Access token or user data is missing. Please log in.");
       return;
     }
-    setToken(accessToken);
 
-    
+    try {
+      setToken(JSON.parse(accessToken));
+      setUserId(JSON.parse(userData).id);
+      
+    } catch (e) {
+      setError("Failed to parse user data.");
+      return;
+    }
 
     const intervalId = setInterval(() => {
       fetchLatestLocations();
@@ -84,6 +90,7 @@ const GetLocations = () => {
     const matchedUserLocations = users.map(user => {
       const location = locations.find(loc => loc.merchandiser_id === user.id);
       if (location) {
+        
         return {
           id: user.id,
           firstName: user.first_name,
@@ -174,3 +181,6 @@ const GetLocations = () => {
 }
 
 export default GetLocations;
+
+
+

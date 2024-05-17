@@ -13,6 +13,8 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [passwordExpire, setPasswordExpired] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [passwordChange, setPasswordChange] = useState({
     email: "",
     oldPassword: "",
@@ -24,16 +26,22 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
-    if (accessToken) {
-      const previousRoute = localStorage.getItem("previous_route");
+    const userData = localStorage.getItem("user_data");
+    const previousRoute = localStorage.getItem("previous_route");
+
+    if (accessToken && userData) {
+      setAuthorized(true);
+      setUserData(JSON.parse(userData));
       if (previousRoute) {
         navigate(previousRoute);
+      } else {
+        navigate('/');
       }
     }
-  }, [setAuthorized, navigate]);
+  }, [setAuthorized, setUserData, navigate]);
 
   useEffect(() => {
-    localStorage.setItem("previous_route", location.pathname);
+    localStorage.setItem("previous_route", JSON.stringify(location.pathname));
   }, [location.pathname]);
 
   const handleRememberMeChange = () => {
@@ -41,7 +49,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   };
 
   const handleEmailChange = event => {
-    setEmail(event.target.value);
+    setEmail(event.target.value.toLowerCase());
   };
 
   const handlePassword = event => {
@@ -66,6 +74,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
     };
 
     try {
+      setLoading(true);
       const response = await fetch(CHANGE_PASSWORD_URL, {
         method: "POST",
         headers: {
@@ -77,6 +86,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
       const data = await response.json();
 
       if (data.status_code === 201) {
+        setLoading(false);
         setError(data.message);
         setPasswordChange({
           email: "",
@@ -89,17 +99,20 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           navigate('/login');
         }, 2000);
       } else if (data.status_code === 400 || data.status_code === 401 || data.status_code === 404) {
+        setLoading(false);
         setTimeout(() => {
           setError("");
         }, 2000);
         setError(data.message);
       } else if (data.status_code === 500) {
+        setLoading(false);
         setError("There was an error changing your password, try again later.");
         setTimeout(() => {
           setError("");
         }, 2000);
       }
     } catch (error) {
+      setLoading(false);
       console.log("Error", error);
       setError("There was an error changing your password.");
       setTimeout(() => {
@@ -111,6 +124,8 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   const handleLogin = async event => {
     event.preventDefault();
     setError("");
+    setLoading(true);
+
 
     try {
       const requestBody = {
@@ -129,27 +144,18 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
       const data = await response.json();
 
       if (data.status_code === 201) {
-
+        setLoading(false);
         const accessToken = data.access_token;
-        localStorage.setItem("access_token", accessToken);
         setPassword("");
         setEmail("");
         setAuthorized(true);
         navigate('/');
-
-
-         if (data.message) {
-        console.log(` response data: ${data.message.username}`)}
-
-
-
 
         if (data.message.role === "manager") {
           setRoleCheck(true);
           setAuthorized(true);
           
         }
-
 
         const userData = {
           "id": data.message.user_id,
@@ -161,17 +167,17 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           "last_login": data.message.last_login
         };
         setUserData(userData)
-
-
-
-
         localStorage.setItem("user_data", JSON.stringify(userData));
+        localStorage.setItem("access_token", JSON.stringify(accessToken));
+        
       } else if (data.status_code === 400 || data.status_code === 409 || data.status_code === 401) {
+        setLoading(false);
         setError(data.message);
         setTimeout(() => {
           setError("");
         }, 2000);
       } else if (data.status_code === 403) {
+        setLoading(false);
         setError(data.message);
         setPasswordExpired(true);
         setPassword("");
@@ -180,6 +186,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           setError("");
         }, 2000);
       } else if (data.status_code === 404) {
+        setLoading(false);
         setError(data.message);
         setTimeout(() => {
           navigate('/signup');
@@ -188,12 +195,14 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           setError("");
         }, 2000);
       } else {
+        setLoading(false);
         setError("There was an error logging, try again later");
         setTimeout(() => {
           setError("");
         }, 2000);
       }
     } catch (error) {
+      setLoading(false);
       console.error('An error occurred while logging in:', error);
       setError("There was an error logging in, try again later");
       setTimeout(() => {
@@ -203,6 +212,13 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   };
 
   return (
+    <>
+    {loading && (
+      <div className="fixed inset-0 flex items-center justify-center py-36  bg-gray-900 bg-opacity-50 z-50">
+        <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-white"></div>
+      </div>
+    )}
+    
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <form className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-8 gap-4 relative">
         <div className="absolute top-0 right-0">
@@ -268,7 +284,11 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 
 export default Login;
+
+
+

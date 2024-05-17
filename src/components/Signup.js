@@ -51,8 +51,24 @@ const Signup = () => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // const handleChange = (e) => {
+  //   let { name, value } = e.target;
+  //   if ((name === 'national_id_no' || name === 'staff_no') && value < 0) {
+  //     alert('Please enter a positive number.');
+  //     e.target.value = Math.max(0, value);
+  //   } else {
+  //     setFormData({ ...formData, [name]: value });
+  //   }
+  // };
+
   const handleChange = (e) => {
     let { name, value } = e.target;
+    if (name === "email") {
+      value = value.toLowerCase();
+    }
+    if (name === "username") {
+      value = value.toLowerCase();
+    }
     if ((name === 'national_id_no' || name === 'staff_no') && value < 0) {
       alert('Please enter a positive number.');
       e.target.value = Math.max(0, value);
@@ -232,3 +248,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
+

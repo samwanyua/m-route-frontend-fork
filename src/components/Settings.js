@@ -1,15 +1,84 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BiToggleLeft, BiToggleRight } from 'react-icons/bi';
+import Location from '../maps/Location';
+import { useNavigate } from "react-router-dom";
 
-const Settings = () => {
+const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
+
+const Settings = ({ setAuthorized }) => {
   const [notifications, setNotifications] = useState({
     routeUpdates: false,
     productInsights: false,
     salesOrders: false,
     competitorActivities: false,
+    currentLocation: false,
   });
 
-  const toggleNotification = (key) => {
+  const { setLocateMerchandiser } = Location();
+  const [token, setToken] = useState("");
+  const [userId, setUserId] = useState(0)
+
+  const navigate = useNavigate();
+
+  const handleSendLocationToggle = () => {
+    setNotifications((prev) => {
+      const newValue = !prev.currentLocation;
+      setLocateMerchandiser(newValue); 
+      return {
+        ...prev,
+        currentLocation: newValue,
+      };
+    });
+  };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    const user = localStorage.getItem("user_data");
+    
+    if (accessToken) {
+      setToken(JSON.parse(accessToken));
+    }
+
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser && parsedUser.id) {
+        setUserId(parsedUser.id);
+      } else {
+        console.error("Invalid user data");
+      }
+    } else {
+      console.error("No user data found");
+    }
+  }, []);
+
+  const logoutUser = async () => {
+      
+    try {
+      const response = await fetch(LOGOUT_URL, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ "user_id": userId }),
+      });
+
+      if (response.ok){
+        const data = await response.json();
+        setAuthorized(false);
+        navigate("/")
+        setToken("");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user_data");
+        console.log(data.message)
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const toggleNotification = key => {
     setNotifications((prev) => ({
       ...prev,
       [key]: !prev[key],
@@ -30,9 +99,8 @@ const Settings = () => {
           /> */}
         </div>
         <input type="email" className="input-field" placeholder="Email" />
-        <input type="tel" className="input-field" placeholder="Phone number" />
-        <input type="password" className="input-field" placeholder="Password" />
-        <input type="password" className="input-field bg-gray-100" placeholder="Confirm password" />
+        <input type="password" className="input-field" placeholder="Old Password" />
+        <input type="password" className="input-field bg-gray-100" placeholder="New password" />
         <button className="text-white bg-gray-900 px-6 py-2 rounded-full">Save changes</button>
       </form>
       <div className="flex flex-col items-center lg:items-start justify-start gap-8 py-6 px-8 text-lg text-black font-poppins shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-xl">
@@ -92,12 +160,30 @@ const Settings = () => {
                 className="text-gray-900 cursor-pointer text-3xl ml-2"
                 onClick={() => toggleNotification('competitorActivities')}
               />
+              
+            )}
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="font-medium text-base">Sharing Current Location</div>
+            {notifications.currentLocation ? (
+              <BiToggleRight
+                className="text-gray-900 cursor-pointer text-3xl ml-2 "
+                onClick={() => handleSendLocationToggle()}
+              />
+            ) : (
+              <BiToggleLeft
+                className="text-gray-900 cursor-pointer text-3xl ml-2"
+                onClick={() => handleSendLocationToggle()}
+              />
             )}
           </div>
         </div>
       </div>
+      <button onClick={logoutUser}>Logout</button>
     </div>
   );
 };
 
 export default Settings;
+
+
