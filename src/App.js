@@ -14,6 +14,7 @@ import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
 import Calendar from "./components/Calendar";
 import MerchSideBar from "./components/MerchSideBar";
+import MerchCalendar from "./components/MerchCalendar";
 
 // import AboutUs from "./components/AboutUs";
 
@@ -37,7 +38,10 @@ function App() {
 
   const [authorized, setAuthorized] = useState(false);
   const [roleCheck, setRoleCheck] = useState(0);
-  const [userData, setUserData] = useState("")
+
+  const [token, setToken] = useState("");
+  const [userData, setUserData] = useState("");
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -85,7 +89,7 @@ function App() {
                   {/* <Route path="/" element={<Home authorized={authorized} />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/contactus" element={<ContactUs />} />
-                  <Route path="/calendar" element={<Calendar  userData={userData} />} />
+                  <Route path="/merch-calendar" element={<MerchCalendar  userData={userData} />} />
                 </>
               )}
               {/* <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} /> */}
@@ -104,7 +108,7 @@ function App() {
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       )}
-      <Footer />
+      {roleCheck ? <Footer /> : null}
     </div>
   );
 }
