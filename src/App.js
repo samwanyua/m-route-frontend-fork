@@ -14,6 +14,7 @@ import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
 import Calendar from "./components/Calendar";
 import MerchSideBar from "./components/MerchSideBar";
+import MerchCalendar from "./components/MerchCalendar";
 
 // import AboutUs from "./components/AboutUs";
 
@@ -121,7 +122,7 @@ function App() {
                   <Route path="/" element={<Home authorized={authorized} />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/contactus" element={<ContactUs />} />
-                  <Route path="/calendar" element={<Calendar  userData={userData} />} />
+                  <Route path="/merch-calendar" element={<MerchCalendar  userData={userData} />} />
                 </>
               )}
               <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} />
@@ -140,7 +141,7 @@ function App() {
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       )}
-      <Footer />
+      {roleCheck ? <Footer /> : null}
     </div>
   );
 }

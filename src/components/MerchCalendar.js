@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
@@ -7,18 +7,46 @@ import moment from 'moment';
 const localizer = momentLocalizer(moment);
 
 const MerchCalendar = () => {
-    const events = [
-        {
-            title: 'Meeting',
-            start: new Date(2024, 4, 20, 10, 0), // year, month (zero-based), day, hour, minute
-            end: new Date(2024, 4, 20, 12, 0),
-        },
-        {
-            title: 'Training',
-            start: new Date(2024, 4, 22, 13, 0),
-            end: new Date(2024, 4, 22, 15, 0),
-        },
-    ];
+    const [events, setEvents] = useState([]);
+    const [token, setToken] = useState(null);
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem("access_token");
+        setToken(accessToken);
+      }, []);
+    console.log(token)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://m-route-backend.onrender.com/users/route-plans', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": `Bearer ${token}`,
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch events');
+                }
+                const data = await response.json();
+                if (data.successful) {
+                    // Transform fetched data into the format expected by React Big Calendar
+                    const formattedEvents = data.message.map(event => ({
+                        title: event.instructions,
+                        start: new Date(event.date_range.start_date),
+                        end: new Date(event.date_range.end_date),
+                    }));
+                    setEvents(formattedEvents);
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error fetching events:', error);
+                // Handle error
+            }
+        };
+        fetchData();
+    }, []); // Empty dependency array to ensure this effect runs only once on mount
 
     return (
         <div className="calendar-container">
@@ -27,7 +55,7 @@ const MerchCalendar = () => {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ width: '100%', height: 500 }}
+                style={{ width: 1500, height: '95%' }}
             />
         </div>
     );
