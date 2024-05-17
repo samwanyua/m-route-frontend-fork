@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RiNotification2Line } from "react-icons/ri";
 import { MdAccountCircle } from "react-icons/md";
 
-const Navbar = () => {
+
+const Navbar = ({userData}) => {
   const [showModal, setShowModal] = React.useState(false);
+
+  
   return (
     <header className="bg-gray-900 shadow-md flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-4">
@@ -15,11 +18,16 @@ const Navbar = () => {
          onClick={() => setShowModal(true)}
         />
         <Link to="/profile">
-          <MdAccountCircle className="h-8 w-8 text-white" />
+          {userData.avatar ? (
+            <img src={userData.avatar} className="h-8 w-8" alt="profile" />
+          ) : (
+            <MdAccountCircle className="h-8 w-8 text-white" alt="profile" />
+          )}
         </Link>
+
       <div className="flex flex-col">
-        <b className="text-base text-white">Moses</b>
-        <div className="text-xs text-white">Manager</div>
+        <b className="text-base text-white capitalize">{userData.username}</b>
+        <div className="text-xs text-white capitalize">{userData.role}</div>
       </div>
       </div>
       <>
