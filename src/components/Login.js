@@ -49,7 +49,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   };
 
   const handleEmailChange = event => {
-    setEmail(event.target.value);
+    setEmail(event.target.value.toLowerCase());
   };
 
   const handlePassword = event => {
