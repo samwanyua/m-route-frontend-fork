@@ -107,7 +107,7 @@ function App() {
               {roleCheck ? (
                 <>
                   {/* Manager routes */}
-                  <Route path="/" element={<Home />} />
+                  {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
