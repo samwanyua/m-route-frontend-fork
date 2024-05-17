@@ -23,6 +23,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   const location = useLocation();
 
   useEffect(() => {
+    
     const accessToken = localStorage.getItem("access_token");
     if (accessToken) {
       const previousRoute = localStorage.getItem("previous_route");
