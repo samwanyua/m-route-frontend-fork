@@ -78,39 +78,41 @@ const MerchRoutePlans = ({ userData }) => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-4xl font-bold text-center mb-8">Route Plans</h1>
-            <table className="min-w-full bg-white border border-gray-200">
-                <thead>
-                    <tr>
-                        <th className="py-2 px-4 border-b">Instructions</th>
-                        <th className="py-2 px-4 border-b">Date</th>
-                        <th className="py-2 px-4 border-b">Status</th>
-                        <th className="py-2 px-4 border-b">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {routePlans.map(plan => (
-                        <tr key={plan.id} className="even:bg-gray-100">
-                            <td className="py-2 px-4 border-b">{plan.instructions}</td>
-                            <td className="py-2 px-4 border-b">
-                                {moment(plan.dateRange.start_date).format('DD/MM/YYYY h:mm A')} - {moment(plan.dateRange.end_date).format('DD/MM/YYYY h:mm A')}
-                            </td>
-                            <td className="py-2 px-4 border-b">{plan.status}</td>
-                            <td className="py-2 px-4 border-b text-center">
-                                <label className="inline-flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        className="form-checkbox h-4 w-4"
-                                        checked={plan.status === 'complete'}
-                                        onChange={(e) => handleStatusChange(plan.id, e.target.checked ? 'complete' : 'pending')}
-                                    />
-                                    <span className="ml-2">Complete</span>
-                                </label>
-                            </td>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8">Route Plans</h1>
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white border border-gray-200">
+                    <thead>
+                        <tr>
+                            <th className="py-2 px-4 border-b">Instructions</th>
+                            <th className="py-2 px-4 border-b">Date</th>
+                            <th className="py-2 px-4 border-b">Status</th>
+                            <th className="py-2 px-4 border-b">Action</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {routePlans.map(plan => (
+                            <tr key={plan.id} className="even:bg-gray-100">
+                                <td className="py-2 px-4 border-b">{plan.instructions}</td>
+                                <td className="py-2 px-4 border-b">
+                                    {moment(plan.dateRange.start_date).format('DD/MM/YYYY h:mm A')} - {moment(plan.dateRange.end_date).format('DD/MM/YYYY h:mm A')}
+                                </td>
+                                <td className="py-2 px-4 border-b">{plan.status}</td>
+                                <td className="py-2 px-4 border-b text-center">
+                                    <label className="inline-flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            className="form-checkbox h-4 w-4"
+                                            checked={plan.status === 'complete'}
+                                            onChange={(e) => handleStatusChange(plan.id, e.target.checked ? 'complete' : 'pending')}
+                                        />
+                                        <span className="ml-2">Complete</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
