@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const SIGNUP_URL = 'https://m-route-backend.onrender.com/users/signup'
+
 const Modal = ({ message, onClose }) => {
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -42,33 +44,27 @@ const Signup = () => {
     last_name: "",
     national_id_no: "",
     staff_no: "",
-    username: "",
-    email: "",
     password: ""
   });
-
-  const navigate = useNavigate();
+  const [emailUsername, setEmailUsername] = useState({
+    email: "",
+    username: ""
+  })
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // const handleChange = (e) => {
-  //   let { name, value } = e.target;
-  //   if ((name === 'national_id_no' || name === 'staff_no') && value < 0) {
-  //     alert('Please enter a positive number.');
-  //     e.target.value = Math.max(0, value);
-  //   } else {
-  //     setFormData({ ...formData, [name]: value });
-  //   }
-  // };
-
-  const handleChange = (e) => {
+  const handleEmailUsername = e => {
     let { name, value } = e.target;
-    if (name === "email") {
-      value = value.toLowerCase();
-    }
-    if (name === "username") {
-      value = value.toLowerCase();
-    }
+    setEmailUsername(prev =>({
+      ...prev,
+      [name] : value.toLowerCase()
+    }))
+    
+  };
+
+  const handleChange = e => {
+    let { name, value } = e.target;
     if ((name === 'national_id_no' || name === 'staff_no') && value < 0) {
       alert('Please enter a positive number.');
       e.target.value = Math.max(0, value);
@@ -77,29 +73,64 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSignup = async e => {
     e.preventDefault();
     setLoading(true);
 
+    const signupData = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      national_id_no: formData.national_id_no,
+      staff_no: formData.staff_no,
+      password: formData.password,
+      email: emailUsername.email,
+      username: emailUsername.username
+    }
+
+    if (formData.middle_name) {
+      signupData.middle_name = formData.middle_name;
+    }
+
     try {
-      const response = await fetch('https://m-route-backend.onrender.com/users/signup', {
+      const response = await fetch(SIGNUP_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(signupData),
       });
 
-      const responseData = await response.json();
+      const data = await response.json();
 
-      if (response.ok) {
-        setMessage("Signup successful, you will be redirected to the login page to complete your login.");
-        navigate('/login');
-      } else {
-        setMessage(`Signup failed: ${responseData.message}`);
+      if (data.status_code === 201){
+        setMessage(data.message);
+        setTimeout(() =>{
+          navigate('/login');
+        }, 3000)
+        setFormData({
+          first_name: "",
+          middle_name: "",
+          last_name: "",
+          national_id_no: "",
+          staff_no: "",
+          password: ""
+        });
+      setEmailUsername({
+        email: "",
+        username: ""
+      });
+
+      }else if (data.status_code === 400){
+        setMessage(data.message);
+
+      }else if (data.status_code === 500){
+        console.log("Error:", data.message);
+        setMessage("Signup failed please try again");
       }
+
     } catch (error) {
-      setMessage(`Signup failed: ${error}`);
+      console.log("Failed to post", error);
+      setMessage(`Signup failed please try again later`);
     } finally {
       setLoading(false);
     }
@@ -120,7 +151,7 @@ const Signup = () => {
       <div className="flex justify-center items-center min-h-screen bg-gray-900">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg shadow-md p-8">
           <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Sign up for an account</h2>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <form className="mt-8 space-y-6" onSubmit={handleSignup}>
             <div>
               <label htmlFor="first_name" className="block text-sm font-medium leading-6 text-gray-900">
                 First Name
@@ -128,6 +159,7 @@ const Signup = () => {
               <input
                 id="first_name"
                 name="first_name"
+                value={formData.first_name}
                 type="text"
                 autoComplete="given-name"
                 required
@@ -143,6 +175,7 @@ const Signup = () => {
                 id="middle_name"
                 name="middle_name"
                 type="text"
+                value={formData.middle_name}
                 autoComplete="middle-name"
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
@@ -155,6 +188,7 @@ const Signup = () => {
               <input
                 id="last_name"
                 name="last_name"
+                value={formData.last_name}
                 type="text"
                 autoComplete="family-name"
                 required
@@ -169,6 +203,7 @@ const Signup = () => {
               <input
                 id="national_id_no"
                 name="national_id_no"
+                value={formData.national_id_no}
                 type="number"
                 autoComplete="off"
                 onChange={handleChange}
@@ -182,6 +217,7 @@ const Signup = () => {
               <input
                 id="staff_no"
                 name="staff_no"
+                value={formData.staff_no}
                 type="number"
                 autoComplete="off"
                 onChange={handleChange}
@@ -195,10 +231,11 @@ const Signup = () => {
               <input
                 id="username"
                 name="username"
+                value={emailUsername.username}
                 type="text"
                 autoComplete="username"
                 required
-                onChange={handleChange}
+                onChange={handleEmailUsername}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
               />
             </div>
@@ -209,10 +246,11 @@ const Signup = () => {
               <input
                 id="email"
                 name="email"
+                value={emailUsername.email}
                 type="email"
                 autoComplete="email"
                 required
-                onChange={handleChange}
+                onChange={handleEmailUsername}
                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z.]{2,}$"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
               />
@@ -224,6 +262,7 @@ const Signup = () => {
               <input
                 id="password"
                 name="password"
+                value={formData.password}
                 type="password"
                 autoComplete="current-password"
                 required
