@@ -24,9 +24,9 @@ const Home = ({ authorized }) => {
         </div>
       </div>
       {/* <AboutUs /> */}
-      <OurClients />
-      <Testimonials />
-      <ContactUs />
+      {/* <OurClients /> */}
+      {/* <Testimonials /> */}
+      {/* <ContactUs /> */}
     </section>
   );
 }
