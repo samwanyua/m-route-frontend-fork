@@ -103,7 +103,7 @@ function Calendar({ userData }) {
       console.log("Formatted End Date:", formattedEndDate);
   
       const data = {
-        manager_id: userData.id,
+        manager_id: userId,
         date_range: {
           start_date: formattedStartDate,
           end_date: formattedEndDate
