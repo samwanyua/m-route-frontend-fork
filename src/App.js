@@ -87,8 +87,6 @@ function App() {
                 </>
               ) : (
                 <>
-                  {/* Merchandiser routes */}
-                  {/* <Route path="/" element={<Home authorized={authorized} />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/merch-calendar" element={<MerchCalendar  userData={userData} />} />
