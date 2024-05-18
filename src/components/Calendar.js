@@ -1,6 +1,9 @@
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import { useState, useEffect } from 'react';
 
+
+const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
+
 function Calendar({ userData }) {
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(new Date());
@@ -15,7 +18,7 @@ function Calendar({ userData }) {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
-    setToken(accessToken);
+    setToken(JSON.parse(accessToken));
   }, []);
 
   if (isLoading) {
@@ -109,7 +112,7 @@ function Calendar({ userData }) {
   
       console.log("Data to be sent to backend:", data);
   
-      const routePlanResponse = await fetch("https://m-route-backend.onrender.com/users/route-plans", {
+      const routePlanResponse = await fetch(ROUTES_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

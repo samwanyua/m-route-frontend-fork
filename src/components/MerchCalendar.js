@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 
-const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans"
+const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
 
 // Initialize localizer for React Big Calendar with moment.js
 const localizer = momentLocalizer(moment);
@@ -71,3 +71,5 @@ const MerchCalendar = ({ userData }) => {
 };
 
 export default MerchCalendar;
+
+
