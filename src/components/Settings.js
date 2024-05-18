@@ -179,7 +179,7 @@ const Settings = ({ setAuthorized }) => {
           </div>
         </div>
       </div>
-      <button className="text-white bg-gray-900 px-6 py-2 rounded-full mr-6" onClick={logoutUser}>Logout</button>
+      <button className="text-white bg-red-600 hover:bg-red-700 px-6 py-3 rounded-md" onClick={logoutUser}>Logout</button>
     </div>
   );
 };
