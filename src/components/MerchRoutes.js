@@ -18,7 +18,7 @@ const MerchRoutePlans = ({ userData }) => {
             const fetchData = async () => {
                 try {
                     const response = await fetch(`${ROUTES_URL}/${userData.id}`, {
-                        method: 'GET',
+                   method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`,
@@ -30,7 +30,7 @@ const MerchRoutePlans = ({ userData }) => {
                     const data = await response.json();
                     if (data.successful) {
                         const formattedRoutePlans = data.message.map(event => ({
-                            id: event.id,  // assuming each event has a unique id
+                            id: event.id,  // Ensure the id is included
                             instructions: event.instructions,
                             dateRange: {
                                 start_date: moment(event.date_range.start_date, 'DD/MM/YYYY h:mm A').toDate(),
@@ -102,7 +102,7 @@ const MerchRoutePlans = ({ userData }) => {
                                         type="checkbox"
                                         className="form-checkbox h-4 w-4"
                                         checked={plan.status === 'complete'}
-                                        onChange={(e) => handleStatusChange(plan.id, e.target.checked ? 'complete' : 'pending')}
+                                    onChange={(e) => handleStatusChange(plan.id, e.target.checked ? 'complete' : 'pending')}                                    
                                     />
                                     <span className="ml-2">Complete</span>
                                 </label>

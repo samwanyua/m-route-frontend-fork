@@ -15,7 +15,7 @@ function Calendar({ userData }) {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
-    setToken(accessToken);
+    setToken(JSON.parse(accessToken));
   }, []);
 
   if (isLoading) {
