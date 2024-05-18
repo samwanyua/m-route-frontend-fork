@@ -15,6 +15,7 @@ import Signup from "./components/Signup";
 import Calendar from "./components/Calendar";
 import MerchSideBar from "./components/MerchSideBar";
 import MerchCalendar from "./components/MerchCalendar";
+import MerchRoutePlans from "./components/MerchRoutes";
 
 // import AboutUs from "./components/AboutUs";
 
@@ -30,6 +31,7 @@ const routeConfig = {
   "/routesplan": { title: "", metaDescription: "" },
   "/contactus": { title: "", metaDescription: "" },
   "/calendar": {title: "", metaDescription: ""},
+  "/myroutes": {title: "", metaDescription: ""},
 };
 
 function App() {
@@ -88,6 +90,7 @@ function App() {
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/merch-calendar" element={<MerchCalendar  userData={userData} />} />
+                  <Route path="/myroutes" element={<MerchRoutePlans userData={userData} />} />
                 </>
               )}
               {/* <Route path="/login" element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />} /> */}
