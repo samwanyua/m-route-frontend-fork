@@ -3,6 +3,8 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 
+const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans"
+
 // Initialize localizer for React Big Calendar with moment.js
 const localizer = momentLocalizer(moment);
 
@@ -12,14 +14,14 @@ const MerchCalendar = ({ userData }) => {
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
-        setToken(accessToken);
+        setToken(JSON.parse(accessToken));
     }, []);
 
     useEffect(() => {
         if (token && userData.id) {
             const fetchData = async () => {
                 try {
-                    const response = await fetch(`https://m-route-backend.onrender.com/users/route-plans/${userData.id}`, {
+                    const response = await fetch(`${ROUTES_URL}/${userData.id}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
