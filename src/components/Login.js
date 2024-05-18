@@ -270,7 +270,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
           </div>
         </div>
         <div className="flex flex-col items-center gap-4 w-full">
-          <p>{error}</p>
+        <p style={{ color: "red", fontWeight: "bold", margin: "10px 0" }}>{error}</p>
           <button
             className="bg-gray-900 text-white px-6 py-3 rounded-full uppercase text-sm hover:bg-gray-800 transition duration-300"
             onClick={handleLogin}
