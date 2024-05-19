@@ -157,7 +157,7 @@ const CreateRoutes = () =>{
                 <div key={index}>
                     <input 
                         type="datetime-local" 
-                        name="dateTime"
+                        name="start"
                         placeholder="YYYY-MM-DD"
                         value={set.start}
                         onChange={(e) => handleInstructionsChange(index, e)}
@@ -167,7 +167,7 @@ const CreateRoutes = () =>{
                     <br />
                     <input 
                         type="datetime-local" 
-                        name="dateTime"
+                        name="end"
                         placeholder="YYYY-MM-DD"
                         value={set.end}
                         onChange={(e) => handleInstructionsChange(index, e)}
