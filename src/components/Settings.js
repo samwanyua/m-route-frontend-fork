@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { BiToggleLeft, BiToggleRight } from 'react-icons/bi';
-import Location from '../maps/Location';
 import { useNavigate } from "react-router-dom";
 
 const LOGOUT_URL = "https://m-route-backend.onrender.com/users/logout";
+const LOCATION_URL = "https://m-route-backend.onrender.com/users/locations";
 
 const Settings = ({ setAuthorized }) => {
   const [notifications, setNotifications] = useState({
@@ -14,22 +14,15 @@ const Settings = ({ setAuthorized }) => {
     currentLocation: false,
   });
 
-  const { setLocateMerchandiser } = Location();
+  
   const [token, setToken] = useState("");
-  const [userId, setUserId] = useState(0)
+  const [userId, setUserId] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+    const [position, setPosition] = useState(null);
+    const [error, setError] = useState("");
+  const [locateMerchandiser, setLocateMerchandiser] = useState(false);
 
-  const navigate = useNavigate();
 
-  const handleSendLocationToggle = () => {
-    setNotifications((prev) => {
-      const newValue = !prev.currentLocation;
-      setLocateMerchandiser(newValue); 
-      return {
-        ...prev,
-        currentLocation: newValue,
-      };
-    });
-  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
@@ -50,6 +43,124 @@ const Settings = ({ setAuthorized }) => {
       console.error("No user data found");
     }
   }, []);
+
+
+  useEffect(() => {
+    let intervalId;
+    if (locateMerchandiser) {
+      intervalId = setInterval(() => {
+        getGeolocation();
+      }, 300000); // 5 minutes
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [locateMerchandiser]);
+
+
+
+  const getGeolocation = () => {
+    if (!navigator.geolocation) {
+        setError("Your browser does not support geolocation");
+        return;
+    }
+
+    setIsLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+          const coords = {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          };
+          setPosition(coords);
+          setIsLoading(false);
+          postGeolocation(coords.latitude, coords.longitude);
+        },
+        error => {
+            setError(error.message);
+            setIsLoading(false);
+        }
+    );
+  };
+
+  const postGeolocation = async (latitude, longitude) => {
+      const currentTime = new Date();
+      const year = currentTime.getFullYear();
+      const month = String(currentTime.getMonth() + 1).padStart(2, '0');
+      const day = String(currentTime.getDate()).padStart(2, '0');
+      const hours = String(currentTime.getHours()).padStart(2, '0');
+      const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+      const seconds = String(currentTime.getSeconds()).padStart(2, '0');
+      const dateTimeString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+      const newLocation = {
+          "latitude": latitude,
+          "longitude": longitude,
+          "timestamp": dateTimeString,
+          "merchandiser_id": userId
+      };
+
+      if (!isLoading && !error && position !== null) {
+          try {
+              const response = await fetch(LOCATION_URL, {
+                  method: "POST",
+                  headers: {
+                      "Authorization": `Bearer ${token}`,
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(newLocation)
+              });
+
+              const data = await response.json();
+
+              if (data.status_code === 201) {
+                  console.log(data.message);
+              } else {
+                  setError(data.message || "System experiencing a problem, please try again later.");
+              }
+          } catch (error) {
+              console.log(error);
+              setError("Failed to post location.");
+          }
+      }
+  };
+
+  const navigate = useNavigate();
+
+  const handleSendLocationToggle = () => {
+    setNotifications((prev) => {
+      const newValue = !prev.currentLocation;
+      setLocateMerchandiser(newValue); 
+      return {
+        ...prev,
+        currentLocation: newValue,
+      };
+    });
+  };
+
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    const user = localStorage.getItem("user_data");
+    
+    if (accessToken) {
+      setToken(JSON.parse(accessToken));
+    }
+
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser && parsedUser.id) {
+        setUserId(parsedUser.id);
+      } else {
+        console.error("Invalid user data");
+      }
+    } else {
+      console.error("No user data found");
+    }
+  }, []);
+
 
   const logoutUser = async () => {
       
@@ -78,12 +189,14 @@ const Settings = ({ setAuthorized }) => {
     }
   };
 
+
   const toggleNotification = key => {
     setNotifications((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
   };
+
 
   return (
     <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start min-h-screen py-16 mb-36 gap-8 lg:gap-36">
