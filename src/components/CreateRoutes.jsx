@@ -11,20 +11,29 @@ const CreateRoutes = () =>{
     });
     const [instructionSets, setInstructionSets] = useState([]);
     const [staffNo, setStaffNo] = useState({
-        staff_no: null
+        staff_no: ""
     });
-    const [userId, setUserId] = useState(null);
+    const [userId, setUserId] = useState("");
     const [token, setToken] = useState("");
     const [message, setMessage] = useState("");
 
 
 
-    useEffect(() =>{
+    // useEffect(() =>{
+    //     const accessToken = localStorage.getItem("access_token");
+    //     const userData = localStorage.getItem("user_data");
+    //     setToken(JSON.parse(accessToken));
+    //     setUserId(JSON.parse(userData.id));
+    // }, [])
+
+    useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
         const userData = localStorage.getItem("user_data");
         setToken(JSON.parse(accessToken));
-        setUserId(JSON.parse(userData.id));
-    }, [])
+        if (userData) {
+            setUserId(JSON.parse(userData).id);
+        }
+    }, []);
 
 
     const handleDateRange = event =>{
@@ -81,6 +90,7 @@ const CreateRoutes = () =>{
             },
             instructions: instructionSets
         };
+        console.log(routes)
 
         try {
             const response = await fetch(ROUTES_URL, {
@@ -97,11 +107,7 @@ const CreateRoutes = () =>{
             if (data.status_code === 201) {
                 setMessage(data.message);
                 setStaffNo("");
-                setInstructionSets({
-                  dateTime: "",
-                  instructions: "",
-                  facility: ""
-                });
+                setInstructionSets([]);
                 setDateRange({
                   startDate: "",
                   endDate: "",
@@ -135,7 +141,7 @@ const CreateRoutes = () =>{
     }
 
     return (
-        <form on onSubmit={handleSubmitRoutes}>
+        <form onSubmit={handleSubmitRoutes}>
            <div>
             <label htmlFor="Date rage">Date Range</label>
             <br />
@@ -147,7 +153,8 @@ const CreateRoutes = () =>{
                 onChange={handleDateRange}
                 required
             />
-            <small>Format: YYYY-MM-DD</small>
+            <small>Start Date: YYYY-MM-DD</small>
+            <br />
             <input 
                 type="date" 
                 name="endDate"
@@ -156,25 +163,26 @@ const CreateRoutes = () =>{
                 onChange={handleDateRange}
                 required
             />
-            <small>Format: YYYY-MM-DD</small>
+            <small>End date: YYYY-MM-DD</small>
            </div>
            <br />
            <div>
-            <label htmlFor="date-instructions">Date</label>
+            <label htmlFor="date-instructions">Activity Date</label>
             <br />
             {instructionSets.map((set, index) => (
-                <div>
+                <div key={index}>
                     <input 
-                        type="date" 
+                        type="datetime-local" 
                         name="dateTime"
                         placeholder="YYYY-MM-DD"
                         value={set.dateTime}
                         onChange={(e) => handleInstructionsChange(index, e)}
                         required
                     />
-                    <small>Format: YYYY-MM-DD</small>
+                    <small>Format: YYYY-MM-DDTHH:MM</small>
                     <br />
                     <label htmlFor="facility">Facility Name</label>
+                    <br />
                     <input 
                         type="text" 
                         name="facility"
@@ -185,6 +193,7 @@ const CreateRoutes = () =>{
                     />
                     <br />
                     <label htmlFor="instructions">Instructions</label>
+                    <br />
                     <textarea 
                         name="instructions" 
                         id="message" 
@@ -196,6 +205,8 @@ const CreateRoutes = () =>{
                     />
                 </div>
             ))}
+            <br />
+            <br />
             <button type="button" onClick={handleAddInstructionSet}>
                 + Add Another Set
             </button>
