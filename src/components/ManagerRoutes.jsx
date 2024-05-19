@@ -155,43 +155,44 @@ const ManagerRoutes = () =>{
 
 
     return (
-        <div>
+        <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
             {isLoading ? (
-                <p>Loading...</p>
+                <p className="text-center text-gray-600">Loading...</p>
             ) : errorMessage ? (
-                <p>{errorMessage}</p>
+                <p className="text-center text-red-600">{errorMessage}</p>
             ) : (
-                <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     {routes.map(route => (
-                        <div key={route.id}>
-                            <p>Date Range: {route.date_range.start_date} to {route.date_range.end_date}</p>
-                            <p>Merchandiser: {route.merchandiser_name}</p>
-                            <p>Staff No: {route.staff_no}</p>
-                            <p>Status: {route.status}</p>
-                            <p>Instructions:</p>
+                        <div key={route.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                            <p><span className="font-bold">Date Range:</span> {route.date_range.start_date} to {route.date_range.end_date}</p>
+                            <p><span className="font-bold">Merchandiser:</span> {route.merchandiser_name}</p>
+                            <p><span className="font-bold">Staff No:</span> {route.staff_no}</p>
+                            <p><span className="font-bold">Status:</span> {route.status}</p>
+                            <p className="font-bold">Instructions:</p>
                             {expandedRoutes[route.id] ? (
                                 <div>
                                     {JSON.parse(route.instructions).map((instruction, index) => (
-                                        <div key={index}>
-                                            <p>DateTime: {instruction.dateTime}</p>
-                                            <p>Instructions: {instruction.instructions}</p>
-                                            <p>Facility: {instruction.facility}</p>
+                                        <div key={index} className="mb-3 p-3 border border-gray-300 rounded">
+                                            <p><span className="font-bold">DateTime:</span> {instruction.dateTime}</p>
+                                            <p><span className="font-bold">Instructions:</span> {instruction.instructions}</p>
+                                            <p><span className="font-bold">Facility:</span> {instruction.facility}</p>
                                         </div>
                                     ))}
-                                    <button onClick={() => toggleInstructions(route.id)}>View Less</button>
+                                    <button onClick={() => toggleInstructions(route.id)} className="mt-2 w-full p-2 bg-gray-800 text-white rounded hover:bg-blue-700">View Less</button>
                                 </div>
                             ) : (
-                                <button onClick={() => toggleInstructions(route.id)}>View More</button>
+                                <button onClick={() => toggleInstructions(route.id)} className="mt-2 w-full p-2 bg-gray-800 text-white rounded hover:bg-blue-700">View More</button>
                             )}
-                            <button onClick={() => handleComplete(route.id)}>Complete</button>
-                            <button onClick={() => handleDeleteRoute(route.id)}>Delete</button>
-                            <br />
-                            <br />
+                            <div className="flex mt-4 space-x-2">
+                                <button onClick={() => handleComplete(route.id)} className="flex-1 p-2 bg-green-600 text-white rounded hover:bg-green-700">Complete</button>
+                                <button onClick={() => handleDeleteRoute(route.id)} className="flex-1 p-2 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                            </div>
                         </div>
                     ))}
                 </div>
             )}
         </div>
+
     )
 }
 
