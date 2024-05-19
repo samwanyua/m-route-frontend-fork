@@ -122,25 +122,19 @@ const ManagerRoutes = () =>{
 
             const data = await response.json();
 
-            if (data.status_code === 204){
+            if (response.ok){
                 setErrorMessage(data.message);
                 getManagerRoutes();
                 setTimeout(() =>{
                     setErrorMessage("")
                 }, 5000)
 
-            }else if (data.status_code === 404){
+            }else {
                 setErrorMessage(data.message);
                 setTimeout(() =>{
                     setErrorMessage("")
                 }, 5000)
 
-            }else if (data.status_code === 500){
-                console.log(data.message);
-                setErrorMessage("Failed to delete the route plan.");
-                setTimeout(() =>{
-                    setErrorMessage("")
-                }, 5000)
             }
             
         } catch (error) {
@@ -152,8 +146,7 @@ const ManagerRoutes = () =>{
         }
     }
 
-
-    const toggleInstructions = (routeId) => {
+    const toggleInstructions = routeId => {
         setExpandedRoutes(prevState => ({
             ...prevState,
             [routeId]: !prevState[routeId]
