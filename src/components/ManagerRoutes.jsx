@@ -153,7 +153,6 @@ const ManagerRoutes = () =>{
         }));
     };
 
-
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
             {isLoading ? (
@@ -171,13 +170,24 @@ const ManagerRoutes = () =>{
                             <p className="font-bold">Instructions:</p>
                             {expandedRoutes[route.id] ? (
                                 <div>
-                                    {JSON.parse(route.instructions).map((instruction, index) => (
-                                        <div key={index} className="mb-3 p-3 border border-gray-300 rounded">
-                                            <p><span className="font-bold">DateTime:</span> {instruction.dateTime}</p>
-                                            <p><span className="font-bold">Instructions:</span> {instruction.instructions}</p>
-                                            <p><span className="font-bold">Facility:</span> {instruction.facility}</p>
-                                        </div>
-                                    ))}
+                                    {JSON.parse(route.instructions).map((instruction, index) => {
+                                        // Convert start and end times to Date objects
+                                        const startTime = new Date(instruction.start);
+                                        const endTime = new Date(instruction.end);
+    
+                                        // Format start and end times
+                                        const startTimeString = startTime.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+                                        const endTimeString = endTime.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+    
+                                        return (
+                                            <div key={index} className="mb-3 p-3 border border-gray-300 rounded">
+                                                <p><span className="font-bold">Start Time:</span> {startTimeString}</p>
+                                                <p><span className="font-bold">End Time:</span> {endTimeString}</p>
+                                                <p><span className="font-bold">Instructions:</span> {instruction.instructions}</p>
+                                                <p><span className="font-bold">Facility:</span> {instruction.facility}</p>
+                                            </div>
+                                        );
+                                    })}
                                     <button onClick={() => toggleInstructions(route.id)} className="mt-2 w-full p-2 bg-gray-800 text-white rounded hover:bg-blue-700">View Less</button>
                                 </div>
                             ) : (
@@ -192,8 +202,7 @@ const ManagerRoutes = () =>{
                 </div>
             )}
         </div>
-
-    )
+    );   
 }
 
 export default ManagerRoutes;
