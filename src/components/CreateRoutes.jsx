@@ -17,15 +17,6 @@ const CreateRoutes = () =>{
     const [token, setToken] = useState("");
     const [message, setMessage] = useState("");
 
-
-
-    // useEffect(() =>{
-    //     const accessToken = localStorage.getItem("access_token");
-    //     const userData = localStorage.getItem("user_data");
-    //     setToken(JSON.parse(accessToken));
-    //     setUserId(JSON.parse(userData.id));
-    // }, [])
-
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
         const userData = localStorage.getItem("user_data");
@@ -44,13 +35,6 @@ const CreateRoutes = () =>{
         }))
     }
 
-    // const handleInstructions = event =>{
-    //     const {name, value} = event.target;
-    //     setInstructionsDetails( prev => ({
-    //         ...prev,
-    //         [name]: value
-    //     }))
-    // }
 
     const handleInstructionsChange = (index, event) => {
         const { name, value } = event.target;
