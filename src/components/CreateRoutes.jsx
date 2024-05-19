@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./CreateRoutes.css";
+
 
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
 
@@ -122,92 +122,102 @@ const CreateRoutes = () => {
     };
 
     return (
-    <div className="card">
-        <form onSubmit={handleSubmitRoutes}>
-        <div>
-            <label htmlFor="startDate">Start Date</label>
+      <div className="w-full max-w-4xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white lg:w-1/3">
+    <form onSubmit={handleSubmitRoutes}>
+        <div className="mb-5">
+            <label htmlFor="startDate" className="font-bold mb-1 block">Start Date</label>
             <input
-            type="date"
-            name="startDate"
-            placeholder="YYYY-MM-DD"
-            value={dateRange.startDate}
-            onChange={handleDateRange}
-            required
+                type="date"
+                name="startDate"
+                placeholder="YYYY-MM-DD"
+                value={dateRange.startDate}
+                onChange={handleDateRange}
+                required
+                className="w-full p-2 mt-1 border border-gray-300 rounded"
             />
-            <small>Start Date: YYYY-MM-DD</small>
-            <br />
-            <label htmlFor="endDate">End Date</label>
-            <input
-            type="date"
-            name="endDate"
-            placeholder="YYYY-MM-DD"
-            value={dateRange.endDate}
-            onChange={handleDateRange}
-            required
-            />
-            <small>End Date: YYYY-MM-DD</small>
+            <small className="block mt-1">Start Date: YYYY-MM-DD</small>
         </div>
-        <div>
-            <label htmlFor="date-instructions">Activity Date</label>
+        <div className="mb-5">
+            <label htmlFor="endDate" className="font-bold mb-1 block">End Date</label>
+            <input
+                type="date"
+                name="endDate"
+                placeholder="YYYY-MM-DD"
+                value={dateRange.endDate}
+                onChange={handleDateRange}
+                required
+                className="w-full p-2 mt-1 border border-gray-300 rounded"
+            />
+            <small className="block mt-1">End Date: YYYY-MM-DD</small>
+        </div>
+        <div className="mb-5">
+            <label htmlFor="date-instructions" className="font-bold mb-1 block">Activity Date</label>
             {instructionSets.map((set, index) => (
-            <div key={index} className="instruction-set">
-                <input
-                type="datetime-local"
-                name="dateTime"
-                placeholder="YYYY-MM-DDTHH:MM"
-                value={set.dateTime}
-                onChange={(e) => handleInstructionsChange(index, e)}
-                required
-                />
-                <small>DateTime: YYYY-MM-DDTHH:MM</small>
-                <br />
-                <label htmlFor="facility">Facility Name</label>
-                <input
-                type="text"
-                name="facility"
-                placeholder="Facility name"
-                value={set.facility}
-                onChange={(e) => handleInstructionsChange(index, e)}
-                required
-                />
-                <br />
-                <label htmlFor="instructions">Instructions</label>
-                <textarea
-                name="instructions"
-                id="message"
-                rows={4}
-                placeholder="Instructions"
-                value={set.instructions}
-                onChange={(e) => handleInstructionsChange(index, e)}
-                required
-                />
-                <br />
-            </div>
+                <div key={index} className="mb-5 p-3 border border-gray-200 rounded">
+                    <input
+                        type="datetime-local"
+                        name="dateTime"
+                        placeholder="YYYY-MM-DDTHH:MM"
+                        value={set.dateTime}
+                        onChange={(e) => handleInstructionsChange(index, e)}
+                        required
+                        className="w-full p-2 mt-1 border border-gray-300 rounded"
+                    />
+                    <small className="block mt-1">DateTime: YYYY-MM-DDTHH:MM</small>
+                    <div className="mt-4">
+                        <label htmlFor="facility" className="font-bold mb-1 block">Facility Name</label>
+                        <input
+                            type="text"
+                            name="facility"
+                            placeholder="Facility name"
+                            value={set.facility}
+                            onChange={(e) => handleInstructionsChange(index, e)}
+                            required
+                            className="w-full p-2 mt-1 border border-gray-300 rounded"
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <label htmlFor="instructions" className="font-bold mb-1 block">Instructions</label>
+                        <textarea
+                            name="instructions"
+                            id="message"
+                            rows={4}
+                            placeholder="Instructions"
+                            value={set.instructions}
+                            onChange={(e) => handleInstructionsChange(index, e)}
+                            required
+                            className="w-full p-2 mt-1 border border-gray-300 rounded"
+                        />
+                    </div>
+                </div>
             ))}
-            <br />
-            <button type="button" onClick={handleAddInstructionSet}>
-            + Add Another Set
+            <button type="button" onClick={handleAddInstructionSet} className="mt-2 w-full p-2 bg-gray-900 text-white rounded hover:bg-blue-700">
+                + Add Another Set
             </button>
         </div>
-        <br />
-        <div>
-            <label htmlFor="staffNo">Staff Number</label>
+        <div className="mb-5">
+            <label htmlFor="staffNo" className="font-bold mb-1 block">Staff Number</label>
             <input
-            type="number"
-            name="staff_no"
-            autoComplete="off"
-            placeholder="Positive number (1234567899)"
-            value={staffNo.staff_no}
-            onChange={handleStaffNo}
-            required
+                type="number"
+                name="staff_no"
+                autoComplete="off"
+                placeholder="Positive number (1234567899)"
+                value={staffNo.staff_no}
+                onChange={handleStaffNo}
+                required
+                className="w-full p-2 mt-1 border border-gray-300 rounded"
             />
         </div>
-        <p className={message.includes("problem") ? "error" : "message"}>
+        <p className={`${message.includes("problem") ? "text-red-600" : "text-green-600"} font-bold`}>
             {message}
         </p>
-        <button type="submit">Submit</button>
-        </form>
-    </div>
+        <button type="submit" className="w-full p-2 bg-gray-900 text-white rounded hover:bg-blue-700">
+            Submit
+        </button>
+    </form>
+</div>
+
+
     );
 };
 
