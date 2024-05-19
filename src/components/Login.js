@@ -30,10 +30,14 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
     const previousRoute = localStorage.getItem("previous_route");
 
     if (accessToken && userData) {
+      const userDataObj = JSON.parse(userData);
       setAuthorized(true);
-      setUserData(JSON.parse(userData));
+      setUserData(userDataObj);
+      if (userDataObj.role === "manager") {
+        setRoleCheck(true);
+      }
       if (previousRoute) {
-        navigate(previousRoute);
+        navigate("/");
       } else {
         navigate('/');
       }
