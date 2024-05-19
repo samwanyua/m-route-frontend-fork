@@ -38,13 +38,13 @@ const routeConfig = {
 function App() {
   const location = useLocation();
   const currentPath = location.pathname;
-
   const [authorized, setAuthorized] = useState(false);
-  const [roleCheck, setRoleCheck] = useState(0);
-
-  const [token, setToken] = useState("");
+  const [roleCheck, setRoleCheck] = useState(false);
   const [userData, setUserData] = useState("");
 
+  if (userData.role === "manager"){
+    setRoleCheck(true);
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
