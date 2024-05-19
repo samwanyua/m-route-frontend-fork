@@ -124,7 +124,7 @@ const CreateRoutes = () => {
     <div className="card">
       <form onSubmit={handleSubmitRoutes}>
         <div>
-          <label htmlFor="Date range">Date Range</label>
+          <label htmlFor="startDate">Start Date</label>
           <input
             type="date"
             name="startDate"
@@ -135,6 +135,7 @@ const CreateRoutes = () => {
           />
           <small>Start Date: YYYY-MM-DD</small>
           <br />
+          <label htmlFor="endDate">End Date</label>
           <input
             type="date"
             name="endDate"
@@ -143,7 +144,7 @@ const CreateRoutes = () => {
             onChange={handleDateRange}
             required
           />
-          <small>End date: YYYY-MM-DD</small>
+          <small>End Date: YYYY-MM-DD</small>
         </div>
         <div>
           <label htmlFor="date-instructions">Activity Date</label>
@@ -152,102 +153,20 @@ const CreateRoutes = () => {
               <input
                 type="datetime-local"
                 name="dateTime"
-                placeholder="YYYY-MM-DD"
-                value={set.Start}
+                placeholder="YYYY-MM-DDTHH:MM"
+                value={set.dateTime}
                 onChange={(e) => handleInstructionsChange(index, e)}
                 required
               />
-              <small>Start: YYYY-MM-DDTHH:MM</small>
+              <small>DateTime: YYYY-MM-DDTHH:MM</small>
+              <br />
+              <label htmlFor="facility">Facility Name</label>
               <input
-                type="datetime-local"
-                name="dateTime"
-                placeholder="YYYY-MM-DD"
-                value={set.End}
+                type="text"
+                name="facility"
+                placeholder="Facility name"
+                value={set.facility}
                 onChange={(e) => handleInstructionsChange(index, e)}
-                required
-// <<<<<<< moses/stylie
-//               />
-//               <small>End: YYYY-MM-DDTHH:MM</small>
-//               <br />
-//               <label htmlFor="facility">Facility Name</label>
-//               <input
-//                 type="text"
-//                 name="facility"
-//                 placeholder="Facility name"
-//                 value={set.facility}
-//                 onChange={(e) => handleInstructionsChange(index, e)}
-
-            />
-            <small>End date: YYYY-MM-DD</small>
-           </div>
-           <br />
-           <div>
-            <label htmlFor="date-instructions">Activity Date</label>
-            <br />
-            {instructionSets.map((set, index) => (
-                <div key={index}>
-                    <input 
-                        type="datetime-local" 
-                        name="start"
-                        placeholder="YYYY-MM-DD"
-                        value={set.start}
-                        onChange={(e) => handleInstructionsChange(index, e)}
-                        required
-                    />
-                    <small>Start: YYYY-MM-DDTHH:MM</small>
-                    <br />
-                    <input 
-                        type="datetime-local" 
-                        name="end"
-                        placeholder="YYYY-MM-DD"
-                        value={set.end}
-                        onChange={(e) => handleInstructionsChange(index, e)}
-                        required
-                    />
-                    <small>End: YYYY-MM-DDTHH:MM</small>
-                    <br />
-                    <label htmlFor="facility">Facility Name</label>
-                    <br />
-                    <input 
-                        type="text" 
-                        name="facility"
-                        placeholder="Facility name"
-                        value={set.facility}
-                        onChange={(e) => handleInstructionsChange(index, e)}
-                        required
-                    />
-                    <br />
-                    <label htmlFor="instructions">Instructions</label>
-                    <br />
-                    <textarea 
-                        name="instructions" 
-                        id="message" 
-                        rows={4} 
-                        placeholder="Instructions"
-                        value={set.instructions}
-                        onChange={(e) => handleInstructionsChange(index, e)}
-                        required
-                    />
-                </div>
-            ))}
-            <br />
-            <br />
-            <button type="button" onClick={handleAddInstructionSet}>
-                + Add Another Set
-            </button>
-           </div>
-           <br />
-           <div>
-            <label htmlFor="staffNo">Staff Number</label>
-            <br />
-            <input 
-                type="number" 
-                name="staff_no"
-                autoComplete="off"
-                placeholder="Positive number (1234567899)"
-                value={staffNo.staff_no}
-                onChange={handleStaffNo}
-
                 required
               />
               <br />
@@ -261,12 +180,15 @@ const CreateRoutes = () => {
                 onChange={(e) => handleInstructionsChange(index, e)}
                 required
               />
+              <br />
             </div>
           ))}
+          <br />
+          <button type="button" onClick={handleAddInstructionSet}>
+            + Add Another Set
+          </button>
         </div>
-        <button type="button" onClick={handleAddInstructionSet}>
-          + Add Another Set
-        </button>
+        <br />
         <div>
           <label htmlFor="staffNo">Staff Number</label>
           <input
