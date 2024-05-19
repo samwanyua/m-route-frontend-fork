@@ -153,13 +153,23 @@ const CreateRoutes = () => {
             <div key={index} className="instruction-set">
                 <input
                 type="datetime-local"
-                name="dateTime"
+                name="start"
                 placeholder="YYYY-MM-DDTHH:MM"
-                value={set.dateTime}
+                value={set.start}
                 onChange={(e) => handleInstructionsChange(index, e)}
                 required
                 />
-                <small>DateTime: YYYY-MM-DDTHH:MM</small>
+                <small>Start: YYYY-MM-DDTHH:MM</small>
+                <br />
+                <input
+                type="datetime-local"
+                name="end"
+                placeholder="YYYY-MM-DDTHH:MM"
+                value={set.end}
+                onChange={(e) => handleInstructionsChange(index, e)}
+                required
+                />
+                <small>End: YYYY-MM-DDTHH:MM</small>
                 <br />
                 <label htmlFor="facility">Facility Name</label>
                 <input
