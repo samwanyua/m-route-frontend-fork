@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BiToggleLeft, BiToggleRight } from 'react-icons/bi';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 const LOGOUT_URL = 'https://m-route-backend.onrender.com/users/logout';
@@ -15,6 +16,7 @@ const Settings = ({ setAuthorized }) => {
     currentLocation: false,
   });
 
+  
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState(0);
   const [email, setEmail] = useState('');
@@ -26,6 +28,13 @@ const Settings = ({ setAuthorized }) => {
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
+  });
+
+  
+  const [passwordVisibility, setPasswordVisibility] = useState({
+    oldPassword: false,
+    newPassword: false,
+    confirmPassword: false,
   });
 
   const navigate = useNavigate();
@@ -184,6 +193,7 @@ const Settings = ({ setAuthorized }) => {
     }
 
     try {
+      setLoading(true);
       const response = await fetch(CHANGE_PASSWORD_URL, {
         method: 'PUT',
         headers: {
@@ -200,6 +210,7 @@ const Settings = ({ setAuthorized }) => {
       const data = await response.json();
 
       if (response.ok) {
+        setLoading(false);
         console.log(data.message);
         setError('');
         setPasswordChange({
@@ -208,48 +219,96 @@ const Settings = ({ setAuthorized }) => {
           confirmPassword: '',
         });
       } else {
+        setLoading(false);
         setError(data.message || 'Failed to change password');
       }
     } catch (error) {
+      setLoading(false);
       console.log(error);
       setError('An error occurred while changing password');
     }
   };
 
+  const togglePasswordVisibility = (field) => {
+    setPasswordVisibility((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const [loading, setLoading] = useState(false);
+
+
+
   return (
+<>
+    {loading && (
+      <div className="fixed inset-0 flex items-center justify-center py-36  bg-gray-900 bg-opacity-50 z-50">
+        <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-white"></div>
+      </div>
+    )}
+    
+
     <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start min-h-screen py-16 mb-36 gap-8 lg:gap-36">
       <form className="flex flex-col items-center justify-start gap-8 p-6 md:p-10 lg:p-16 xl:p-20 max-w-[90%] sm:max-w-[80%] md:max-w-[70%] lg:max-w-[50%] xl:max-w-[40%] shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] bg-white rounded-xl">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-darkslateblue-300 mb-4">Profile settings</h1>
         <div className="w-[120px] h-[120px] rounded-full flex items-center justify-center pt-[84px] pb-2 bg-[url('/public/39@2x.png')] bg-cover bg-no-repeat bg-[top]"></div>
         <input type="email" className="input-field" placeholder="Email" value={email} readOnly />
-        <input
-          type="password"
-          className="input-field"
-          placeholder="Old Password"
-          name="oldPassword"
-          value={passwordChange.oldPassword}
-          onChange={handlePasswordChange}
-        />
-        <input
-          type="password"
-          className="input-field"
-          placeholder="New password"
-          name="newPassword"
-          value={passwordChange.newPassword}
-          onChange={handlePasswordChange}
-        />
-        <input
-          type="password"
-          className="input-field"
-          placeholder="Confirm new password"
-          name="confirmPassword"
-          value={passwordChange.confirmPassword}
-          onChange={handlePasswordChange}
-        />
+        <div className="relative w-full">
+          <input
+            type={passwordVisibility.oldPassword ? 'text' : 'password'}
+            className="input-field"
+            placeholder="Old Password"
+            name="oldPassword"
+            value={passwordChange.oldPassword}
+            onChange={handlePasswordChange}
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            {passwordVisibility.oldPassword ? (
+              <AiFillEyeInvisible className="cursor-pointer" onClick={() => togglePasswordVisibility('oldPassword')} />
+            ) : (
+              <AiFillEye className="cursor-pointer" onClick={() => togglePasswordVisibility('oldPassword')} />
+            )}
+          </div>
+        </div>
+        <div className="relative w-full">
+          <input
+            type={passwordVisibility.newPassword ? 'text' : 'password'}
+            className="input-field"
+            placeholder="New Password"
+            name="newPassword"
+            value={passwordChange.newPassword}
+            onChange={handlePasswordChange}
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            {passwordVisibility.newPassword ? (
+              <AiFillEyeInvisible className="cursor-pointer" onClick={() => togglePasswordVisibility('newPassword')} />
+            ) : (
+              <AiFillEye className="cursor-pointer" onClick={() => togglePasswordVisibility('newPassword')} />
+            )}
+          </div>
+        </div>
+        <div className="relative w-full">
+          <input
+            type={passwordVisibility.confirmPassword ? 'text' : 'password'}
+            className="input-field"
+            placeholder="Confirm New Password"
+            name="confirmPassword"
+            value={passwordChange.confirmPassword}
+            onChange={handlePasswordChange}
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            {passwordVisibility.confirmPassword ? (
+              <AiFillEyeInvisible className="cursor-pointer" onClick={() => togglePasswordVisibility('confirmPassword')} />
+            ) : (
+              <AiFillEye className="cursor-pointer" onClick={() => togglePasswordVisibility('confirmPassword')} />
+            )}
+          </div>
+        </div>
         <button className="text-white bg-gray-900 px-6 py-2 rounded-full" onClick={handleSubmitPasswordChange}>
           Save changes
         </button>
-        {error && <div className="text-red-500 mt-2">{error}</div>}
+         {error && <p className="error-message" style={{ color: "red", fontWeight: "bold", margin: "10px 0" }}>{error}</p>}
       </form>
       <div className="flex flex-col items-center lg:items-start justify-start gap-8 py-6 px-8 text-lg text-black font-poppins shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-xl">
         <b className="text-xl text-darkslateblue-300">Notification Preferences</b>
@@ -330,6 +389,7 @@ const Settings = ({ setAuthorized }) => {
         Logout
       </button>
     </div>
+    </>
   );
 };
 
