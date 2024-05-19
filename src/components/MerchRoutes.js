@@ -74,7 +74,7 @@ const MerchRoutePlans = () => {
     };
 
     const handleSubmit = async event =>{
-        event.preventdefault();
+        event.preventDefault();
 
         const currentTime = new Date();
         const year = currentTime.getFullYear();
