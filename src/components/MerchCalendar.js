@@ -116,8 +116,8 @@ const MerchCalendar = ({ userData }) => {
                             const instructions = JSON.parse(event.instructions);
                             return instructions.map(instruction => ({
                                 title: instruction.instructions,
-                                start: moment(instruction.start).toDate(),
-                                end: moment(instruction.end).toDate(),
+                                start: moment(instruction.start, 'YYYY-MM-DDTHH:mm').toDate(),
+                                end: moment(instruction.end, 'YYYY-MM-DDTHH:mm').toDate(),
                             }));
                         });
                         setEvents(formattedEvents);
