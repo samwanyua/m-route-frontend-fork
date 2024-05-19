@@ -16,6 +16,7 @@ import Calendar from "./components/Calendar";
 import MerchSideBar from "./components/MerchSideBar";
 import MerchCalendar from "./components/MerchCalendar";
 import MerchRoutePlans from "./components/MerchRoutes";
+import CreateRoutes from "./components/CreateRoutes";
 
 // import AboutUs from "./components/AboutUs";
 
@@ -83,7 +84,8 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/map" element={<GetLocations />} />
                   {/* <Route path="/contactus" element={<ContactUs />} /> */}
-                  <Route path="/calendar" element={<Calendar  userData={userData}/>} />
+                  {/* <Route path="/calendar" element={<Calendar  userData={userData}/>} /> */}
+                  <Route path="/calendar" element={<CreateRoutes />} />
                 </>
               ) : (
                 <>

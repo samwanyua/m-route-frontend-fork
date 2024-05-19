@@ -60,7 +60,6 @@ const Signup = () => {
       ...prev,
       [name] : value.toLowerCase()
     }))
-    
   };
 
   const handleChange = e => {
