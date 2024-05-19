@@ -45,7 +45,7 @@ const CreateRoutes = () =>{
       };
 
       const handleAddInstructionSet = () => {
-        setInstructionSets([...instructionSets, { dateTime: "", instructions: "", facility: "" }]);
+        setInstructionSets([...instructionSets, { start: "", end: "", instructions: "", facility: "" }]);
       };
 
     const handleStaffNo = event =>{
