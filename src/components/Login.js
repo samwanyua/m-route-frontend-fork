@@ -28,7 +28,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
     const accessToken = localStorage.getItem("access_token");
     const userData = localStorage.getItem("user_data");
     const previousRoute = localStorage.getItem("previous_route");
-
+  
     if (accessToken && userData) {
       setAuthorized(true);
       setUserData(JSON.parse(userData));
@@ -38,6 +38,7 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         navigate('/');
       }
     }
+
   }, [setAuthorized, setUserData, navigate]);
 
   useEffect(() => {
