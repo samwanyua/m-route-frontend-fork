@@ -6,11 +6,8 @@ const USERS_URL = "https://m-route-backend.onrender.com/users";
 const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com/users/route-plans";
 
 const containerStyle = {
-  width: "1250px",
-  height: "800px",
-  left: "257px",
-  top: "73px",
-  position: "absolute"
+  width: "100%",
+  height: "100%",
 };
 
 const center = {
@@ -26,9 +23,9 @@ const GetLocations = () => {
   const [userLocations, setUserLocations] = useState([]);
   const [userId, setUserId] = useState('');
   const [assignedMerchandisers, setAssignedMerchandisers] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => {
-
     const accessToken = localStorage.getItem("access_token");
     const userData = localStorage.getItem("user_data");
 
@@ -40,7 +37,6 @@ const GetLocations = () => {
     try {
       setToken(JSON.parse(accessToken));
       setUserId(JSON.parse(userData).id);
-      
     } catch (e) {
       setError("Failed to parse user data.");
       return;
@@ -51,33 +47,32 @@ const GetLocations = () => {
       fetchUsersData();
     }, 200000);
 
+    fetchLatestLocations();
+    fetchUsersData();
+    getRoutePlans();
+
     return () => clearInterval(intervalId);
-  }, []);
-
+  }, [token, userId]);
+  console.log(token)
+  console.log(userId)
   const getRoutePlans = async () => {
-    const response = await fetch(ROUTE_PLANS_URL, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`
+    try {
+      const response = await fetch(ROUTE_PLANS_URL, {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const data = await response.json();
+
+      if (data.status_code === 200) {
+        const merchandisersList = data.message.filter(manager => manager.manager_id === userId);
+        setAssignedMerchandisers(merchandisersList.map(manager => manager.merchandiser_id));
+      } else {
+        setError(data.message || "Failed to get routes");
       }
-    });
-
-    const data = await response.json();
-
-    if (data.status_code === 200) {
-      const merchandisersList = data.message.filter(manager => manager.manager_id === userId);
-      setAssignedMerchandisers(merchandisersList.merchandiser_id);
-    } else if (data.status_code === 400 || data.status_code === 404) {
-      setError(data.message);
-    } else {
-      console.log(data.message);
-      setError("Failed to get routes");
+    } catch (error) {
+      setError("System experiencing a problem, please try again later.");
     }
   };
-
-  useEffect(() => {
-    getRoutePlans();
-  }, []);
 
   const isRecentTimestamp = timestamp => {
     const THIRTY_MINUTES = 30 * 60 * 1000;
@@ -90,7 +85,6 @@ const GetLocations = () => {
     const matchedUserLocations = users.map(user => {
       const location = locations.find(loc => loc.merchandiser_id === user.id);
       if (location) {
-        
         return {
           id: user.id,
           firstName: user.first_name,
@@ -106,81 +100,88 @@ const GetLocations = () => {
     }).filter(userLocation => userLocation !== null);
 
     setUserLocations(matchedUserLocations);
-  }, []);
+  }, [users, locations]);
 
   const fetchLatestLocations = async () => {
-    const response = await fetch(LOCATIONS_URL, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
-    });
-
-    const data = await response.json();
-
-    if (data.status_code === 200) {
-      setLocations(data.message);
-    } else if (data.status_code === 400 || data.status_code === 404) {
-      setError(data.message);
-    } else if (data.status_code === 500) {
-      console.log(data.message)
-      setError("Server error, try again");
-    } else {
+    try {
+      const response = await fetch(LOCATIONS_URL, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
       console.log(data)
+      if (data.status_code === 200) {
+        setLocations(data.message);
+      } else {
+        setError(data.message || "Failed to fetch locations.");
+      }
+    } catch (error) {
       setError("System experiencing a problem, please try again later.");
     }
   };
 
   const fetchUsersData = async () => {
-    const response = await fetch(USERS_URL, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+    try {
+      const response = await fetch(USERS_URL, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+      console.log(data)
+      if (data.status_code === 200) {
+        const merchandisers = data.message.filter(user => user.role === "merchandiser" && user.status === "active");
+        setUsers(merchandisers);
+      } else {
+        setError(data.message || "Failed to fetch users.");
       }
-    })
-
-    const data = await response.json();
-
-    if (data.status_code === 200) {
-      const merchandisers = data.message.filter(user => (user.role === "merchandiser") && (user.status === "active"));
-      setUsers(merchandisers);
-    } else if (data.status_code === 404) {
-      setError(data.message || "Failed to fetch users.");
-    } else {
-      setError("Failed to fetch users.")
+    } catch (error) {
+      setError("System experiencing a problem, please try again later.");
     }
-  }
+  };
 
   return (
-    <div>
-      {error && <p>{error}</p>}
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        scrollWheelZoom={true}
-      >
-        {userLocations
-          .filter(location => assignedMerchandisers.includes(location.id))
-          .filter(location => isRecentTimestamp(location.timestamp))
-          .map(location => (
-            <Marker
-              key={location.id}
-              position={{ lat: location.latitude, lng: location.longitude }}
+    <div className="flex flex-col h-screen w-full">
+      {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+      <div className="flex-grow">
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={10}
+        >
+          {userLocations
+            .filter(location => assignedMerchandisers.includes(location.id))
+            .filter(location => isRecentTimestamp(location.timestamp))
+            .map(location => (
+              <Marker
+                key={location.id}
+                position={{ lat: location.latitude, lng: location.longitude }}
+                onClick={() => setSelectedLocation(location)}
+              />
+            ))}
+
+          {selectedLocation && (
+            <InfoWindow
+              position={{ lat: selectedLocation.latitude, lng: selectedLocation.longitude }}
+              onCloseClick={() => setSelectedLocation(null)}
             >
-              <InfoWindow>
-                <div>{location.firstName}</div>
-              </InfoWindow>
-            </Marker>
-          ))}
-      </GoogleMap>
+              <div className="p-2 text-sm">
+                <h4 className="font-bold">{selectedLocation.firstName} {selectedLocation.lastName}</h4>
+                <p>Username: {selectedLocation.username}</p>
+                <p>Role: {selectedLocation.role}</p>
+                <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
+      </div>
     </div>
   );
 }
 
 export default GetLocations;
-
-
-
