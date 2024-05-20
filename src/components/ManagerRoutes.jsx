@@ -4,14 +4,15 @@ const MANAGER_ROUTES_URL = "https://m-route-backend.onrender.com/users/manager-r
 const MODIFY_ROUTE = "https://m-route-backend.onrender.com/users/modify-route";
 const DELETE_ROUTE_URL = "https://m-route-backend.onrender.com/users/delete-route-plans";
 
-const ManagerRoutes = () =>{
-
+const ManagerRoutes = () => {
     const [routes, setRoutes] = useState([]);
+    const [filteredRoutes, setFilteredRoutes] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [token, setToken] = useState("");
     const [userId, setUserId] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [expandedRoutes, setExpandedRoutes] = useState({});
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
@@ -25,18 +26,20 @@ const ManagerRoutes = () =>{
         }
     }, []);
 
-
     useEffect(() => {
         if (token && userId) {
             getManagerRoutes();
         }
     }, [token, userId]);
 
+    useEffect(() => {
+        if (routes.length > 0) {
+            filterRoutesByMerchandiserName(searchTerm);
+        }
+    }, [routes, searchTerm]);
 
-    
-    const getManagerRoutes = async () =>{
+    const getManagerRoutes = async () => {
         setIsLoading(true);
-
         try {
             const response = await fetch(`${MANAGER_ROUTES_URL}/${userId}`, {
                 method: "GET",
@@ -44,33 +47,37 @@ const ManagerRoutes = () =>{
                     "Authorization": `Bearer ${token}`
                 }
             });
-
             const data = await response.json();
 
-            if (data.status_code === 200){
+            if (data.status_code === 200) {
                 setRoutes(data.message);
                 setIsLoading(false);
-                setTimeout(() =>{
-                    setErrorMessage("")
-                }, 5000)
-
-            }else if (data.status_code === 404){
+                setTimeout(() => {
+                    setErrorMessage("");
+                }, 5000);
+            } else if (data.status_code === 404) {
                 setErrorMessage(data.message);
                 setIsLoading(false);
-                setTimeout(() =>{
-                    setErrorMessage("")
-                }, 5000)
+                setTimeout(() => {
+                    setErrorMessage("");
+                }, 5000);
             }
-            
         } catch (error) {
             console.log("Error", error);
             setErrorMessage("Failed to get routes, please try again.");
             setIsLoading(false);
-            setTimeout(() =>{
-                setErrorMessage("")
-            }, 5000)
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 5000);
         }
-    }
+    };
+
+    const filterRoutesByMerchandiserName = (searchTerm) => {
+        const filtered = routes.filter((route) =>
+            route.merchandiser_name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredRoutes(filtered);
+    };
 
 
     const handleComplete = async routeId =>{
@@ -151,15 +158,28 @@ const ManagerRoutes = () =>{
         }));
     };
 
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
+            <div className="mb-4">
+                <input
+                    type="text"
+                    placeholder="Search by merchandiser name..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="border border-gray-300 rounded px-3 py-1 w-full"
+                />
+            </div>
             {isLoading ? (
                 <p className="text-center text-gray-600">Loading...</p>
             ) : errorMessage ? (
                 <p className="text-center text-red-600">{errorMessage}</p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {routes.map(route => (
+                    {(searchTerm ? filteredRoutes : routes).map((route) => (
                         <div key={route.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
                             <p><span className="font-bold">Date Range:</span> {route.date_range.start_date} to {route.date_range.end_date}</p>
                             <p><span className="font-bold">Merchandiser:</span> {route.merchandiser_name}</p>
