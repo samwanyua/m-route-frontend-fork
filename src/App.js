@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import SideBar from "./components/SideBar";
-import Footer from "./components/Footer";
-import Dashboard from "./components/Dashboard";
+// import Footer from "./components/Footer";
+// import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Home from "./components/Home";
 import Reviews from "./components/Reviews";
@@ -12,7 +12,7 @@ import Profile from "./components/Profile";
 import GetLocations from "./maps/GetLocations";
 import ContactUs from "./components/ContactUs";
 import Signup from "./components/Signup";
-import Calendar from "./components/Calendar";
+// import Calendar from "./components/Calendar";
 import MerchSideBar from "./components/MerchSideBar";
 import MerchCalendar from "./components/MerchCalendar";
 import MerchRoutePlans from "./components/MerchRoutes";
@@ -113,7 +113,7 @@ function App() {
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       )}
-      {roleCheck ? <Footer /> : null}
+      {/* {roleCheck ? null : <Footer />} */}
     </div>
   );
 }
