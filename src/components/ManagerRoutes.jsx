@@ -74,7 +74,6 @@ const ManagerRoutes = () =>{
 
 
     const handleComplete = async routeId =>{
-
         try {
             const response = await fetch(`${MODIFY_ROUTE}/${routeId}`, {
                 method: "PUT",
@@ -111,7 +110,6 @@ const ManagerRoutes = () =>{
 
 
     const handleDeleteRoute = async routeId =>{
-
         try {
             const response = await fetch(`${DELETE_ROUTE_URL}/${routeId}`, {
                 method: "DELETE",
@@ -194,8 +192,12 @@ const ManagerRoutes = () =>{
                                 <button onClick={() => toggleInstructions(route.id)} className="mt-2 w-full p-2 bg-gray-800 text-white rounded hover:bg-blue-700">View More</button>
                             )}
                             <div className="flex mt-4 space-x-2">
-                                <button onClick={() => handleComplete(route.id)} className="flex-1 p-2 bg-green-600 text-white rounded hover:bg-green-700">Complete</button>
-                                <button onClick={() => handleDeleteRoute(route.id)} className="flex-1 p-2 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                                {route.status.toLowerCase() !== 'complete' && (
+                                    <button onClick={() => handleComplete(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-green-500">Complete</button>
+                                )}
+                                {route.status.toLowerCase() === 'complete' && (                                     <button className="flex-1 p-2 bg-gray-400 text-white rounded cursor-not-allowed opacity-50">Complete</button>
+                                )}
+                                <button onClick={() => handleDeleteRoute(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-red-500">Delete</button>
                             </div>
                         </div>
                     ))}
@@ -206,6 +208,8 @@ const ManagerRoutes = () =>{
 }
 
 export default ManagerRoutes;
+
+
 
 
 
