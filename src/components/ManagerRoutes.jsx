@@ -163,7 +163,7 @@ const ManagerRoutes = () => {
 
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
-            <div className="mb-4 flex items-center border border-gray-300 rounded px-3 py-1 w-full">
+            <div className="mb-4 flex items-center border border-gray-300 rounded px-3 py-1 w-2/3">
                 <FaSearch className="text-gray-900 mr-2" />
                 <input
                     type="text"
@@ -198,7 +198,7 @@ const ManagerRoutes = () => {
                                         const endTimeString = endTime.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
 
                                         return (
-                                            <div key={index} className="mb-3 p-3 border border-gray-300 rounded">
+                                            <div key={index} className="mb-3 p-3 border border-gray-300 bg-white rounded">
                                                 <p><span className="font-bold">Start Time:</span> {startTimeString}</p>
                                                 <p><span className="font-bold">End Time:</span> {endTimeString}</p>
                                                 <p><span className="font-bold">Instructions:</span> {instruction.instructions}</p>
