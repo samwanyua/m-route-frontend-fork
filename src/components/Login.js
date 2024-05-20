@@ -300,12 +300,6 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         {error && (
           <div className="text-red-500 mt-2 text-sm text-center">{error}</div>
         )}
-        <p className="text-gray-900 text-sm mt-2">
-          New here?{" "}
-          <Link to="/signup" className="underline">
-            Create an account
-          </Link>
-        </p>
         <Link to="/forgot-password" className="text-sm text-gray-900 underline">
           Forgot password?
         </Link>
