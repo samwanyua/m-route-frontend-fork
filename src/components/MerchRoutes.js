@@ -8,7 +8,6 @@ const MerchRoutePlans = () => {
     const [routePlans, setRoutePlans] = useState([]);
     const [token, setToken] = useState(null);
     const [userId, setUserId] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
     const [notification, setNotification] = useState(false);
     const [showForm, setShowForm] = useState(false);
@@ -36,7 +35,6 @@ const MerchRoutePlans = () => {
 
     
     const fetchData = async () => {
-        setIsLoading(true);
 
         try {
             const response = await fetch(`${ROUTES_URL}/${userId}`, {
@@ -111,6 +109,8 @@ const MerchRoutePlans = () => {
                     setNotification("");
                 }, 5000);
                 setShowForm(false);
+                setSelectedPlan("");
+                setNotificationsData({});
 
             }else{
                 setError(data.message);
@@ -130,6 +130,7 @@ const MerchRoutePlans = () => {
 
         if (name === "staff_no" && value < 0){
             alert("Please enter a positive value");
+            event.target.value = Math.max(0, value);
             return;
         }
         setNotificationsData(prev =>({
@@ -175,7 +176,7 @@ const MerchRoutePlans = () => {
                                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
                                             onClick={() => handleStatusChange(plan.id, plan.status, instruction.facility)}
                                         >
-                                            Update Status
+                                            Send Notification
                                         </button>
                                     </td>
                                 </tr>
