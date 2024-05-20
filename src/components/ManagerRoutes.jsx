@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FaSearch } from 'react-icons/fa';
 
 const MANAGER_ROUTES_URL = "https://m-route-backend.onrender.com/users/manager-routes";
 const MODIFY_ROUTE = "https://m-route-backend.onrender.com/users/modify-route";
@@ -79,8 +80,7 @@ const ManagerRoutes = () => {
         setFilteredRoutes(filtered);
     };
 
-
-    const handleComplete = async routeId =>{
+    const handleComplete = async routeId => {
         try {
             const response = await fetch(`${MODIFY_ROUTE}/${routeId}`, {
                 method: "PUT",
@@ -91,32 +91,31 @@ const ManagerRoutes = () => {
 
             const data = await response.json();
 
-            if (data.status_code === 201){
+            if (data.status_code === 201) {
                 setErrorMessage(data.message);
-                setTimeout(() =>{
+                setTimeout(() => {
                     setErrorMessage("")
                 }, 5000)
                 getManagerRoutes();
 
-            }else if (data.status_code === 500){
+            } else if (data.status_code === 500) {
                 console.log(data.message)
-                setErrorMessage("Failed to complete the route the route")
-                setTimeout(() =>{
+                setErrorMessage("Failed to complete the route")
+                setTimeout(() => {
                     setErrorMessage("")
                 }, 5000)
             }
-            
+
         } catch (error) {
             console.log(error)
             setErrorMessage("There was an error completing the task")
-            setTimeout(() =>{
+            setTimeout(() => {
                 setErrorMessage("")
             }, 5000)
         }
     }
 
-
-    const handleDeleteRoute = async routeId =>{
+    const handleDeleteRoute = async routeId => {
         try {
             const response = await fetch(`${DELETE_ROUTE_URL}/${routeId}`, {
                 method: "DELETE",
@@ -127,25 +126,25 @@ const ManagerRoutes = () => {
 
             const data = await response.json();
 
-            if (response.ok){
+            if (response.ok) {
                 setErrorMessage(data.message);
                 getManagerRoutes();
-                setTimeout(() =>{
+                setTimeout(() => {
                     setErrorMessage("")
                 }, 5000)
 
-            }else {
+            } else {
                 setErrorMessage(data.message);
-                setTimeout(() =>{
+                setTimeout(() => {
                     setErrorMessage("")
                 }, 5000)
 
             }
-            
+
         } catch (error) {
             console.log(error)
             setErrorMessage("There was an issue deleting the route plan")
-            setTimeout(() =>{
+            setTimeout(() => {
                 setErrorMessage("")
             }, 5000)
         }
@@ -164,13 +163,14 @@ const ManagerRoutes = () => {
 
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
-            <div className="mb-4">
+            <div className="mb-4 flex items-center border border-gray-300 rounded px-3 py-1 w-full">
+                <FaSearch className="text-gray-900 mr-2" />
                 <input
                     type="text"
                     placeholder="Search by merchandiser name..."
                     value={searchTerm}
                     onChange={handleSearch}
-                    className="border border-gray-300 rounded px-3 py-1 w-full"
+                    className="flex-grow outline-none"
                 />
             </div>
             {isLoading ? (
@@ -178,7 +178,7 @@ const ManagerRoutes = () => {
             ) : errorMessage ? (
                 <p className="text-center text-red-600">{errorMessage}</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
                     {(searchTerm ? filteredRoutes : routes).map((route) => (
                         <div key={route.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
                             <p><span className="font-bold">Date Range:</span> {route.date_range.start_date} to {route.date_range.end_date}</p>
@@ -192,11 +192,11 @@ const ManagerRoutes = () => {
                                         // Convert start and end times to Date objects
                                         const startTime = new Date(instruction.start);
                                         const endTime = new Date(instruction.end);
-    
+
                                         // Format start and end times
                                         const startTimeString = startTime.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
                                         const endTimeString = endTime.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
-    
+
                                         return (
                                             <div key={index} className="mb-3 p-3 border border-gray-300 rounded">
                                                 <p><span className="font-bold">Start Time:</span> {startTimeString}</p>
@@ -215,7 +215,8 @@ const ManagerRoutes = () => {
                                 {route.status.toLowerCase() !== 'complete' && (
                                     <button onClick={() => handleComplete(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-green-500">Complete</button>
                                 )}
-                                {route.status.toLowerCase() === 'complete' && (                                     <button className="flex-1 p-2 bg-gray-400 text-white rounded cursor-not-allowed opacity-50">Complete</button>
+                                {route.status.toLowerCase() === 'complete' && (
+                                    <button className="flex-1 p-2 bg-gray-400 text-white rounded cursor-not-allowed opacity-50">Complete</button>
                                 )}
                                 <button onClick={() => handleDeleteRoute(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-red-500">Delete</button>
                             </div>
@@ -224,12 +225,7 @@ const ManagerRoutes = () => {
                 </div>
             )}
         </div>
-    );   
+    );
 }
 
 export default ManagerRoutes;
-
-
-
-
-
