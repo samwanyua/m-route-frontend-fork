@@ -156,14 +156,26 @@ const CreateRoutes = () => {
                 <div key={index} className="mb-5 p-3 border border-gray-200 rounded">
                     <input
                         type="datetime-local"
-                        name="dateTime"
+                        name="start"
                         placeholder="YYYY-MM-DDTHH:MM"
-                        value={set.dateTime}
+                        value={set.start}
                         onChange={(e) => handleInstructionsChange(index, e)}
                         required
                         className="w-full p-2 mt-1 border border-gray-300 rounded"
                     />
-                    <small className="block mt-1">DateTime: YYYY-MM-DDTHH:MM</small>
+                    <small className="block mt-1">Start: YYYY-MM-DDTHH:MM</small>
+                    <br />
+                    <input
+                        type="datetime-local"
+                        name="end"
+                        placeholder="YYYY-MM-DDTHH:MM"
+                        value={set.end}
+                        onChange={(e) => handleInstructionsChange(index, e)}
+                        required
+                        className="w-full p-2 mt-1 border border-gray-300 rounded"
+                    />
+                    <small className="block mt-1">End: YYYY-MM-DDTHH:MM</small>
+                    <br />
                     <div className="mt-4">
                         <label htmlFor="facility" className="font-bold mb-1 block">Facility Name</label>
                         <input
