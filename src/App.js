@@ -18,6 +18,7 @@ import MerchCalendar from "./components/MerchCalendar";
 import MerchRoutePlans from "./components/MerchRoutes";
 import CreateRoutes from "./components/CreateRoutes";
 import ManagerRoutes from "./components/ManagerRoutes";
+import ManageUsers from "./components/ManageUsers";
 
 // import AboutUs from "./components/AboutUs";
 
@@ -42,10 +43,6 @@ function App() {
   const [authorized, setAuthorized] = useState(false);
   const [roleCheck, setRoleCheck] = useState(false);
   const [userData, setUserData] = useState("");
-
-  // if (userData.role === "manager"){
-  //   setRoleCheck(true);
-  // }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -88,6 +85,7 @@ function App() {
                   {/* <Route path="/contactus" element={<ContactUs />} /> */}
                   {/* <Route path="/calendar" element={<Calendar  userData={userData}/>} /> */}
                   <Route path="/calendar" element={<CreateRoutes />} />
+                  <Route path="/manageusers" element={<ManageUsers />} />
                 </>
               ) : (
                 <>
@@ -113,7 +111,7 @@ function App() {
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       )}
-      {/* {roleCheck ? null : <Footer />} */}
+      {/* {roleCheck ? <Footer /> : null} */}
     </div>
   );
 }

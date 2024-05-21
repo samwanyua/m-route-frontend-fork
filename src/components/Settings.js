@@ -65,13 +65,14 @@ const Settings = ({ setAuthorized }) => {
     if (locateMerchandiser) {
       intervalId = setInterval(() => {
         getGeolocation();
-      }, 300000); // 5 minutes
+      }, 5000); // 5 minutes
     }
 
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
   }, [locateMerchandiser]);
+
 
   const getGeolocation = () => {
     if (!navigator.geolocation) {
@@ -144,6 +145,8 @@ const Settings = ({ setAuthorized }) => {
       };
     });
   };
+
+  
 
   const logoutUser = async () => {
     try {
@@ -395,3 +398,9 @@ const Settings = ({ setAuthorized }) => {
 };
 
 export default Settings;
+
+
+
+
+
+
