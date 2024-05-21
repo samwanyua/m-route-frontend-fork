@@ -76,7 +76,7 @@ function App() {
             {roleCheck === 1 && (
                 <>
                   {/* Manager routes */}
-                  <Route path="/" element={<Home />} />
+                  {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
@@ -88,7 +88,7 @@ function App() {
               {roleCheck === 2 && (
                 <>
                   {/* Merchandiser routes */}
-                  <Route path="/" element={<Home />} />
+                  {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/merch-calendar" element={<MerchCalendar userData={userData} />} />
@@ -98,7 +98,7 @@ function App() {
               {roleCheck === 3 && (
                 <>
                   {/* Admin routes */}
-                  <Route path="/" element={<Home />} />
+                  {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/manageusers" element={<ManageUsers />} />
                   <Route path="/signup" element={<Signup />} />
