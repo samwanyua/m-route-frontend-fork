@@ -34,6 +34,9 @@ const GetLocations = () => {
 
     if (accessToken) {
       setToken(JSON.parse(accessToken));
+
+    }else{
+      console.log("No access token.")
     }
 
     if (user) {
@@ -83,7 +86,7 @@ const GetLocations = () => {
       const data = await response.json();
 
       if (data.status_code === 200) {
-        console.log(data.message)
+        console.log("Route plans:", data.message)
         const merchandisersList = data.message.filter(manager => manager.manager_id === userId);
         setAssignedMerchandisers(merchandisersList.map(manager => manager.merchandiser_id));
 
@@ -142,7 +145,7 @@ const GetLocations = () => {
       const data = await response.json();
 
       if (data.status_code === 200) {
-        console.log(data.message)
+        console.log("Latest locations",data.message)
         setLocations(data.message);
 
       } else if (data.status_code === 404) {
@@ -169,7 +172,7 @@ const GetLocations = () => {
 
 
       if (data.status_code === 200) {
-        console.log(data.message)
+        console.log("Users data" , data.message)
         const merchandisers = data.message.filter(user => user.role === "merchandiser" && user.status === "active");
         setUsers(merchandisers);
 
