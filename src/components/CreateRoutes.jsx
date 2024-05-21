@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
-const MERCHANDISERS_URL = "https://m-route-backend.onrender.com/users"; // Add the URL for fetching merchandisers
+const USERS_URL = "https://m-route-backend.onrender.com/users"; 
 
 const CreateRoutes = () => {
     const [dateRange, setDateRange] = useState({
@@ -26,22 +26,26 @@ const CreateRoutes = () => {
 
     useEffect(() => {
         if (token) {
-            getMerchandisers();
+            fetchUsers();
         }
     }, [token]);
 
-    const getMerchandisers = async () => {
+    const fetchUsers = async () => {
         try {
-            const response = await fetch(MERCHANDISERS_URL, {
+            const response = await fetch(USERS_URL, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
                 }
             });
+
             const data = await response.json();
 
             if (response.ok) {
-                setMerchandisers(data.merchandisers);
+                const allUsers = data;
+                const merchandisers = allUsers.filter(user => user.role === 'merchandiser');
+                setMerchandisers(merchandisers);
             } else {
                 setMessage(data.message);
                 setTimeout(() => {
@@ -49,8 +53,8 @@ const CreateRoutes = () => {
                 }, 5000);
             }
         } catch (error) {
-            console.log("Error", error);
-            setMessage("Failed to get merchandisers, please try again.");
+            console.log("Error fetching users:", error);
+            setMessage("Failed to fetch users, please try again.");
             setTimeout(() => {
                 setMessage("");
             }, 5000);
@@ -59,7 +63,9 @@ const CreateRoutes = () => {
 
     const merchandiserOptions = useMemo(() => (
         merchandisers.map(merchandiser => (
-            <option key={merchandiser.id} value={merchandiser.id}>{merchandiser.name}</option>
+            <option key={merchandiser.id} value={merchandiser.id}>
+                {merchandiser.first_name} {merchandiser.last_name}
+            </option>
         ))
     ), [merchandisers]);
 
@@ -205,7 +211,7 @@ const CreateRoutes = () => {
                             </div>
                             <div className="mt-4">
                                 <label htmlFor="instructions" className="font-bold mb-1 block">Instructions</label>
-                                                                    <textarea
+                                <textarea
                                     name="instructions"
                                     id="message"
                                     rows={4}
@@ -247,5 +253,3 @@ const CreateRoutes = () => {
 };
 
 export default CreateRoutes;
-
-                               
