@@ -43,10 +43,6 @@ function App() {
   const [roleCheck, setRoleCheck] = useState(false);
   const [userData, setUserData] = useState("");
 
-  // if (userData.role === "manager"){
-  //   setRoleCheck(true);
-  // }
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPath]);
@@ -113,7 +109,7 @@ function App() {
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       )}
-      {/* {roleCheck ? null : <Footer />} */}
+      {/* {roleCheck ? <Footer /> : null} */}
     </div>
   );
 }
