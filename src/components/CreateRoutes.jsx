@@ -44,7 +44,7 @@ const CreateRoutes = () => {
                 // Process merchandisers to include first and last names
                 const merchandisersWithFullName = data.merchandisers.map(merchandiser => ({
                     ...merchandiser,
-                    fullName: `${merchandiser.firstName} ${merchandiser.lastName}`
+                    fullName: `${merchandiser.first_name} ${merchandiser.last_name}`
                 }));
                 setMerchandisers(merchandisersWithFullName);
             } else {
