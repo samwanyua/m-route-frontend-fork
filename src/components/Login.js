@@ -7,7 +7,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 const LOGIN_URL = 'https://m-route-backend.onrender.com/users/login';
 const CHANGE_PASSWORD_URL = "https://m-route-backend.onrender.com/users/change-password"
 
-const Login = ({ setAuthorized, setManager, setAdmin, setMerchandiser, setUserData }) => {
+const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -41,13 +41,13 @@ const Login = ({ setAuthorized, setManager, setAdmin, setMerchandiser, setUserDa
       setUserData(userDataObj);
 
       if (userDataObj.role === "manager") {
-        setManager(true);
+        setRoleCheck(0);
 
       }else if (userDataObj.role === "merchandiser"){
-        setMerchandiser(true);
+        setRoleCheck(1);
 
       }else if(userDataObj.role === "admin"){
-        setAdmin(true);
+        setRoleCheck(2);
 
       }
       if (previousRoute) {
@@ -178,15 +178,15 @@ const Login = ({ setAuthorized, setManager, setAdmin, setMerchandiser, setUserDa
         navigate('/');
 
         if (data.message.role === "manager") {
-          setManager(true);
+          setRoleCheck(0);
           setAuthorized(true);
           
         }else if (data.message.role === "merchandiser"){
-          setMerchandiser(true);
+          setRoleCheck(1);
           setAuthorized(true);
 
         }else if(data.message.role === "admin"){
-          setAdmin(true);
+          setRoleCheck(2);
           setAuthorized(true);
         }
 
