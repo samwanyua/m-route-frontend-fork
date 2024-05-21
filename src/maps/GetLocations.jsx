@@ -193,11 +193,27 @@ const GetLocations = () => {
     if (foundLocation) {
       setSelectedLocation(foundLocation);
       setMapCenter({ lat: foundLocation.latitude, lng: foundLocation.longitude });
+      fetchStreetName(foundLocation.latitude, foundLocation.longitude);
     } else {
       setError("Merchandiser not found.");
       setTimeout(() => {
         setError("");
       }, 5000);
+    }
+  };
+
+  const fetchStreetName = async (latitude, longitude) => {
+    try {
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
+      const data = await response.json();
+      if (data.status === "OK") {
+        return data.results[0].formatted_address;
+      } else {
+        return "Unknown street/road";
+      }
+    } catch (error) {
+      console.error("Error fetching street name:", error);
+      return "Unknown street/road";
     }
   };
 
@@ -237,22 +253,23 @@ const GetLocations = () => {
                   position={{ lat: location.latitude, lng: location.longitude }}
                   label={location.firstName} 
                   onClick={() => setSelectedLocation(location)}
-                />
+                >
+                  {selectedLocation === location && (
+                    <InfoWindow
+                      position={{ lat: selectedLocation.latitude, lng: selectedLocation.longitude }}
+                      onCloseClick={() => setSelectedLocation(null)}
+                    >
+                      <div className="p-2 text-sm">
+                        <h4 className="font-bold">{selectedLocation.firstName} {selectedLocation.lastName}</h4>
+                        <p>Username: {selectedLocation.username}</p>
+                        <p>Role: {selectedLocation.role}</p>
+                        <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
+                        <p>Street: {selectedLocation.streetName || 'Unknown street/road'}</p>
+                      </div>
+                    </InfoWindow>
+                  )}
+                </Marker>
               ))}
-
-            {selectedLocation && (
-              <InfoWindow
-                position={{ lat: selectedLocation.latitude, lng: selectedLocation.longitude }}
-                onCloseClick={() => setSelectedLocation(null)}
-              >
-                <div className="p-2 text-sm">
-                  <h4 className="font-bold">{selectedLocation.firstName} {selectedLocation.lastName}</h4>
-                  <p>Username: {selectedLocation.username}</p>
-                  <p>Role: {selectedLocation.role}</p>
-                  <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
-                </div>
-              </InfoWindow>
-            )}
           </GoogleMap>
         </div>
       )}
@@ -261,3 +278,6 @@ const GetLocations = () => {
 }
 
 export default GetLocations;
+
+
+
