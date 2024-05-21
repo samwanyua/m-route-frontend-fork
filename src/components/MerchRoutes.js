@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from "react";
 import moment from 'moment';
 
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
-const NOTIFICATIONS_URL = "https://m-route-backend.onrender.com/users/send-notifications"; // Use this URL to update status
+const NOTIFICATIONS_URL = "https://m-route-backend.onrender.com/users/send-notifications"; // Use this URL to update statu
+const USERS_URL = "https://m-route-backend.onrender.com/users"; 
+
 
 const MerchRoutePlans = () => {
     const [routePlans, setRoutePlans] = useState([]);
@@ -14,7 +16,8 @@ const MerchRoutePlans = () => {
     const [selectedPlan, setSelectedPlan] = useState("");
     const [notificationsData, setNotificationsData] = useState({})
     const [managers, setManagers] = useState([]);
-    const [merchandisers, setMerchandisers] = useState([]);
+    const [message, setMessage] = useState("");
+
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
@@ -32,55 +35,47 @@ const MerchRoutePlans = () => {
     }, [token, userId]);
 
     useEffect(() => {
-        if (token && userId) {
-            fetchManagersAndMerchandisers();
+        if (token) {
+            fetchUsers();
         }
-    }, [token, userId]);
+    }, [token]);
 
-    const fetchManagersAndMerchandisers = async () => {
+    const fetchUsers = async () => {
         try {
-            const accessToken = localStorage.getItem("access_token");
-
-            const response = await fetch("https://m-route-backend.onrender.com/users", {
-                method: 'GET',
+            const response = await fetch(USERS_URL, {
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                },
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
             });
 
             const data = await response.json();
 
-            if (response.ok) {
-                // Assuming data contains an array of users with 'role' attribute
-                const users = data;
-
-                // Filter managers and merchandisers based on their role
-                const filteredManagers = users.filter(user => user.role === 'manager');
-                const filteredMerchandisers = users.filter(user => user.role === 'merchandiser');
-
-                setManagers(filteredManagers);
-                setMerchandisers(filteredMerchandisers);
-            } else {
-                setError(data.message || "Failed to fetch users");
+            if (data.status_code === 200) {
+                setManagers(data.message.filter(user => user.role === 'manager' && user.status === 'active'));
+            } else if(data.status_code === 404) {
+                setMessage(data.message);
                 setTimeout(() => {
-                    setError("");
+                    setMessage("");
                 }, 5000);
             }
         } catch (error) {
-            console.error('Error fetching managers and merchandisers:', error);
-            setError("There was an error retrieving managers and merchandisers.");
+            console.log("Error fetching users:", error);
+            setMessage("Failed to fetch users, please try again.");
             setTimeout(() => {
-                setError("");
+                setMessage("");
             }, 5000);
         }
     };
 
-    const managerOptions = managers.map(manager => (
-        <option key={manager.id} value={manager.id}>
-            {manager.first_name} {manager.last_name}
-        </option>
-    ));
+    const managerOptions = useMemo(() => (
+        managers.map(manager => (
+            <option key={manager.id} value={manager.staff_no}>
+                {manager.first_name} {manager.last_name}
+            </option>
+        ))
+    ), [managers]);
 
     
 
@@ -245,10 +240,8 @@ const MerchRoutePlans = () => {
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                         required
                                     >
-                                        <option value="">Select Manager</option>
-                                        {managers.map((manager, index) => (
-                                            <option key={index} value={manager}>{manager}</option>
-                                        ))}
+                                        <option value="">Select a manager</option>
+                                            {managerOptions}
                                     </select>
                                 </div>
                                 <div className="mb-4">
