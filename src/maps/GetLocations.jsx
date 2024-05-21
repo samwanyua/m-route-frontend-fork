@@ -4,7 +4,6 @@ import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 const LOCATIONS_URL = "https://m-route-backend.onrender.com/users/locations";
 const USERS_URL = "https://m-route-backend.onrender.com/users";
 const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com/users/route-plans";
-const GOOGLE_URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
 const containerStyle = {
   width: "100%",
@@ -28,7 +27,6 @@ const GetLocations = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [mapCenter, setMapCenter] = useState(center); 
-  const [streetName, setStreetName] = useState("");
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -195,7 +193,6 @@ const GetLocations = () => {
     if (foundLocation) {
       setSelectedLocation(foundLocation);
       setMapCenter({ lat: foundLocation.latitude, lng: foundLocation.longitude });
-      handleMarkerClick(foundLocation); // Fetch street name when searching
     } else {
       setError("Merchandiser not found.");
       setTimeout(() => {
@@ -203,27 +200,9 @@ const GetLocations = () => {
       }, 5000);
     }
   };
+  
 
-  const handleMarkerClick = async (location) => {
-    setSelectedLocation(location);
-    const street = await fetchStreetName(location.latitude, location.longitude);
-    setStreetName(street);
-  };
 
-  const fetchStreetName = async (latitude, longitude) => {
-    try {
-      const response = await fetch(`${GOOGLE_URL}${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
-      const data = await response.json();
-      if (data.status === "OK" && data.results[0]) {
-        return data.results[0].formatted_address;
-      } else {
-        return "Unknown street/road";
-      }
-    } catch (error) {
-      console.error("Error fetching street name:", error);
-      return "Unknown street/road";
-    }
-  };
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -260,7 +239,7 @@ const GetLocations = () => {
                   key={location.id}
                   position={{ lat: location.latitude, lng: location.longitude }}
                   label={location.firstName} 
-                  onClick={() => handleMarkerClick(location)}
+                  onClick={() => setSelectedLocation(location)}
                 />
               ))}
 
@@ -274,7 +253,6 @@ const GetLocations = () => {
                   <p>Username: {selectedLocation.username}</p>
                   <p>Role: {selectedLocation.role}</p>
                   <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
-                  <p>Street: {streetName || "Unknown street"}</p>
                 </div>
               </InfoWindow>
             )}
@@ -286,3 +264,6 @@ const GetLocations = () => {
 }
 
 export default GetLocations;
+
+
+
