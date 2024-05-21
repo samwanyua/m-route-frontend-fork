@@ -18,6 +18,7 @@ import MerchCalendar from "./components/MerchCalendar";
 import MerchRoutePlans from "./components/MerchRoutes";
 import CreateRoutes from "./components/CreateRoutes";
 import ManagerRoutes from "./components/ManagerRoutes";
+import ManageUsers from "./components/ManageUsers";
 
 // import AboutUs from "./components/AboutUs";
 
@@ -84,6 +85,7 @@ function App() {
                   {/* <Route path="/contactus" element={<ContactUs />} /> */}
                   {/* <Route path="/calendar" element={<Calendar  userData={userData}/>} /> */}
                   <Route path="/calendar" element={<CreateRoutes />} />
+                  <Route path="/manageusers" element={<ManageUsers />} />
                 </>
               ) : (
                 <>

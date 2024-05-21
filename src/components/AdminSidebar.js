@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RiHome2Line, RiMapPinLine, RiSettings2Line } from "react-icons/ri";
-import { FaRegMessage } from "react-icons/fa6";
-import { MdOutlineReviews } from "react-icons/md";
-import { FaInfoCircle } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
-import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
+import { FaUserPlus } from "react-icons/fa";
+import { RiTaskLine } from "react-icons/ri";
 
 const SidebarItem = ({ icon, label, to }) => {
   const [showLabel, setShowLabel] = useState(true);
@@ -31,7 +29,7 @@ const SidebarItem = ({ icon, label, to }) => {
   );
 };
 
-const SideBar = () => {
+const AdminSideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showMenuText, setShowMenuText] = useState(true);
 
@@ -55,10 +53,10 @@ const SideBar = () => {
 
   const sidebarItems = [
     { icon: <RiHome2Line className="h-6 w-6 text-gray-900" />, label: "Home", to: "/map" },
-    { icon: <RiMapPinLine className="h-6 w-6 text-gray-900" />, label: "Routes", to: "/routes" },
-    { icon: <FaRegCalendarAlt className="h-6 w-6 text-gray-900" />, label: "Calendar", to: "/calendar" },
-    { icon: <RiSettings2Line className="h-6 w-6 text-gray-900" />, label: "Settings", to: "/settings" },
+    { icon: <FaUserPlus className="h-6 w-6 text-gray-900" />, label: "Create User", to: "/createuser" },
+    { icon: <RiTaskLine className="h-6 w-6 text-gray-900" />, label: "Change role", to: "/changerole" },
     { icon: <FaUserCheck className="h-6 w-6 text-gray-900" />, label: "Manage users", to: "/manageusers" },
+    { icon: <RiSettings2Line className="h-6 w-6 text-gray-900" />, label: "Settings", to: "/settings" },
     // { icon: <MdOutlineReviews className="h-6 w-6 text-gray-900" />, label: "Reviews", to: "/reviews" },
     // { icon: <FaInfoCircle className="h-6 w-6 text-gray-900" />, label: "About us", to: "/aboutus" },
     // { icon: <FaRegMessage className="h-6 w-6 text-gray-900" />, label: "Contact Us", to: "/contactus" },
@@ -79,4 +77,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default AdminSideBar;
