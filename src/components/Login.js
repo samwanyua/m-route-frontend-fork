@@ -39,8 +39,16 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
       const userDataObj = JSON.parse(userData);
       setAuthorized(true);
       setUserData(userDataObj);
+      
       if (userDataObj.role === "manager") {
-        setRoleCheck(true);
+        setRoleCheck(1);
+
+      }else if (data.message === "merchandiser"){
+        setRoleCheck(2);
+
+      }else if(data.message === "admin"){
+        setRoleCheck(3);
+
       }
       if (previousRoute) {
         navigate("/");
@@ -170,9 +178,16 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         navigate('/');
 
         if (data.message.role === "manager") {
-          setRoleCheck(true);
+          setRoleCheck(1);
           setAuthorized(true);
           
+        }else if (data.message === "merchandiser"){
+          setRoleCheck(2);
+          setAuthorized(true);
+
+        }else if(data.message === "admin"){
+          setRoleCheck(3);
+          setAuthorized(true);
         }
 
         const userData = {

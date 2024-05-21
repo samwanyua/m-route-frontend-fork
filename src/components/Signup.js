@@ -36,6 +36,25 @@ const Modal = ({ message, onClose }) => {
   );
 };
 
+
+const generatePassword = () => {
+  const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+  const numbers = '0123456789';
+  const specialCharacters = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+  
+  const getRandomChar = (str) => str[Math.floor(Math.random() * str.length)];
+  
+  const password = [
+    getRandomChar(upperCaseLetters),
+    ...Array.from({ length: 4 }, () => getRandomChar(lowerCaseLetters)),
+    ...Array.from({ length: 2 }, () => getRandomChar(numbers)),
+    getRandomChar(specialCharacters),
+  ];
+  
+  return password.sort(() => Math.random() - 0.5).join('');
+};
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -51,7 +70,6 @@ const Signup = () => {
   });
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [passwordVisibility, setPasswordVisibility] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailUsername = e => {
@@ -83,7 +101,7 @@ const Signup = () => {
       staff_no: formData.staff_no,
       email: emailUsername.email,
       username: emailUsername.username,
-      password: "Complex1",
+      password: generatePassword(),
       user_type: formData.user_type
     };
 
@@ -138,9 +156,6 @@ const Signup = () => {
     setMessage(null);
   };
 
-  // const togglePasswordVisibility = () => {
-  //   setPasswordVisibility(!passwordVisibility);
-  // };
 
   return (
     <>
@@ -256,28 +271,6 @@ const Signup = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
               />
             </div>
-            {/* <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                Password
-              </label>
-              <div className="relative mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type={passwordVisibility ? "text" : "password"}
-                  value={formData.password}
-                  autoComplete="current-password"
-                  required
-                  onChange={handleChange}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                  <button type="button" onClick={togglePasswordVisibility} className="focus:outline-none">
-                    {passwordVisibility ? <AiFillEyeInvisible /> : <AiFillEye />}
-                  </button>
-                </div>
-              </div>
-            </div> */}
             <div>
               <label htmlFor="user_type" className="block text-sm font-medium leading-6 text-gray-900">
                 User Type
@@ -302,12 +295,6 @@ const Signup = () => {
               </button>
             </div>
           </form>
-          {/* <p className="mt-2 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Log in
-            </Link>
-          </p> */}
         </div>
       </div>
     </>
@@ -315,3 +302,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
+
