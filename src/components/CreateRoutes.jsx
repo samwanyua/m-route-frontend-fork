@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
-const MERCHANDISERS_URL = "https://m-route-backend.onrender.com/users/merchandisers"; // Add the URL for fetching merchandisers
+const MERCHANDISERS_URL = "https://m-route-backend.onrender.com/users";
 
 const CreateRoutes = () => {
     const [dateRange, setDateRange] = useState({
@@ -41,7 +41,12 @@ const CreateRoutes = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMerchandisers(data.merchandisers);
+                // Process merchandisers to include first and last names
+                const merchandisersWithFullName = data.merchandisers.map(merchandiser => ({
+                    ...merchandiser,
+                    fullName: `${merchandiser.firstName} ${merchandiser.lastName}`
+                }));
+                setMerchandisers(merchandisersWithFullName);
             } else {
                 setMessage(data.message);
                 setTimeout(() => {
@@ -59,7 +64,7 @@ const CreateRoutes = () => {
 
     const merchandiserOptions = useMemo(() => (
         merchandisers.map(merchandiser => (
-            <option key={merchandiser.id} value={merchandiser.id}>{merchandiser.name}</option>
+            <option key={merchandiser.id} value={merchandiser.id}>{merchandiser.fullName}</option>
         ))
     ), [merchandisers]);
 
@@ -247,5 +252,3 @@ const CreateRoutes = () => {
 };
 
 export default CreateRoutes;
-
-                               
