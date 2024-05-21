@@ -64,9 +64,11 @@ All commits must be descriptive, reviewed by two members and the project lead, a
 
 ### Backend API
 - [Backend API](https://m-route-backend.onrender.com)
+- [Backend Git](https://github.com/OumaArera/m-route-backend.git)
 
 ### Frontend link
 - [Merch Mate](https://m-route-frontend.vercel.app/)
+- [Frontend Git](https://github.com/OumaArera/m-route-frontend.git)
 
 ## Authors :black_nib:
 
