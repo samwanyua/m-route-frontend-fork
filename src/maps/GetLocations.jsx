@@ -183,6 +183,8 @@ const GetLocations = () => {
     }
   };
 
+  console.log(userLocations);
+
   return (
     <div className="flex flex-col h-screen w-full">
       {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
