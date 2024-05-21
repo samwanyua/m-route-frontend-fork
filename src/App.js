@@ -73,7 +73,7 @@ function App() {
         <>
           <Navbar userData ={userData} />
           <div className="flex flex-1">
-            {(roleCheck && !admin) ? <SideBar /> : <MerchSideBar />}
+            {(roleCheck && !admin) ? <SideBar /> : (!roleCheck && !admin) ? <MerchSideBar />  : null }
             {admin ? <AdminSideBar /> : null}
             <Routes className="flex-1 ml-4">
               {roleCheck ? (
