@@ -48,16 +48,21 @@ const GetLocations = () => {
     } else {
       console.error('No user data found');
     }
+    
+    
+  }, []);
 
-    const intervalId = setInterval(() => {
-      fetchLatestLocations();
-    }, 5000);
+
+  useEffect(() =>{
 
     fetchUsersData();
     getRoutePlans();
-    
+    const intervalId = setInterval(() => {
+      fetchLatestLocations();
+    }, 20000);
+
     return () => clearInterval(intervalId);
-  }, []);
+  }, [])
 
 
 
