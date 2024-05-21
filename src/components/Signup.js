@@ -102,7 +102,7 @@ const Signup = () => {
       email: emailUsername.email,
       username: emailUsername.username,
       password: generatePassword(),
-      user_type: formData.user_type
+      role: formData.user_type
     };
 
     if (formData.middle_name) {
@@ -132,7 +132,7 @@ const Signup = () => {
           last_name: "",
           national_id_no: "",
           staff_no: "",
-          user_type: ""
+          role: ""
         });
         setEmailUsername({
           email: "",
