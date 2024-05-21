@@ -24,7 +24,9 @@ const GetLocations = () => {
   const [userId, setUserId] = useState('');
   const [assignedMerchandisers, setAssignedMerchandisers] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(""); // Add searchTerm state
+  const [mapCenter, setMapCenter] = useState(center); // Add mapCenter state for dynamic centering
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -51,11 +53,6 @@ const GetLocations = () => {
   useEffect(() => {
     if (token) {
       fetchData();
-    } else {
-      setError("Loading...");
-      setTimeout(() => {
-        setError("");
-      }, 5000);
     }
   }, [token]);
 
@@ -64,7 +61,7 @@ const GetLocations = () => {
       await fetchUsersData();
       await getRoutePlans();
       await fetchLatestLocations();
-      setIsLoading(false); // Set isLoading to false after all data is fetched
+      setIsLoading(false);
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
       setTimeout(() => {
@@ -127,6 +124,7 @@ const GetLocations = () => {
     }).filter(userLocation => userLocation !== null);
 
     setUserLocations(matchedUserLocations);
+    console.log("User locations", userLocations);
   }, [locations, users]);
 
   const fetchLatestLocations = async () => {
@@ -183,18 +181,46 @@ const GetLocations = () => {
     }
   };
 
-  console.log(userLocations);
+  const handleSearch = () => {
+    const foundLocation = userLocations.find(
+      (location) => location.firstName.toLowerCase() === searchTerm.toLowerCase()
+    );
+    if (foundLocation) {
+      setSelectedLocation(foundLocation);
+      setMapCenter({ lat: foundLocation.latitude, lng: foundLocation.longitude });
+    } else {
+      setError("Merchandiser not found.");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen w-full">
       {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+      <div className="flex justify-center mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Enter merchandiser's first name"
+          className="p-2 border border-gray-300 rounded mr-2"
+        />
+        <button
+          onClick={handleSearch}
+          className="p-2 bg-blue-500 text-white rounded"
+        >
+          Search
+        </button>
+      </div>
       {isLoading ? (
         <p className="text-center">Loading...</p>
       ) : (
         <div className="flex-grow">
           <GoogleMap
             mapContainerStyle={containerStyle}
-            center={center}
+            center={mapCenter}
             zoom={10}
           >
             {userLocations
