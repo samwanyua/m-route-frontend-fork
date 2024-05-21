@@ -25,57 +25,67 @@ const GetLocations = () => {
   const [assignedMerchandisers, setAssignedMerchandisers] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-    const userData = localStorage.getItem("user_data");
 
-    if (!accessToken || !userData) {
-      setError("Access token or user data is missing. Please log in.");
-      return;
+
+  useEffect(() => {
+    
+    const accessToken = localStorage.getItem('access_token');
+    const user = localStorage.getItem('user_data');
+
+    if (accessToken) {
+      setToken(JSON.parse(accessToken));
     }
 
-    try {
-      setToken(JSON.parse(accessToken));
-      setUserId(JSON.parse(userData).id);
-    } catch (e) {
-      setError("Failed to parse user data.");
-      return;
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser && parsedUser.id) {
+        setUserId(parsedUser.id);
+
+      } else {
+        console.error('Invalid user data');
+
+      }
+    } else {
+      console.error('No user data found');
     }
 
     const intervalId = setInterval(() => {
       fetchLatestLocations();
-      fetchUsersData();
-    }, 200000);
+    }, 5000);
 
-    fetchLatestLocations();
     fetchUsersData();
     getRoutePlans();
-
+    
     return () => clearInterval(intervalId);
   }, [token, userId]);
-  console.log(token)
-  console.log(userId)
+
+
+
   const getRoutePlans = async () => {
     try {
       const response = await fetch(ROUTE_PLANS_URL, {
         method: "GET",
-        headers: { "Authorization": `Bearer ${token}` }
+        headers: { 
+          "Authorization": `Bearer ${token}` 
+        }
       });
       const data = await response.json();
 
       if (data.status_code === 200) {
         const merchandisersList = data.message.filter(manager => manager.manager_id === userId);
         setAssignedMerchandisers(merchandisersList.map(manager => manager.merchandiser_id));
+
       } else {
         setError(data.message || "Failed to get routes");
       }
+
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
     }
   };
 
   const isRecentTimestamp = timestamp => {
-    const THIRTY_MINUTES = 30 * 60 * 1000;
+    const THIRTY_MINUTES = 300 * 60 * 1000;
     const currentTime = new Date().getTime();
     const locationTime = new Date(timestamp).getTime();
     return currentTime - locationTime <= THIRTY_MINUTES;
@@ -100,21 +110,21 @@ const GetLocations = () => {
     }).filter(userLocation => userLocation !== null);
 
     setUserLocations(matchedUserLocations);
-  }, [users, locations]);
+  }, [locations]);
 
   const fetchLatestLocations = async () => {
     try {
       const response = await fetch(LOCATIONS_URL, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+          "Authorization": `Bearer ${token}`
         }
       });
       const data = await response.json();
-      console.log(data)
+
       if (data.status_code === 200) {
         setLocations(data.message);
+
       } else {
         setError(data.message || "Failed to fetch locations.");
       }
@@ -128,15 +138,17 @@ const GetLocations = () => {
       const response = await fetch(USERS_URL, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+          "Authorization": `Bearer ${token}`
         }
       });
+
       const data = await response.json();
-      console.log(data)
+
+
       if (data.status_code === 200) {
         const merchandisers = data.message.filter(user => user.role === "merchandiser" && user.status === "active");
         setUsers(merchandisers);
+
       } else {
         setError(data.message || "Failed to fetch users.");
       }
@@ -185,3 +197,6 @@ const GetLocations = () => {
 }
 
 export default GetLocations;
+
+
+
