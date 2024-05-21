@@ -39,14 +39,14 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
       const userDataObj = JSON.parse(userData);
       setAuthorized(true);
       setUserData(userDataObj);
-      
+
       if (userDataObj.role === "manager") {
         setRoleCheck(1);
 
-      }else if (data.message === "merchandiser"){
+      }else if (userDataObj.role === "merchandiser"){
         setRoleCheck(2);
 
-      }else if(data.message === "admin"){
+      }else if(userDataObj.role === "admin"){
         setRoleCheck(3);
 
       }
