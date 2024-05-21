@@ -193,7 +193,7 @@ const GetLocations = () => {
     if (foundLocation) {
       setSelectedLocation(foundLocation);
       setMapCenter({ lat: foundLocation.latitude, lng: foundLocation.longitude });
-      fetchStreetName(foundLocation.latitude, foundLocation.longitude);
+      fetchStreetName(foundLocation.latitude, foundLocation.longitude)
     } else {
       setError("Merchandiser not found.");
       setTimeout(() => {
@@ -201,6 +201,7 @@ const GetLocations = () => {
       }, 5000);
     }
   };
+
 
   const fetchStreetName = async (latitude, longitude) => {
     try {
@@ -216,6 +217,9 @@ const GetLocations = () => {
       return "Unknown street/road";
     }
   };
+  
+
+
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -253,23 +257,23 @@ const GetLocations = () => {
                   position={{ lat: location.latitude, lng: location.longitude }}
                   label={location.firstName} 
                   onClick={() => setSelectedLocation(location)}
-                >
-                  {selectedLocation === location && (
-                    <InfoWindow
-                      position={{ lat: selectedLocation.latitude, lng: selectedLocation.longitude }}
-                      onCloseClick={() => setSelectedLocation(null)}
-                    >
-                      <div className="p-2 text-sm">
-                        <h4 className="font-bold">{selectedLocation.firstName} {selectedLocation.lastName}</h4>
-                        <p>Username: {selectedLocation.username}</p>
-                        <p>Role: {selectedLocation.role}</p>
-                        <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
-                        <p>Street: {selectedLocation.streetName || 'Unknown street/road'}</p>
-                      </div>
-                    </InfoWindow>
-                  )}
-                </Marker>
+                />
               ))}
+
+            {selectedLocation && (
+              <InfoWindow
+                position={{ lat: selectedLocation.latitude, lng: selectedLocation.longitude }}
+                onCloseClick={() => setSelectedLocation(null)}
+              >
+                <div className="p-2 text-sm">
+                  <h4 className="font-bold">{selectedLocation.firstName} {selectedLocation.lastName}</h4>
+                  <p>Username: {selectedLocation.username}</p>
+                  <p>Role: {selectedLocation.role}</p>
+                  <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
+                  <p>Street: {selectedLocation.streetName}</p>
+                </div>
+              </InfoWindow>
+            )}
           </GoogleMap>
         </div>
       )}
