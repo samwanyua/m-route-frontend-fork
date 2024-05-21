@@ -253,7 +253,6 @@ const GetLocations = () => {
                   <p>Username: {selectedLocation.username}</p>
                   <p>Role: {selectedLocation.role}</p>
                   <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
-                  <p>Street: {streetName || "Unknown street/road"}</p>
                 </div>
               </InfoWindow>
             )}
