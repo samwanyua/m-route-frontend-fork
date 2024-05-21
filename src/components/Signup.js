@@ -43,7 +43,8 @@ const Signup = () => {
     last_name: "",
     national_id_no: "",
     staff_no: "",
-    password: ""
+    password: "",
+    user_type: ""
   });
   const [emailUsername, setEmailUsername] = useState({
     email: "",
@@ -83,7 +84,8 @@ const Signup = () => {
       staff_no: formData.staff_no,
       password: formData.password,
       email: emailUsername.email,
-      username: emailUsername.username
+      username: emailUsername.username,
+      user_type: formData.user_type
     };
 
     if (formData.middle_name) {
@@ -91,6 +93,7 @@ const Signup = () => {
     }
 
     try {
+      console.log(signupData);
       const response = await fetch(SIGNUP_URL, {
         method: 'POST',
         headers: {
@@ -112,7 +115,8 @@ const Signup = () => {
           last_name: "",
           national_id_no: "",
           staff_no: "",
-          password: ""
+          password: "",
+          user_type: ""
         });
         setEmailUsername({
           email: "",
@@ -277,17 +281,35 @@ const Signup = () => {
               </div>
             </div>
             <div>
+              <label htmlFor="user_type" className="block text-sm font-medium leading-6 text-gray-900">
+                User Type
+              </label>
+              <select
+                id="user_type"
+                name="user_type"
+                value={formData.user_type}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
+              >
+                <option value="" disabled>Select user type</option>
+                <option value="manager">Manager</option>
+                <option value="merchandiser">Merchandiser</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div>
               <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Sign Up
+                Register User
               </button>
             </div>
           </form>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          {/* <p className="mt-2 text-center text-sm text-gray-600">
             Already have an account?{' '}
             <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
               Log in
             </Link>
-          </p>
+          </p> */}
         </div>
       </div>
     </>

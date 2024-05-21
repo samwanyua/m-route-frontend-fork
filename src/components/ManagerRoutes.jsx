@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch } from "react-icons/fa";
+import RouteModal from "./RouteModal";
 
 const MANAGER_ROUTES_URL = "https://m-route-backend.onrender.com/users/manager-routes";
 const MODIFY_ROUTE = "https://m-route-backend.onrender.com/users/modify-route";
@@ -12,8 +13,11 @@ const ManagerRoutes = () => {
     const [token, setToken] = useState("");
     const [userId, setUserId] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    const [expandedRoutes, setExpandedRoutes] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
+    const [modalData, setModalData] = useState(null);
+    const [filter, setFilter] = useState('all');
+    const [currentPage, setCurrentPage] = useState(1);
+    const routesPerPage = 12;
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
@@ -80,6 +84,16 @@ const ManagerRoutes = () => {
         setFilteredRoutes(filtered);
     };
 
+    const filteredRoutesByStatus = routes.filter((route) => {
+        if (filter === 'all') return true;
+        return filter === 'complete' ? route.status.toLowerCase() === 'complete' : route.status.toLowerCase() !== 'complete';
+    });
+
+    const filteredAndSearchedRoutes = searchTerm ? filteredRoutesByStatus.filter(route => route.merchandiser_name.toLowerCase().includes(searchTerm.toLowerCase())) : filteredRoutesByStatus;
+
+    const totalPages = Math.ceil(filteredAndSearchedRoutes.length / routesPerPage);
+    const displayedRoutes = filteredAndSearchedRoutes.slice((currentPage - 1) * routesPerPage, currentPage * routesPerPage);
+
     const handleComplete = async routeId => {
         try {
             const response = await fetch(`${MODIFY_ROUTE}/${routeId}`, {
@@ -95,25 +109,23 @@ const ManagerRoutes = () => {
                 setErrorMessage(data.message);
                 setTimeout(() => {
                     setErrorMessage("")
-                }, 5000)
+                }, 5000);
                 getManagerRoutes();
-
             } else if (data.status_code === 500) {
-                console.log(data.message)
-                setErrorMessage("Failed to complete the route")
+                console.log(data.message);
+                setErrorMessage("Failed to complete the route");
                 setTimeout(() => {
-                    setErrorMessage("")
-                }, 5000)
+                    setErrorMessage("");
+                }, 5000);
             }
-
         } catch (error) {
-            console.log(error)
-            setErrorMessage("There was an error completing the task")
+            console.log(error);
+            setErrorMessage("There was an error completing the task");
             setTimeout(() => {
-                setErrorMessage("")
-            }, 5000)
+                setErrorMessage("");
+            }, 5000);
         }
-    }
+    };
 
     const handleDeleteRoute = async routeId => {
         try {
@@ -130,100 +142,101 @@ const ManagerRoutes = () => {
                 setErrorMessage(data.message);
                 getManagerRoutes();
                 setTimeout(() => {
-                    setErrorMessage("")
-                }, 5000)
-
+                    setErrorMessage("");
+                }, 5000);
             } else {
                 setErrorMessage(data.message);
                 setTimeout(() => {
-                    setErrorMessage("")
-                }, 5000)
-
+                    setErrorMessage("");
+                }, 5000);
             }
-
         } catch (error) {
-            console.log(error)
-            setErrorMessage("There was an issue deleting the route plan")
+            console.log(error);
+            setErrorMessage("There was an issue deleting the route plan");
             setTimeout(() => {
-                setErrorMessage("")
-            }, 5000)
+                setErrorMessage("");
+            }, 5000);
         }
-    }
-
-    const toggleInstructions = routeId => {
-        setExpandedRoutes(prevState => ({
-            ...prevState,
-            [routeId]: !prevState[routeId]
-        }));
     };
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
     };
 
+    const toggleModal = (route) => {
+        setModalData(route);
+    };
+
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
-            <div className="mb-4 flex items-center border border-gray-300 rounded px-3 py-1 w-2/3">
-                <FaSearch className="text-gray-900 mr-2" />
-                <input
-                    type="text"
-                    placeholder="Search by merchandiser name..."
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    className="flex-grow outline-none"
-                />
+            <div className="flex justify-between items-center mb-4">
+                <div className="mb-4 flex items-center border border-gray-300 rounded px-3 py-1 w-2/3">
+                    <FaSearch className="text-gray-900 mr-2" />
+                    <input
+                        type="text"
+                        placeholder="Search by merchandiser name..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        className="flex-grow outline-none"
+                    />
+                    <select
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="ml-4 border border-gray-300 rounded px-3 py-1"
+                    >
+                        <option value="all">All</option>
+                        <option value="complete">Complete</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                <p className="text-gray-600 mb-4">Showing {displayedRoutes.length} of {filteredAndSearchedRoutes.length} routes</p>
             </div>
             {isLoading ? (
                 <p className="text-center text-gray-600">Loading...</p>
             ) : errorMessage ? (
                 <p className="text-center text-red-600">{errorMessage}</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-                    {(searchTerm ? filteredRoutes : routes).map((route) => (
-                        <div key={route.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
-                            <p><span className="font-bold">Date Range:</span> {route.date_range.start_date} to {route.date_range.end_date}</p>
-                            <p><span className="font-bold">Merchandiser:</span> {route.merchandiser_name}</p>
-                            <p><span className="font-bold">Staff No:</span> {route.staff_no}</p>
-                            <p><span className="font-bold">Status:</span> {route.status}</p>
-                            <p className="font-bold">Instructions:</p>
-                            {expandedRoutes[route.id] ? (
-                                <div>
-                                    {JSON.parse(route.instructions).map((instruction, index) => {
-                                        // Convert start and end times to Date objects
-                                        const startTime = new Date(instruction.start);
-                                        const endTime = new Date(instruction.end);
-
-                                        // Format start and end times
-                                        const startTimeString = startTime.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
-                                        const endTimeString = endTime.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
-
-                                        return (
-                                            <div key={index} className="mb-3 p-3 border border-gray-300 bg-white rounded">
-                                                <p><span className="font-bold">Start Time:</span> {startTimeString}</p>
-                                                <p><span className="font-bold">End Time:</span> {endTimeString}</p>
-                                                <p><span className="font-bold">Instructions:</span> {instruction.instructions}</p>
-                                                <p><span className="font-bold">Facility:</span> {instruction.facility}</p>
-                                            </div>
-                                        );
-                                    })}
-                                    <button onClick={() => toggleInstructions(route.id)} className="mt-2 w-full p-2 bg-gray-800 text-white rounded hover:bg-blue-700">View Less</button>
+                <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+                        {displayedRoutes.map((route) => (
+                            <div key={route.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                <p><span className="font-bold">Date Range:</span> {route.date_range.start_date} to {route.date_range.end_date}</p>
+                                <p><span className="font-bold">Merchandiser:</span> {route.merchandiser_name}</p>
+                                <p><span className="font-bold">Staff No:</span> {route.staff_no}</p>
+                                <p><span className="font-bold">Status:</span> {route.status}</p>
+                                <button onClick={() => toggleModal(route)} className="mt-2 w-full p-2 bg-gray-800 text-white rounded hover:bg-blue-700">View More</button>
+                                <div className="flex mt-4 space-x-2">
+                                    {route.status.toLowerCase() !== 'complete' && (
+                                        <button onClick={() => handleComplete(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-green-500">Complete</button>
+                                    )}
+                                    {route.status.toLowerCase() === 'complete' && (
+                                        <button className="flex-1 p-2 bg-gray-400 text-white rounded cursor-not-allowed opacity-50">Complete</button>
+                                    )}
+                                    <button onClick={() => handleDeleteRoute(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-red-500">Delete</button>
                                 </div>
-                            ) : (
-                                <button onClick={() => toggleInstructions(route.id)} className="mt-2 w-full p-2 bg-gray-800 text-white rounded hover:bg-blue-700">View More</button>
-                            )}
-                            <div className="flex mt-4 space-x-2">
-                                {route.status.toLowerCase() !== 'complete' && (
-                                    <button onClick={() => handleComplete(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-green-500">Complete</button>
-                                )}
-                                {route.status.toLowerCase() === 'complete' && (
-                                    <button className="flex-1 p-2 bg-gray-400 text-white rounded cursor-not-allowed opacity-50">Complete</button>
-                                )}
-                                <button onClick={() => handleDeleteRoute(route.id)} className="flex-1 p-2 bg-gray-800 text-white rounded hover:bg-red-500">Delete</button>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    <div className="flex justify-between items-center mt-4">
+                        <button
+                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                            className={`p-2 ${currentPage === 1 ? 'bg-gray-400' : 'bg-gray-800 hover:bg-blue-700'} text-white rounded`}
+                        >
+                            Previous
+                        </button>
+                        <span>Page {currentPage} of {totalPages}</span>
+                        <button
+                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                            className={`p-2 ${currentPage === totalPages ? 'bg-gray-400' : 'bg-gray-800 hover:bg-blue-700'} text-white rounded`}
+                        >
+                            Next
+                        </button>
+                    </div>
                 </div>
             )}
+            {modalData && <RouteModal route={modalData} onClose={() => setModalData(null)} />}
         </div>
     );
 }
