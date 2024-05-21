@@ -4,7 +4,7 @@ import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 const LOCATIONS_URL = "https://m-route-backend.onrender.com/users/locations";
 const USERS_URL = "https://m-route-backend.onrender.com/users";
 const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com/users/route-plans";
-const GOOGLE_URL ="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+const GOOGLE_URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
 const containerStyle = {
   width: "100%",
@@ -195,7 +195,7 @@ const GetLocations = () => {
     if (foundLocation) {
       setSelectedLocation(foundLocation);
       setMapCenter({ lat: foundLocation.latitude, lng: foundLocation.longitude });
-      fetchStreetName(foundLocation.latitude, foundLocation.longitude)
+      handleMarkerClick(foundLocation); // Fetch street name when searching
     } else {
       setError("Merchandiser not found.");
       setTimeout(() => {
@@ -210,12 +210,11 @@ const GetLocations = () => {
     setStreetName(street);
   };
 
-
   const fetchStreetName = async (latitude, longitude) => {
     try {
       const response = await fetch(`${GOOGLE_URL}${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
       const data = await response.json();
-      if (data.status === "OK") {
+      if (data.status === "OK" && data.results[0]) {
         return data.results[0].formatted_address;
       } else {
         return "Unknown street/road";
@@ -225,9 +224,6 @@ const GetLocations = () => {
       return "Unknown street/road";
     }
   };
-  
-
-
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -278,7 +274,7 @@ const GetLocations = () => {
                   <p>Username: {selectedLocation.username}</p>
                   <p>Role: {selectedLocation.role}</p>
                   <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
-                  <p>Street: {streetName || "Unknown street/road"}</p>
+                  <p>Street: {streetName || "Unknown street"}</p>
                 </div>
               </InfoWindow>
             )}
@@ -290,6 +286,3 @@ const GetLocations = () => {
 }
 
 export default GetLocations;
-
-
-
