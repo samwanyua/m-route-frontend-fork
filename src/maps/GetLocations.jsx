@@ -11,8 +11,8 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 1.2921,
-  lng: 36.8219,
+  lat: -1.1213293,
+  lng: 37.0198416,
 };
 
 const GetLocations = () => {
@@ -48,8 +48,6 @@ const GetLocations = () => {
     } else {
       console.error('No user data found');
     }
-    
-    
   }, []);
 
 
@@ -77,15 +75,22 @@ const GetLocations = () => {
       const data = await response.json();
 
       if (data.status_code === 200) {
+        console.log(data.message)
         const merchandisersList = data.message.filter(manager => manager.manager_id === userId);
         setAssignedMerchandisers(merchandisersList.map(manager => manager.merchandiser_id));
 
-      } else {
-        setError(data.message || "Failed to get routes");
+      } else if (data.status_code === 404) {
+        setError(data.message);
+        setTimeout(() =>{
+          setError("")
+        }, 5000)
       }
 
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
+      setTimeout(() =>{
+        setError("")
+      }, 5000)
     }
   };
 
@@ -125,13 +130,18 @@ const GetLocations = () => {
           "Authorization": `Bearer ${token}`
         }
       });
+
       const data = await response.json();
 
       if (data.status_code === 200) {
+        console.log(data.message)
         setLocations(data.message);
 
-      } else {
-        setError(data.message || "Failed to fetch locations.");
+      } else if (data.status_code === 404) {
+        setError(data.message);
+        setTimeout(() =>{
+          setError("")
+        }, 5000)
       }
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
@@ -151,14 +161,21 @@ const GetLocations = () => {
 
 
       if (data.status_code === 200) {
+        console.log(data.message)
         const merchandisers = data.message.filter(user => user.role === "merchandiser" && user.status === "active");
         setUsers(merchandisers);
 
-      } else {
-        setError(data.message || "Failed to fetch users.");
+      } else if (data.status_code === 404) {
+        setError(data.message);
+        setTimeout(() =>{
+          setError("")
+        }, 5000)
       }
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
+      setTimeout(() =>{
+        setError("")
+      }, 5000)
     }
   };
 
