@@ -165,6 +165,40 @@ const MerchRoutePlans = () => {
         }))
     };
 
+    const fetchManagers = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+    
+            const response = await fetch("https://m-route-backend.onrender.com/users", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                // Assuming data contains an array of users
+                const users = data;
+                setManagers(users);
+            } else {
+                setError(data.message || "Failed to fetch users");
+                setTimeout(() => {
+                    setError("");
+                }, 5000);
+            }
+        } catch (error) {
+            console.error('Error fetching managers:', error);
+            setError("There was an error retrieving managers.");
+            setTimeout(() => {
+                setError("");
+            }, 5000);
+        }
+    };
+    
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8">Route Plans</h1>
@@ -224,7 +258,9 @@ const MerchRoutePlans = () => {
                                         required
                                     >
                                         <option value="">Select Manager</option>
-                                        {managerOptions}
+                                        {managers.map((manager, index) => (
+                                            <option key={index} value={manager}>{manager}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="mb-4">
