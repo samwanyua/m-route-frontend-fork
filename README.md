@@ -1,4 +1,4 @@
-<h1 align="center">Merch Mate</h1> :earth_africa:
+<h1 align="center">Merch Mate :earth_africa:</h1> 
 
 ## Table of Contents
 
@@ -40,15 +40,16 @@ npm start
 This will start the development server, and you can view the application in your browser at http://localhost:3000.
 
 ## Features
-- *User Authentication*: Secure login and registration for both merchandisers and managers.
-- *Route Planning*: Sales managers can assign and edit monthly route plans for merchandisers.
-- *GPS Tracking*: Real-time tracking of merchandiser locations displayed on Google Maps.
-- *Route Notifications*: Merchandisers receive their monthly route plans via email.
-- *Google Calendar Integration*: Merchandisers can view their daily route plans on a Google Calendar.
-- *GPS Control*: Merchandisers can switch off their GPS when they are off duty.
-- *Common Database*: Both the web app and mobile app use a common PostgreSQL database for data consistency.
-- *Modular Codebase*: The application is designed in a modular format to ensure independent operation of different modules.
-- *Comprehensive Testing*: The project includes unit tests and UI tests with a coverage of over 85%.
+
+- ***User Authentication***: Secure login and registration for both merchandisers and managers.
+- ***Route Planning***: Sales managers can assign and edit monthly route plans for merchandisers.
+- ***GPS Tracking***: Real-time tracking of merchandiser locations displayed on Google Maps.
+- ***Route Notifications***: Merchandisers receive their monthly route plans via email.
+- ***Google Calendar Integration***: Merchandisers can view their daily route plans on a Google Calendar.
+- ***GPS Control***: Merchandisers can switch off their GPS when they are off duty.
+- ***Common Database***: Both the web app and mobile app use a common PostgreSQL database for data consistency.
+- ***Modular Codebase***: The application is designed in a modular format to ensure independent operation of different modules.
+- ***Comprehensive Testing***: The project includes unit tests and UI tests with a coverage of over 85%.
 
 ## Contributing
 We welcome contributions from the community! To contribute:
