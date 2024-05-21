@@ -53,13 +53,21 @@ const GetLocations = () => {
 
   useEffect(() =>{
 
-    fetchUsersData();
-    getRoutePlans();
-    const intervalId = setInterval(() => {
-      fetchLatestLocations();
-    }, 20000);
+    if (token){
+      fetchUsersData();
+      getRoutePlans();
 
-    return () => clearInterval(intervalId);
+      const intervalId = setInterval(() => {
+        fetchLatestLocations();
+      }, 20000);
+      return () => clearInterval(intervalId);
+
+    }else{
+      setError("Loading...");
+      setTimeout(() =>{
+        setError("")
+      }, 5000)
+    }
   }, [])
 
 
