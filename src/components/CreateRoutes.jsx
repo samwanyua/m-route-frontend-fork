@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
-const MERCHANDISERS_URL = "https://m-route-backend.onrender.com/users";
+const MERCHANDISERS_URL = "https://m-route-backend.onrender.com/users"; // Add the URL for fetching merchandisers
 
 const CreateRoutes = () => {
     const [dateRange, setDateRange] = useState({
@@ -41,12 +41,7 @@ const CreateRoutes = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Process merchandisers to include first and last names
-                const merchandisersWithFullName = data.merchandisers.map(merchandiser => ({
-                    ...merchandiser,
-                    fullName: `${merchandiser.first_name} ${merchandiser.last_name}`
-                }));
-                setMerchandisers(merchandisersWithFullName);
+                setMerchandisers(data.merchandisers);
             } else {
                 setMessage(data.message);
                 setTimeout(() => {
@@ -64,7 +59,7 @@ const CreateRoutes = () => {
 
     const merchandiserOptions = useMemo(() => (
         merchandisers.map(merchandiser => (
-            <option key={merchandiser.id} value={merchandiser.id}>{merchandiser.fullName}</option>
+            <option key={merchandiser.id} value={merchandiser.id}>{merchandiser.name}</option>
         ))
     ), [merchandisers]);
 
@@ -210,7 +205,7 @@ const CreateRoutes = () => {
                             </div>
                             <div className="mt-4">
                                 <label htmlFor="instructions" className="font-bold mb-1 block">Instructions</label>
-                                <textarea
+                                                                    <textarea
                                     name="instructions"
                                     id="message"
                                     rows={4}
@@ -252,3 +247,5 @@ const CreateRoutes = () => {
 };
 
 export default CreateRoutes;
+
+                               
