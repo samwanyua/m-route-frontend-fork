@@ -222,7 +222,6 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         setLoading(false);
         setError(data.message);
         setTimeout(() => {
-          navigate('/signup');
         }, 2000);
         setTimeout(() => {
           setError("");

@@ -101,6 +101,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/manageusers" element={<ManageUsers />} />
+                  <Route path="/signup" element={<Signup />} />
                   {/* Add admin-specific routes here */}
                 </>
               )}
@@ -115,7 +116,7 @@ function App() {
             path="/login"
             element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />}
           />
-          <Route path="/signup" element={<Signup />} />
+          
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       )}
