@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from "react";
 import moment from 'moment';
 
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
-const NOTIFICATIONS_URL = "https://m-route-backend.onrender.com/users/send-notifications"; // Use this URL to update status
+const NOTIFICATIONS_URL = "https://m-route-backend.onrender.com/users/send-notifications"; // Use this URL to update statu
+const USERS_URL = "https://m-route-backend.onrender.com/users"; 
+
 
 const MerchRoutePlans = () => {
     const [routePlans, setRoutePlans] = useState([]);
@@ -13,11 +15,11 @@ const MerchRoutePlans = () => {
     const [showForm, setShowForm] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState("");
     const [notificationsData, setNotificationsData] = useState({})
-
+    const [managers, setManagers] = useState([]);
+    const [message, setMessage] = useState("");
 
 
     useEffect(() => {
-
         const accessToken = localStorage.getItem("access_token");
         const userData = localStorage.getItem("user_data");
         setToken(JSON.parse(accessToken));
@@ -26,52 +28,93 @@ const MerchRoutePlans = () => {
         }
     }, []);
 
-
     useEffect(() => {
         if (token && userId) {
             fetchData();
         }
     }, [token, userId]);
 
-    
-    const fetchData = async () => {
+    useEffect(() => {
+        if (token) {
+            fetchUsers();
+        }
+    }, [token]);
 
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch(USERS_URL, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.status_code === 200) {
+                setManagers(data.message.filter(user => user.role === 'manager' && user.status === 'active'));
+            } else if(data.status_code === 404) {
+                setMessage(data.message);
+                setTimeout(() => {
+                    setMessage("");
+                }, 5000);
+            }
+        } catch (error) {
+            console.log("Error fetching users:", error);
+            setMessage("Failed to fetch users, please try again.");
+            setTimeout(() => {
+                setMessage("");
+            }, 5000);
+        }
+    };
+
+    const managerOptions = useMemo(() => (
+        managers.map(manager => (
+            <option key={manager.id} value={manager.staff_no}>
+                {manager.first_name} {manager.last_name}
+            </option>
+        ))
+    ), [managers]);
+
+    
+
+    const fetchData = async () => {
         try {
             const response = await fetch(`${ROUTES_URL}/${userId}`, {
-            method: 'GET',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
             });
-             const data = await response.json();
+            const data = await response.json();
 
-             if (data.successful){
+            if (data.successful) {
                 setRoutePlans(data.message);
 
-             }else{
+            } else {
                 setError(data.message);
-                setTimeout(() =>{
+                setTimeout(() => {
                     setError("");
                 }, 5000)
-             }
+            }
 
         } catch (error) {
             console.error('Error fetching route plans:', error);
             setError("There was an error retrieving your routes.");
-            setTimeout(() =>{
+            setTimeout(() => {
                 setError("");
             }, 5000)
         }
     };
-    
 
     const handleStatusChange = (planId, status, facility) => {
         setSelectedPlan({ planId, status, facility });
         setShowForm(true);
     };
 
-    const handleSubmit = async event =>{
+    const handleSubmit = async event => {
         event.preventDefault();
 
         const currentTime = new Date();
@@ -89,7 +132,7 @@ const MerchRoutePlans = () => {
             status: selectedPlan.status,
             merchandiser_id: userId,
             facility: selectedPlan.facility
-        }
+        };
 
         try {
             const response = await fetch(NOTIFICATIONS_URL, {
@@ -103,7 +146,7 @@ const MerchRoutePlans = () => {
 
             const data = await response.json();
 
-            if (data.successful){
+            if (data.successful) {
                 setNotification(data.message);
                 setTimeout(() => {
                     setNotification("");
@@ -112,37 +155,32 @@ const MerchRoutePlans = () => {
                 setSelectedPlan("");
                 setNotificationsData({});
 
-            }else{
+            } else {
                 setError(data.message);
-                setTimeout(() =>{
+                setTimeout(() => {
                     setError("");
                 }, 5000)
             }
-            
+
         } catch (error) {
-            
+
         }
-    }
+    };
 
-    const handleSendNotification = event =>{
+    const handleSendNotification = event => {
 
-        const {name, value} = event.target;
+        const { name, value } = event.target;
 
-        if (name === "staff_no" && value < 0){
+        if (name === "staff_no" && value < 0) {
             alert("Please enter a positive value");
             event.target.value = Math.max(0, value);
             return;
         }
-        setNotificationsData(prev =>({
+        setNotificationsData(prev => ({
             ...prev,
-            [name] : value
+            [name]: value
         }))
-
-
-    }
-    
-
-    
+    };
 
     return (
         <div className="container mx-auto p-4">
@@ -174,82 +212,82 @@ const MerchRoutePlans = () => {
                                     <td className="py-2 px-4 border-b text-center">
                                         <button
                                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-                                            onClick={() => handleStatusChange(plan.id, plan.status, instruction.facility)}
-                                        >
-                                            Send Notification
-                                        </button>
-                                    </td>
-                                </tr>
-                            ));
-                        })}
-                    </tbody>
-                </table>
-            </div>
-
-            {showForm && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                    <div className="bg-white p-4 rounded shadow-lg w-96">
-                        <h2 className="text-xl font-bold mb-4">Update Status</h2>
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="staffNumber">Staff Number</label>
-                                <input
-                                    id="staffNumber"
-                                    name="staff_no"
-                                    type="number"
-                                    value={notificationsData.staff_no}
-                                    onChange={handleSendNotification}
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="content">Content</label>
-                                <textarea
-                                    id="content"
-                                    name="content"
-                                    value={notificationsData.content}
-                                    onChange={handleSendNotification}
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    required
-                                ></textarea>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
-                                <select
-                                    value={selectedPlan.status}
-                                    onChange={(e) => setSelectedPlan({ ...selectedPlan, status: e.target.value })}
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                >
-                                    <option value="pending">Pending</option>
-                                    <option value="complete">Complete</option>
-                                </select>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <button
-                                    type="submit"
-                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                >
-                                    Submit
-                                </button>
-                                <button
-                                    type="button"
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                    onClick={() => setShowForm(false)}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                                            onClick={() => handleStatusChange(plan.id, plan.status, instruction.facility
+                                            )}
+                                            >
+                                                Send Notification
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ));
+                            })}
+                        </tbody>
+                    </table>
                 </div>
-            )}
-        </div>
-    );
-};
-
-export default MerchRoutePlans;
-
-
-
-
+    
+                {showForm && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                        <div className="bg-white p-4 rounded shadow-lg w-96">
+                            <h2 className="text-xl font-bold mb-4">Update Status</h2>
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="managerSelect">Select Manager</label>
+                                    <select
+                                        id="managerSelect"
+                                        name="staff_no"
+                                        value={notificationsData.staff_no}
+                                        onChange={handleSendNotification}
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        required
+                                    >
+                                        <option value="">Select a manager</option>
+                                            {managerOptions}
+                                    </select>
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="content">Content</label>
+                                    <textarea
+                                        id="content"
+                                        name="content"
+                                        value={notificationsData.content}
+                                        onChange={handleSendNotification}
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        required
+                                    ></textarea>
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
+                                    <select
+                                        value={selectedPlan.status}
+                                        onChange={(e) => setSelectedPlan({ ...selectedPlan, status: e.target.value })}
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    >
+                                        <option value="pending">Pending</option>
+                                        <option value="complete">Complete</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <button
+                                        type="submit"
+                                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                        Submit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                        onClick={() => setShowForm(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
+    
+    export default MerchRoutePlans;
+    
