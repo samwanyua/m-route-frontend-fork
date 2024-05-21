@@ -172,14 +172,14 @@ const Login = ({ setAuthorized, setRoleCheck, setAdmin, setUserData }) => {
         setPassword("");
         setEmail("");
         setAuthorized(true);
-        navigate('/');
+        navigate('/myroutes');
 
         if (data.message.role === "manager") {
           setRoleCheck(true);
-          
+          navigate('/routes')
         }else if(data.message.role === "admin"){
           setAdmin(true);
-  
+          navigate('/manageusers')
         }
   
 
