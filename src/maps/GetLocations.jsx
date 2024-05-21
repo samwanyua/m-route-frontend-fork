@@ -202,6 +202,7 @@ const GetLocations = () => {
                 <Marker
                   key={location.id}
                   position={{ lat: location.latitude, lng: location.longitude }}
+                  label={location.firstName} 
                   onClick={() => setSelectedLocation(location)}
                 />
               ))}
@@ -227,5 +228,3 @@ const GetLocations = () => {
 }
 
 export default GetLocations;
-
-
