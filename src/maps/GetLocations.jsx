@@ -4,6 +4,7 @@ import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 const LOCATIONS_URL = "https://m-route-backend.onrender.com/users/locations";
 const USERS_URL = "https://m-route-backend.onrender.com/users";
 const ROUTE_PLANS_URL = "https://m-route-backend.onrender.com/users/route-plans";
+const GOOGLE_URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
 const containerStyle = {
   width: "100%",
@@ -11,8 +12,8 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 1.2921,
-  lng: 36.8219,
+  lat: -1.1213293,
+  lng: 37.0198416,
 };
 
 const GetLocations = () => {
@@ -24,53 +25,80 @@ const GetLocations = () => {
   const [userId, setUserId] = useState('');
   const [assignedMerchandisers, setAssignedMerchandisers] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [mapCenter, setMapCenter] = useState(center); 
+  const [streetName, setStreetName] = useState("");
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-    const userData = localStorage.getItem("user_data");
+    const accessToken = localStorage.getItem('access_token');
+    const user = localStorage.getItem('user_data');
 
-    if (!accessToken || !userData) {
-      setError("Access token or user data is missing. Please log in.");
-      return;
-    }
-
-    try {
+    if (accessToken) {
       setToken(JSON.parse(accessToken));
-      setUserId(JSON.parse(userData).id);
-    } catch (e) {
-      setError("Failed to parse user data.");
-      return;
+    } else {
+      console.log("No access token.");
     }
 
-    const intervalId = setInterval(() => {
-      fetchLatestLocations();
-      fetchUsersData();
-    }, 200000);
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser && parsedUser.id) {
+        setUserId(parsedUser.id);
+      } else {
+        console.error('Invalid user data');
+      }
+    } else {
+      console.error('No user data found');
+    }
+  }, []);
 
-    fetchLatestLocations();
-    fetchUsersData();
-    getRoutePlans();
+  useEffect(() => {
+    if (token) {
+      fetchData();
+      const intervalId = setInterval(fetchLatestLocations, 3 * 60 * 1000); 
+      return () => clearInterval(intervalId); 
+    }
+  }, [token]);
 
-    return () => clearInterval(intervalId);
-  }, [token, userId]);
-  console.log(token)
-  console.log(userId)
+  const fetchData = async () => {
+    try {
+      await fetchUsersData();
+      await getRoutePlans();
+      await fetchLatestLocations();
+      setIsLoading(false);
+    } catch (error) {
+      setError("System experiencing a problem, please try again later.");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
+
   const getRoutePlans = async () => {
     try {
       const response = await fetch(ROUTE_PLANS_URL, {
         method: "GET",
-        headers: { "Authorization": `Bearer ${token}` }
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
       const data = await response.json();
 
       if (data.status_code === 200) {
+        console.log("Route plans:", data.message);
         const merchandisersList = data.message.filter(manager => manager.manager_id === userId);
         setAssignedMerchandisers(merchandisersList.map(manager => manager.merchandiser_id));
-      } else {
-        setError(data.message || "Failed to get routes");
+      } else if (data.status_code === 404) {
+        setError(data.message);
+        setTimeout(() => {
+          setError("");
+        }, 5000);
       }
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
     }
   };
 
@@ -100,23 +128,28 @@ const GetLocations = () => {
     }).filter(userLocation => userLocation !== null);
 
     setUserLocations(matchedUserLocations);
-  }, [users, locations]);
+    console.log("User locations", userLocations);
+  }, [locations, users]);
 
   const fetchLatestLocations = async () => {
     try {
       const response = await fetch(LOCATIONS_URL, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+          "Authorization": `Bearer ${token}`
         }
       });
+
       const data = await response.json();
-      console.log(data)
+
       if (data.status_code === 200) {
+        console.log("Latest locations", data.message);
         setLocations(data.message);
-      } else {
-        setError(data.message || "Failed to fetch locations.");
+      } else if (data.status_code === 404) {
+        setError(data.message);
+        setTimeout(() => {
+          setError("");
+        }, 5000);
       }
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
@@ -128,58 +161,126 @@ const GetLocations = () => {
       const response = await fetch(USERS_URL, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
+          "Authorization": `Bearer ${token}`
         }
       });
+
       const data = await response.json();
-      console.log(data)
+
       if (data.status_code === 200) {
+        console.log("Users data", data.message);
         const merchandisers = data.message.filter(user => user.role === "merchandiser" && user.status === "active");
         setUsers(merchandisers);
-      } else {
-        setError(data.message || "Failed to fetch users.");
+      } else if (data.status_code === 404) {
+        setError(data.message);
+        setTimeout(() => {
+          setError("");
+        }, 5000);
       }
     } catch (error) {
       setError("System experiencing a problem, please try again later.");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
+
+  const handleSearch = () => {
+    const foundLocation = userLocations.find(
+      (location) => 
+        location.firstName.toLowerCase() === searchTerm.toLowerCase() ||
+        location.lastName.toLowerCase() === searchTerm.toLowerCase() ||
+        `${location.firstName.toLowerCase()} ${location.lastName.toLowerCase()}` === searchTerm.toLowerCase()
+    );
+    if (foundLocation) {
+      setSelectedLocation(foundLocation);
+      setMapCenter({ lat: foundLocation.latitude, lng: foundLocation.longitude });
+      handleMarkerClick(foundLocation); // Fetch street name when searching
+    } else {
+      setError("Merchandiser not found.");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
+
+  const handleMarkerClick = async (location) => {
+    setSelectedLocation(location);
+    const street = await fetchStreetName(location.latitude, location.longitude);
+    setStreetName(street);
+  };
+
+  const fetchStreetName = async (latitude, longitude) => {
+    try {
+      const response = await fetch(`${GOOGLE_URL}${latitude},${longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
+      const data = await response.json();
+      if (data.status === "OK" && data.results[0]) {
+        return data.results[0].formatted_address;
+      } else {
+        return "Unknown street/road";
+      }
+    } catch (error) {
+      console.error("Error fetching street name:", error);
+      return "Unknown street/road";
     }
   };
 
   return (
     <div className="flex flex-col h-screen w-full">
       {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-      <div className="flex-grow">
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={10}
+      <div className="flex justify-center mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Enter merchandiser's first, last or both names"
+          className="p-2 border border-gray-300 rounded mr-2"
+        />
+        <button
+          onClick={handleSearch}
+          className="p-2 bg-blue-500 text-white rounded"
         >
-          {userLocations
-            .filter(location => assignedMerchandisers.includes(location.id))
-            .filter(location => isRecentTimestamp(location.timestamp))
-            .map(location => (
-              <Marker
-                key={location.id}
-                position={{ lat: location.latitude, lng: location.longitude }}
-                onClick={() => setSelectedLocation(location)}
-              />
-            ))}
-
-          {selectedLocation && (
-            <InfoWindow
-              position={{ lat: selectedLocation.latitude, lng: selectedLocation.longitude }}
-              onCloseClick={() => setSelectedLocation(null)}
-            >
-              <div className="p-2 text-sm">
-                <h4 className="font-bold">{selectedLocation.firstName} {selectedLocation.lastName}</h4>
-                <p>Username: {selectedLocation.username}</p>
-                <p>Role: {selectedLocation.role}</p>
-                <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
+          Search
+        </button>
       </div>
+      {isLoading ? (
+        <p className="text-center">Loading...</p>
+      ) : (
+        <div className="flex-grow">
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={mapCenter}
+            zoom={10}
+          >
+            {userLocations
+              .filter(location => assignedMerchandisers.includes(location.id))
+              .filter(location => isRecentTimestamp(location.timestamp))
+              .map(location => (
+                <Marker
+                  key={location.id}
+                  position={{ lat: location.latitude, lng: location.longitude }}
+                  label={location.firstName} 
+                  onClick={() => handleMarkerClick(location)}
+                />
+              ))}
+
+            {selectedLocation && (
+              <InfoWindow
+                position={{ lat: selectedLocation.latitude, lng: selectedLocation.longitude }}
+                onCloseClick={() => setSelectedLocation(null)}
+              >
+                <div className="p-2 text-sm">
+                  <h4 className="font-bold">{selectedLocation.firstName} {selectedLocation.lastName}</h4>
+                  <p>Username: {selectedLocation.username}</p>
+                  <p>Role: {selectedLocation.role}</p>
+                  <p>Last update: {new Date(selectedLocation.timestamp).toLocaleString()}</p>
+                  <p>Street: {streetName || "Unknown street"}</p>
+                </div>
+              </InfoWindow>
+            )}
+          </GoogleMap>
+        </div>
+      )}
     </div>
   );
 }

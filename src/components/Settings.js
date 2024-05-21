@@ -65,13 +65,14 @@ const Settings = ({ setAuthorized }) => {
     if (locateMerchandiser) {
       intervalId = setInterval(() => {
         getGeolocation();
-      }, 300000); // 5 minutes
+      }, 5000); // 5 minutes
     }
 
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
   }, [locateMerchandiser]);
+
 
   const getGeolocation = () => {
     if (!navigator.geolocation) {
@@ -144,6 +145,8 @@ const Settings = ({ setAuthorized }) => {
       };
     });
   };
+
+  
 
   const logoutUser = async () => {
     try {
@@ -251,7 +254,7 @@ const Settings = ({ setAuthorized }) => {
 
     <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start min-h-screen py-16 mb-36 gap-8 lg:gap-36">
       <form className="flex flex-col items-center justify-start gap-8 p-6 md:p-10 lg:p-16 xl:p-20 max-w-[90%] sm:max-w-[80%] md:max-w-[70%] lg:max-w-[50%] xl:max-w-[40%] shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] bg-white rounded-xl">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-darkslateblue-300 mb-4">Profile settings</h1>
+        <h1 className="text-2xl md:text-2xl lg:text-2xl  text-center font-bold text-darkslateblue-300 mb-4">Profile settings</h1>
         <div className="w-[120px] h-[120px] rounded-full flex items-center justify-center pt-[84px] pb-2 bg-[url('/public/39@2x.png')] bg-cover bg-no-repeat bg-[top]"></div>
         <h2>Change your password below:</h2>
         <input type="email" className="input-field" placeholder="Email" value={email} readOnly />
@@ -386,7 +389,7 @@ const Settings = ({ setAuthorized }) => {
           </div>
         </div>
       </div>
-      <button className="text-white bg-red-600 hover:bg-red-700 px-6 py-3 rounded-md" onClick={logoutUser}>
+      <button className="text-white bg-gray-900 hover:bg-gray-800 px-8 py-3 rounded-full mr-4" onClick={logoutUser}>
         Logout
       </button>
     </div>
@@ -395,3 +398,9 @@ const Settings = ({ setAuthorized }) => {
 };
 
 export default Settings;
+
+
+
+
+
+

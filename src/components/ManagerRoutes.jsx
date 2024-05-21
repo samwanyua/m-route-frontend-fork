@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
+import { FaSearch } from "react-icons/fa";
 import RouteModal from "./RouteModal";
-import { FaSearch } from 'react-icons/fa';
 import { AiOutlineCaretRight, AiOutlineCaretLeft } from "react-icons/ai";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 
@@ -20,7 +20,7 @@ const ManagerRoutes = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const routesPerPage = 12;
 
-    // Get token and user ID from local storage
+
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
         const userData = localStorage.getItem("user_data");
@@ -61,6 +61,7 @@ const ManagerRoutes = () => {
         return filtered;
     };
 
+
     const filteredRoutesByStatus = (routes) => {
         return routes.filter(route => {
             if (filter === 'all') return true;
@@ -81,12 +82,14 @@ const ManagerRoutes = () => {
     const { displayedRoutes, totalPages, totalFilteredRoutes } = getDisplayedRoutes();
 
     const handleComplete = async (routeId) => {
+
         try {
             const response = await fetch(`${MODIFY_ROUTE}/${routeId}`, {
                 method: "PUT",
                 headers: { "Authorization": `Bearer ${token}` }
             });
             const data = await response.json();
+
 
             setErrorMessage(data.message);
             if (data.status_code === 201) getManagerRoutes();
@@ -98,11 +101,13 @@ const ManagerRoutes = () => {
     };
 
     const handleDeleteRoute = async (routeId) => {
+
         try {
             const response = await fetch(`${DELETE_ROUTE_URL}/${routeId}`, {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` }
             });
+
     
             if (response.ok) {
                 setRoutes(prevRoutes => prevRoutes.filter(route => route.id !== routeId));
@@ -118,6 +123,7 @@ const ManagerRoutes = () => {
         }
     };
     
+
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -136,12 +142,16 @@ const ManagerRoutes = () => {
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white flex flex-col min-h-screen">
             <div className="flex justify-between items-center mb-4">
+            <FaSearch className="text-gray-900 mr-2" />
+
                 <div className="relative w-full">
+
                     <input
                         type="text"
                         placeholder="Search by merchandiser name..."
                         value={searchTerm}
                         onChange={handleSearch}
+
                         className="border border-gray-300 rounded pl-10 pr-3 py-1 w-full"
                     />
                     <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
@@ -157,6 +167,7 @@ const ManagerRoutes = () => {
                 </select>
             </div>
             <p className="text-gray-600 mb-4">Showing {displayedRoutes.length} of {totalFilteredRoutes} routes</p>
+
             {isLoading ? (
                 <p className="text-center text-gray-600 flex-grow">Loading...</p>
             ) : errorMessage ? (

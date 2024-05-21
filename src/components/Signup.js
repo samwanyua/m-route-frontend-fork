@@ -27,13 +27,32 @@ const Modal = ({ message, onClose }) => {
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button onClick={onClose} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
-              Try Again
+              Continue
             </button>
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+
+const generatePassword = () => {
+  const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+  const numbers = '0123456789';
+  const specialCharacters = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+  
+  const getRandomChar = (str) => str[Math.floor(Math.random() * str.length)];
+  
+  const password = [
+    getRandomChar(upperCaseLetters),
+    ...Array.from({ length: 4 }, () => getRandomChar(lowerCaseLetters)),
+    ...Array.from({ length: 2 }, () => getRandomChar(numbers)),
+    getRandomChar(specialCharacters),
+  ];
+  
+  return password.sort(() => Math.random() - 0.5).join('');
 };
 
 const Signup = () => {
@@ -43,7 +62,7 @@ const Signup = () => {
     last_name: "",
     national_id_no: "",
     staff_no: "",
-    password: ""
+    user_type: ""
   });
   const [emailUsername, setEmailUsername] = useState({
     email: "",
@@ -51,7 +70,6 @@ const Signup = () => {
   });
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailUsername = e => {
@@ -81,9 +99,10 @@ const Signup = () => {
       last_name: formData.last_name,
       national_id_no: formData.national_id_no,
       staff_no: formData.staff_no,
-      password: formData.password,
       email: emailUsername.email,
-      username: emailUsername.username
+      username: emailUsername.username,
+      password: generatePassword(),
+      user_type: formData.user_type
     };
 
     if (formData.middle_name) {
@@ -91,6 +110,7 @@ const Signup = () => {
     }
 
     try {
+      console.log(signupData);
       const response = await fetch(SIGNUP_URL, {
         method: 'POST',
         headers: {
@@ -112,7 +132,7 @@ const Signup = () => {
           last_name: "",
           national_id_no: "",
           staff_no: "",
-          password: ""
+          user_type: ""
         });
         setEmailUsername({
           email: "",
@@ -136,9 +156,6 @@ const Signup = () => {
     setMessage(null);
   };
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisibility(!passwordVisibility);
-  };
 
   return (
     <>
@@ -150,7 +167,7 @@ const Signup = () => {
       {message && <Modal message={message} onClose={closeModal} />}
       <div className="flex justify-center items-center min-h-screen bg-gray-900">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg shadow-md p-8">
-          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Sign up for an account</h2>
+          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Setup New User Account</h2>
           <form className="mt-8 space-y-6" onSubmit={handleSignup}>
             <div>
               <label htmlFor="first_name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -255,39 +272,29 @@ const Signup = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                Password
+              <label htmlFor="user_type" className="block text-sm font-medium leading-6 text-gray-900">
+                User Type
               </label>
-              <div className="relative mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type={passwordVisibility ? "text" : "password"}
-                  value={formData.password}
-                  autoComplete="current-password"
-                  required
-                  onChange={handleChange}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                  <button type="button" onClick={togglePasswordVisibility} className="focus:outline-none">
-                    {passwordVisibility ? <AiFillEyeInvisible /> : <AiFillEye />}
-                  </button>
-                </div>
-              </div>
+              <select
+                id="user_type"
+                name="user_type"
+                value={formData.user_type}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
+              >
+                <option value="" disabled>Select user type</option>
+                <option value="manager">Manager</option>
+                <option value="merchandiser">Merchandiser</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
             <div>
               <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Sign Up
+                Register User
               </button>
             </div>
           </form>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Log in
-            </Link>
-          </p>
         </div>
       </div>
     </>
@@ -295,3 +302,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
+

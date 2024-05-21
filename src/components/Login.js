@@ -39,8 +39,16 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
       const userDataObj = JSON.parse(userData);
       setAuthorized(true);
       setUserData(userDataObj);
+
       if (userDataObj.role === "manager") {
-        setRoleCheck(true);
+        setRoleCheck(1);
+
+      }else if (userDataObj.role === "merchandiser"){
+        setRoleCheck(2);
+
+      }else if(userDataObj.role === "admin"){
+        setRoleCheck(3);
+
       }
       if (previousRoute) {
         navigate("/");
@@ -170,9 +178,16 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         navigate('/');
 
         if (data.message.role === "manager") {
-          setRoleCheck(true);
+          setRoleCheck(1);
           setAuthorized(true);
           
+        }else if (data.message === "merchandiser"){
+          setRoleCheck(2);
+          setAuthorized(true);
+
+        }else if(data.message === "admin"){
+          setRoleCheck(3);
+          setAuthorized(true);
         }
 
         const userData = {
@@ -207,7 +222,6 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         setLoading(false);
         setError(data.message);
         setTimeout(() => {
-          navigate('/signup');
         }, 2000);
         setTimeout(() => {
           setError("");
@@ -300,12 +314,6 @@ const Login = ({ setAuthorized, setRoleCheck, setUserData }) => {
         {error && (
           <div className="text-red-500 mt-2 text-sm text-center">{error}</div>
         )}
-        <p className="text-gray-900 text-sm mt-2">
-          New here?{" "}
-          <Link to="/signup" className="underline">
-            Create an account
-          </Link>
-        </p>
         <Link to="/forgot-password" className="text-sm text-gray-900 underline">
           Forgot password?
         </Link>
