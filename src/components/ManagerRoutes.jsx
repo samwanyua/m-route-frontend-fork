@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FaSearch } from "react-icons/fa";
 import RouteModal from "./RouteModal";
 
 const MANAGER_ROUTES_URL = "https://m-route-backend.onrender.com/users/manager-routes";
@@ -12,15 +13,11 @@ const ManagerRoutes = () => {
     const [token, setToken] = useState("");
     const [userId, setUserId] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    // const [expandedRoutes, setExpandedRoutes] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
     const [modalData, setModalData] = useState(null);
     const [filter, setFilter] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
     const routesPerPage = 12;
-
-
-
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
@@ -91,16 +88,13 @@ const ManagerRoutes = () => {
         if (filter === 'all') return true;
         return filter === 'complete' ? route.status.toLowerCase() === 'complete' : route.status.toLowerCase() !== 'complete';
     });
-    
-    const filteredAndSearchedRoutes = searchTerm ? filteredRoutesByStatus.filter(route => route.merchandiser_name.toLowerCase().includes(searchTerm.toLowerCase())) : filteredRoutesByStatus;
-    
-    // Calculate the total number of pages
-    const totalPages = Math.ceil(filteredAndSearchedRoutes.length / routesPerPage);
 
-    // Get the routes for the current page
+    const filteredAndSearchedRoutes = searchTerm ? filteredRoutesByStatus.filter(route => route.merchandiser_name.toLowerCase().includes(searchTerm.toLowerCase())) : filteredRoutesByStatus;
+
+    const totalPages = Math.ceil(filteredAndSearchedRoutes.length / routesPerPage);
     const displayedRoutes = filteredAndSearchedRoutes.slice((currentPage - 1) * routesPerPage, currentPage * routesPerPage);
 
-    const handleComplete = async routeId =>{
+    const handleComplete = async routeId => {
         try {
             const response = await fetch(`${MODIFY_ROUTE}/${routeId}`, {
                 method: "PUT",
@@ -111,32 +105,29 @@ const ManagerRoutes = () => {
 
             const data = await response.json();
 
-            if (data.status_code === 201){
+            if (data.status_code === 201) {
                 setErrorMessage(data.message);
-                setTimeout(() =>{
+                setTimeout(() => {
                     setErrorMessage("")
-                }, 5000)
+                }, 5000);
                 getManagerRoutes();
-
-            }else if (data.status_code === 500){
-                console.log(data.message)
-                setErrorMessage("Failed to complete the route the route")
-                setTimeout(() =>{
-                    setErrorMessage("")
-                }, 5000)
+            } else if (data.status_code === 500) {
+                console.log(data.message);
+                setErrorMessage("Failed to complete the route");
+                setTimeout(() => {
+                    setErrorMessage("");
+                }, 5000);
             }
-            
         } catch (error) {
-            console.log(error)
-            setErrorMessage("There was an error completing the task")
-            setTimeout(() =>{
-                setErrorMessage("")
-            }, 5000)
+            console.log(error);
+            setErrorMessage("There was an error completing the task");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 5000);
         }
-    }
+    };
 
-
-    const handleDeleteRoute = async routeId =>{
+    const handleDeleteRoute = async routeId => {
         try {
             const response = await fetch(`${DELETE_ROUTE_URL}/${routeId}`, {
                 method: "DELETE",
@@ -147,36 +138,26 @@ const ManagerRoutes = () => {
 
             const data = await response.json();
 
-            if (response.ok){
+            if (response.ok) {
                 setErrorMessage(data.message);
                 getManagerRoutes();
-                setTimeout(() =>{
-                    setErrorMessage("")
-                }, 5000)
-
-            }else {
+                setTimeout(() => {
+                    setErrorMessage("");
+                }, 5000);
+            } else {
                 setErrorMessage(data.message);
-                setTimeout(() =>{
-                    setErrorMessage("")
-                }, 5000)
-
+                setTimeout(() => {
+                    setErrorMessage("");
+                }, 5000);
             }
-            
         } catch (error) {
-            console.log(error)
-            setErrorMessage("There was an issue deleting the route plan")
-            setTimeout(() =>{
-                setErrorMessage("")
-            }, 5000)
+            console.log(error);
+            setErrorMessage("There was an issue deleting the route plan");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 5000);
         }
-    }
-
-    // const toggleInstructions = routeId => {
-    //     setExpandedRoutes(prevState => ({
-    //         ...prevState,
-    //         [routeId]: !prevState[routeId]
-    //     }));
-    // };
+    };
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -189,24 +170,27 @@ const ManagerRoutes = () => {
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
             <div className="flex justify-between items-center mb-4">
-                <input
-                    type="text"
-                    placeholder="Search by merchandiser name..."
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    className="border border-gray-300 rounded px-3 py-1 w-full"
-                />
-                <select
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                    className="ml-4 border border-gray-300 rounded px-3 py-1"
-                >
-                    <option value="all">All</option>
-                    <option value="complete">Complete</option>
-                    <option value="pending">Pending</option>
-                </select>
+                <div className="mb-4 flex items-center border border-gray-300 rounded px-3 py-1 w-2/3">
+                    <FaSearch className="text-gray-900 mr-2" />
+                    <input
+                        type="text"
+                        placeholder="Search by merchandiser name..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        className="flex-grow outline-none"
+                    />
+                    <select
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="ml-4 border border-gray-300 rounded px-3 py-1"
+                    >
+                        <option value="all">All</option>
+                        <option value="complete">Complete</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                <p className="text-gray-600 mb-4">Showing {displayedRoutes.length} of {filteredAndSearchedRoutes.length} routes</p>
             </div>
-            <p className="text-gray-600 mb-4">Showing {displayedRoutes.length} of {filteredAndSearchedRoutes.length} routes</p>
             {isLoading ? (
                 <p className="text-center text-gray-600">Loading...</p>
             ) : errorMessage ? (
@@ -255,15 +239,6 @@ const ManagerRoutes = () => {
             {modalData && <RouteModal route={modalData} onClose={() => setModalData(null)} />}
         </div>
     );
-    
-    
-    
-    
 }
 
 export default ManagerRoutes;
-
-
-
-
-
