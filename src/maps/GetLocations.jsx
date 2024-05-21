@@ -57,7 +57,7 @@ const GetLocations = () => {
     getRoutePlans();
     
     return () => clearInterval(intervalId);
-  }, [token, userId]);
+  }, []);
 
 
 
