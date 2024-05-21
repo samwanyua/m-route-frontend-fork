@@ -132,7 +132,7 @@ const Signup = () => {
           last_name: "",
           national_id_no: "",
           staff_no: "",
-          role: ""
+          user_type: ""
         });
         setEmailUsername({
           email: "",
