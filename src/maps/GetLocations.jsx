@@ -25,8 +25,8 @@ const GetLocations = () => {
   const [assignedMerchandisers, setAssignedMerchandisers] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(""); // Add searchTerm state
-  const [mapCenter, setMapCenter] = useState(center); // Add mapCenter state for dynamic centering
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [mapCenter, setMapCenter] = useState(center); 
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
@@ -53,6 +53,8 @@ const GetLocations = () => {
   useEffect(() => {
     if (token) {
       fetchData();
+      const intervalId = setInterval(fetchLatestLocations, 3 * 60 * 1000); 
+      return () => clearInterval(intervalId); 
     }
   }, [token]);
 
@@ -183,7 +185,10 @@ const GetLocations = () => {
 
   const handleSearch = () => {
     const foundLocation = userLocations.find(
-      (location) => location.firstName.toLowerCase() === searchTerm.toLowerCase()
+      (location) => 
+        location.firstName.toLowerCase() === searchTerm.toLowerCase() ||
+        location.lastName.toLowerCase() === searchTerm.toLowerCase() ||
+        `${location.firstName.toLowerCase()} ${location.lastName.toLowerCase()}` === searchTerm.toLowerCase()
     );
     if (foundLocation) {
       setSelectedLocation(foundLocation);
@@ -204,7 +209,7 @@ const GetLocations = () => {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Enter merchandiser's first name"
+          placeholder="Enter merchandiser's first, last or both names"
           className="p-2 border border-gray-300 rounded mr-2"
         />
         <button
