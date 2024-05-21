@@ -73,20 +73,6 @@ const Settings = ({ setAuthorized }) => {
     };
   }, [locateMerchandiser]);
 
-  // const handleSendLocationToggle = () => {
-  //   setNotifications((prev) => {
-  //     const newValue = !prev.currentLocation;
-  //     if (newValue) {
-  //       setLocateMerchandiser(true); // Start collecting location when the toggle is turned on
-  //     } else {
-  //       setLocateMerchandiser(false); // Stop collecting location when the toggle is turned off
-  //     }
-  //     return {
-  //       ...prev,
-  //       currentLocation: newValue,
-  //     };
-  //   });
-  // };
 
   const getGeolocation = () => {
     if (!navigator.geolocation) {
