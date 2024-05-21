@@ -41,8 +41,10 @@ function App() {
   const location = useLocation();
   const currentPath = location.pathname;
   const [authorized, setAuthorized] = useState(false);
-  const [roleCheck, setRoleCheck] = useState(0);
+  const [manager, setManager] = useState(0);
   const [userData, setUserData] = useState("");
+  const [admin, setAdmin] = useState(false);
+  const [merchandiser, setMerchandiser] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -73,10 +75,8 @@ function App() {
           <div className="flex flex-1">
             {roleCheck ? <SideBar /> : <MerchSideBar />}
             <Routes className="flex-1 ml-4">
-            {roleCheck === 1 && (
+            {manager ? (
                 <>
-                  {/* Manager routes */}
-                  {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/reviews" element={<Reviews />} />
                   <Route path="/profile" element={<Profile />} />
@@ -84,27 +84,22 @@ function App() {
                   <Route path="/routes" element={<ManagerRoutes />} />
                   <Route path="/calendar" element={<CreateRoutes />} />
                 </>
-              )}
-              {roleCheck === 2 && (
+              ): null}
+              {merchandiser ?(
                 <>
-                  {/* Merchandiser routes */}
-                  {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/contactus" element={<ContactUs />} />
                   <Route path="/merch-calendar" element={<MerchCalendar userData={userData} />} />
                   <Route path="/myroutes" element={<MerchRoutePlans userData={userData} />} />
                 </>
-              )}
-              {roleCheck === 3 && (
+              ): null}
+              {admin ? (
                 <>
-                  {/* Admin routes */}
-                  {/* <Route path="/" element={<Home />} /> */}
                   <Route path="/settings" element={<Settings setAuthorized={setAuthorized} />} />
                   <Route path="/manageusers" element={<ManageUsers />} />
                   <Route path="/signup" element={<Signup />} />
-                  {/* Add admin-specific routes here */}
                 </>
-              )}
+              ): null}
             </Routes>
 
           </div>
@@ -114,13 +109,17 @@ function App() {
           <Route path="/" element={<Home authorized={authorized} />} />
           <Route
             path="/login"
-            element={<Login setRoleCheck={setRoleCheck} setAuthorized={setAuthorized} setUserData={setUserData} />}
+            element={<Login 
+              setAuthorized={setAuthorized} 
+              setManager={setManager} 
+              setAdmin={setAdmin}
+              setMerchandiser={setMerchandiser}
+              setUserData={setUserData} />}
           />
           
           <Route path="/contactus" element={<ContactUs />} />
         </Routes>
       )}
-      {/* {roleCheck ? <Footer /> : null} */}
     </div>
   );
 }
