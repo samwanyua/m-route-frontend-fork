@@ -27,7 +27,7 @@ const Modal = ({ message, onClose }) => {
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button onClick={onClose} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
-              Try Again
+              Continue
             </button>
           </div>
         </div>
@@ -43,7 +43,6 @@ const Signup = () => {
     last_name: "",
     national_id_no: "",
     staff_no: "",
-    password: "",
     user_type: ""
   });
   const [emailUsername, setEmailUsername] = useState({
@@ -52,7 +51,7 @@ const Signup = () => {
   });
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  // const [passwordVisibility, setPasswordVisibility] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailUsername = e => {
@@ -82,9 +81,9 @@ const Signup = () => {
       last_name: formData.last_name,
       national_id_no: formData.national_id_no,
       staff_no: formData.staff_no,
-      password: formData.password,
       email: emailUsername.email,
       username: emailUsername.username,
+      password: "Complex1",
       user_type: formData.user_type
     };
 
@@ -115,7 +114,6 @@ const Signup = () => {
           last_name: "",
           national_id_no: "",
           staff_no: "",
-          password: "",
           user_type: ""
         });
         setEmailUsername({
@@ -140,9 +138,9 @@ const Signup = () => {
     setMessage(null);
   };
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisibility(!passwordVisibility);
-  };
+  // const togglePasswordVisibility = () => {
+  //   setPasswordVisibility(!passwordVisibility);
+  // };
 
   return (
     <>
@@ -154,7 +152,7 @@ const Signup = () => {
       {message && <Modal message={message} onClose={closeModal} />}
       <div className="flex justify-center items-center min-h-screen bg-gray-900">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg shadow-md p-8">
-          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Sign up for an account</h2>
+          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Setup New User Account</h2>
           <form className="mt-8 space-y-6" onSubmit={handleSignup}>
             <div>
               <label htmlFor="first_name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -258,7 +256,7 @@ const Signup = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 px-3 py-2"
               />
             </div>
-            <div>
+            {/* <div>
               <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                 Password
               </label>
@@ -279,7 +277,7 @@ const Signup = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div>
               <label htmlFor="user_type" className="block text-sm font-medium leading-6 text-gray-900">
                 User Type
