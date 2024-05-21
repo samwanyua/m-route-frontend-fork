@@ -42,11 +42,9 @@ const CreateRoutes = () => {
 
             const data = await response.json();
 
-            if (response.ok) {
-                const allUsers = data;
-                const merchandisers = allUsers.filter(user => user.role === 'merchandiser');
-                setMerchandisers(merchandisers);
-            } else {
+            if (data.status_code === 200) {
+                setMerchandisers(data.message.filter(user => user.role === 'merchandiser' && user.status === 'active'));
+            } else if(data.status_code === 404) {
                 setMessage(data.message);
                 setTimeout(() => {
                     setMessage("");
@@ -63,7 +61,7 @@ const CreateRoutes = () => {
 
     const merchandiserOptions = useMemo(() => (
         merchandisers.map(merchandiser => (
-            <option key={merchandiser.id} value={merchandiser.id}>
+            <option key={merchandiser.id} value={merchandiser.staff_no}>
                 {merchandiser.first_name} {merchandiser.last_name}
             </option>
         ))
