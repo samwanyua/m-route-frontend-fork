@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import RouteModal from "./RouteModal";
 import { FaSearch } from 'react-icons/fa';
+import { AiOutlineCaretRight, AiOutlineCaretLeft } from "react-icons/ai";
+import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 
 const MANAGER_ROUTES_URL = "https://m-route-backend.onrender.com/users/manager-routes";
 const MODIFY_ROUTE = "https://m-route-backend.onrender.com/users/modify-route";
@@ -132,7 +134,7 @@ const ManagerRoutes = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
+        <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white flex flex-col min-h-screen">
             <div className="flex justify-between items-center mb-4">
                 <div className="relative w-full">
                     <input
@@ -156,11 +158,11 @@ const ManagerRoutes = () => {
             </div>
             <p className="text-gray-600 mb-4">Showing {displayedRoutes.length} of {totalFilteredRoutes} routes</p>
             {isLoading ? (
-                <p className="text-center text-gray-600">Loading...</p>
+                <p className="text-center text-gray-600 flex-grow">Loading...</p>
             ) : errorMessage ? (
-                <p className="text-center text-red-600">{errorMessage}</p>
+                <p className="text-center text-red-600 flex-grow">{errorMessage}</p>
             ) : (
-                <div>
+                <div className="flex-grow">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
                         {displayedRoutes.map((route) => (
                             <div key={route.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
@@ -181,25 +183,45 @@ const ManagerRoutes = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="flex justify-between items-center mt-4">
-                        <button
-                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                            disabled={currentPage === 1}
-                            className={`p-2 ${currentPage === 1 ? 'bg-gray-400' : 'bg-gray-800 hover:bg-blue-700'} text-white rounded`}
-                        >
-                            Previous
-                        </button>
-                        <span>Page {currentPage} of {totalPages}</span>
-                        <button
-                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                            disabled={currentPage === totalPages}
-                            className={`p-2 ${currentPage === totalPages ? 'bg-gray-400' : 'bg-gray-800 hover:bg-blue-700'} text-white rounded`}
-                        >
-                            Next
-                        </button>
-                    </div>
                 </div>
             )}
+            <div className="flex justify-between items-center mt-4">
+                <div className="flex space-x-2">
+                    {totalPages > 2 && (
+                        <button
+                            onClick={() => setCurrentPage(1)}
+                            className="p-2 bg-gray-800 hover:bg-blue-700 text-white rounded flex items-center"
+                        >
+                            <HiChevronDoubleLeft />
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className={`p-2 ${currentPage === 1 ? 'bg-gray-400' : 'bg-gray-800 hover:bg-blue-700'} text-white rounded flex items-center`}
+                    >
+                        <AiOutlineCaretLeft />
+                    </button>
+                </div>
+                <span>Page {currentPage} of {totalPages}</span>
+                <div className="flex space-x-2">
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        className={`p-2 ${currentPage === totalPages ? 'bg-gray-400' : 'bg-gray-800 hover:bg-blue-700'} text-white rounded flex items-center`}
+                    >
+                        <AiOutlineCaretRight />
+                    </button>
+                    {totalPages > 2 && (
+                        <button
+                            onClick={() => setCurrentPage(totalPages)}
+                            className="p-2 bg-gray-800 hover:bg-blue-700 text-white rounded flex items-center"
+                        >
+                            <HiChevronDoubleRight />
+                        </button>
+                    )}
+                </div>
+            </div>
             {modalData && <RouteModal route={modalData} onClose={() => setModalData(null)} />}
         </div>
     );
