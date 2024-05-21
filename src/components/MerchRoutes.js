@@ -14,6 +14,7 @@ const MerchRoutePlans = () => {
     const [selectedPlan, setSelectedPlan] = useState("");
     const [notificationsData, setNotificationsData] = useState({})
     const [managers, setManagers] = useState([]);
+    const [merchandisers, setMerchandisers] = useState([]);
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
@@ -31,36 +32,57 @@ const MerchRoutePlans = () => {
     }, [token, userId]);
 
     useEffect(() => {
-        // Fetch managers data
-        const fetchManagers = async () => {
-            try {
-                const response = await fetch("https://m-route-backend.onrender.com/users/managers", {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                const data = await response.json();
-                if (data.status_code === 200) {
-                    setManagers(data.message);
-                } else {
-                    console.error("Failed to fetch managers data");
-                }
-            } catch (error) {
-                console.error("Error fetching managers data:", error);
-            }
-        };
-
-        if (token) {
-            fetchManagers();
+        if (token && userId) {
+            fetchManagersAndMerchandisers();
         }
-    }, [token]);
+    }, [token, userId]);
+
+    const fetchManagersAndMerchandisers = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+
+            const response = await fetch("https://m-route-backend.onrender.com/users", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Assuming data contains an array of users with 'role' attribute
+                const users = data;
+
+                // Filter managers and merchandisers based on their role
+                const filteredManagers = users.filter(user => user.role === 'manager');
+                const filteredMerchandisers = users.filter(user => user.role === 'merchandiser');
+
+                setManagers(filteredManagers);
+                setMerchandisers(filteredMerchandisers);
+            } else {
+                setError(data.message || "Failed to fetch users");
+                setTimeout(() => {
+                    setError("");
+                }, 5000);
+            }
+        } catch (error) {
+            console.error('Error fetching managers and merchandisers:', error);
+            setError("There was an error retrieving managers and merchandisers.");
+            setTimeout(() => {
+                setError("");
+            }, 5000);
+        }
+    };
 
     const managerOptions = managers.map(manager => (
         <option key={manager.id} value={manager.id}>
-            {manager.name}
+            {manager.first_name} {manager.last_name}
         </option>
     ));
+
+    
 
     const fetchData = async () => {
         try {
@@ -164,40 +186,6 @@ const MerchRoutePlans = () => {
             [name]: value
         }))
     };
-
-    const fetchManagers = async () => {
-        try {
-            const accessToken = localStorage.getItem("access_token");
-    
-            const response = await fetch("https://m-route-backend.onrender.com/users", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                },
-            });
-    
-            const data = await response.json();
-    
-            if (response.ok) {
-                // Assuming data contains an array of users
-                const users = data;
-                setManagers(users);
-            } else {
-                setError(data.message || "Failed to fetch users");
-                setTimeout(() => {
-                    setError("");
-                }, 5000);
-            }
-        } catch (error) {
-            console.error('Error fetching managers:', error);
-            setError("There was an error retrieving managers.");
-            setTimeout(() => {
-                setError("");
-            }, 5000);
-        }
-    };
-    
 
     return (
         <div className="container mx-auto p-4">
