@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import RouteModal from "./RouteModal";
+import { FaSearch } from 'react-icons/fa';
 
 const MANAGER_ROUTES_URL = "https://m-route-backend.onrender.com/users/manager-routes";
 const MODIFY_ROUTE = "https://m-route-backend.onrender.com/users/modify-route";
@@ -7,7 +8,6 @@ const DELETE_ROUTE_URL = "https://m-route-backend.onrender.com/users/delete-rout
 
 const ManagerRoutes = () => {
     const [routes, setRoutes] = useState([]);
-    const [filteredRoutes, setFilteredRoutes] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [token, setToken] = useState("");
     const [userId, setUserId] = useState("");
@@ -31,11 +31,6 @@ const ManagerRoutes = () => {
     useEffect(() => {
         if (token && userId) getManagerRoutes();
     }, [token, userId]);
-
-    // Filter routes by search term
-    useEffect(() => {
-        filterRoutesByMerchandiserName(searchTerm);
-    }, [routes, searchTerm]);
 
     const getManagerRoutes = async () => {
         setIsLoading(true);
@@ -61,20 +56,27 @@ const ManagerRoutes = () => {
 
     const filterRoutesByMerchandiserName = (searchTerm) => {
         const filtered = routes.filter(route => route.merchandiser_name.toLowerCase().includes(searchTerm.toLowerCase()));
-        setFilteredRoutes(filtered);
+        return filtered;
     };
 
-    const filteredRoutesByStatus = routes.filter(route => {
-        if (filter === 'all') return true;
-        return filter === 'complete' ? route.status.toLowerCase() === 'complete' : route.status.toLowerCase() !== 'complete';
-    });
+    const filteredRoutesByStatus = (routes) => {
+        return routes.filter(route => {
+            if (filter === 'all') return true;
+            return filter === 'complete' ? route.status.toLowerCase() === 'complete' : route.status.toLowerCase() !== 'complete';
+        });
+    };
 
-    const filteredAndSearchedRoutes = searchTerm ? filteredRoutesByStatus.filter(route => route.merchandiser_name.toLowerCase().includes(searchTerm.toLowerCase())) : filteredRoutesByStatus;
-    
-    // Calculate total pages
-    const totalPages = Math.ceil(filteredAndSearchedRoutes.length / routesPerPage);
-    // Slice routes for current page
-    const displayedRoutes = filteredAndSearchedRoutes.slice((currentPage - 1) * routesPerPage, currentPage * routesPerPage);
+    const getDisplayedRoutes = () => {
+        const searchedRoutes = filterRoutesByMerchandiserName(searchTerm);
+        const statusFilteredRoutes = filteredRoutesByStatus(searchedRoutes);
+
+        const totalPages = Math.ceil(statusFilteredRoutes.length / routesPerPage);
+        const displayedRoutes = statusFilteredRoutes.slice((currentPage - 1) * routesPerPage, currentPage * routesPerPage);
+
+        return { displayedRoutes, totalPages, totalFilteredRoutes: statusFilteredRoutes.length };
+    };
+
+    const { displayedRoutes, totalPages, totalFilteredRoutes } = getDisplayedRoutes();
 
     const handleComplete = async (routeId) => {
         try {
@@ -102,7 +104,6 @@ const ManagerRoutes = () => {
     
             if (response.ok) {
                 setRoutes(prevRoutes => prevRoutes.filter(route => route.id !== routeId));
-                setFilteredRoutes(prevRoutes => prevRoutes.filter(route => route.id !== routeId));
                 setErrorMessage("Route deleted successfully.");
             } else {
                 const data = await response.json();
@@ -118,6 +119,12 @@ const ManagerRoutes = () => {
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
+        setCurrentPage(1); // Reset to first page on search
+    };
+
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value);
+        setCurrentPage(1); // Reset to first page on filter change
     };
 
     const toggleModal = (route) => {
@@ -127,16 +134,19 @@ const ManagerRoutes = () => {
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white">
             <div className="flex justify-between items-center mb-4">
-                <input
-                    type="text"
-                    placeholder="Search by merchandiser name..."
-                    value={searchTerm}
-                    onChange={handleSearch}
-                    className="border border-gray-300 rounded px-3 py-1 w-full"
-                />
+                <div className="relative w-full">
+                    <input
+                        type="text"
+                        placeholder="Search by merchandiser name..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        className="border border-gray-300 rounded pl-10 pr-3 py-1 w-full"
+                    />
+                    <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                </div>
                 <select
                     value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
+                    onChange={handleFilterChange}
                     className="ml-4 border border-gray-300 rounded px-3 py-1"
                 >
                     <option value="all">All</option>
@@ -144,7 +154,7 @@ const ManagerRoutes = () => {
                     <option value="pending">Pending</option>
                 </select>
             </div>
-            <p className="text-gray-600 mb-4">Showing {displayedRoutes.length} of {filteredAndSearchedRoutes.length} routes</p>
+            <p className="text-gray-600 mb-4">Showing {displayedRoutes.length} of {totalFilteredRoutes} routes</p>
             {isLoading ? (
                 <p className="text-center text-gray-600">Loading...</p>
             ) : errorMessage ? (
