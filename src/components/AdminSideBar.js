@@ -53,7 +53,7 @@ const AdminSideBar = () => {
 
   const sidebarItems = [
     { icon: <RiHome2Line className="h-6 w-6 text-gray-900" />, label: "Home", to: "/map" },
-    { icon: <FaUserPlus className="h-6 w-6 text-gray-900" />, label: "Create User", to: "/createuser" },
+    { icon: <FaUserPlus className="h-6 w-6 text-gray-900" />, label: "Create User", to: "/signup" },
     { icon: <RiTaskLine className="h-6 w-6 text-gray-900" />, label: "Change role", to: "/changerole" },
     { icon: <FaUserCheck className="h-6 w-6 text-gray-900" />, label: "Manage users", to: "/manageusers" },
     { icon: <RiSettings2Line className="h-6 w-6 text-gray-900" />, label: "Settings", to: "/settings" },
