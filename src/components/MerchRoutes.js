@@ -4,7 +4,7 @@ import moment from 'moment';
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
 const NOTIFICATIONS_URL = "https://m-route-backend.onrender.com/users/send-notifications"; 
 const USERS_URL = "https://m-route-backend.onrender.com/users"; 
-const UPDATE_STATUS_URL = "https://m-route-backend.onrender.com/change-route-status";
+const UPDATE_STATUS_URL = "https://m-route-backend.onrender.com/users/change-route-status";
 
 const MerchRoutePlans = () => {
     const [routePlans, setRoutePlans] = useState([]);
@@ -340,6 +340,9 @@ const MerchRoutePlans = () => {
 };
 
 export default MerchRoutePlans;
+
+
+
 
 
 
