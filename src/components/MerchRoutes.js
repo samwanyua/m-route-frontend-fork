@@ -61,7 +61,7 @@ const MerchRoutePlans = () => {
             }
         } catch (error) {
             console.log("Error fetching users:", error);
-            setError(data.message);
+            setError(error);
                     setTimeout(() => {
                         setError("");
                     }, 5000)
