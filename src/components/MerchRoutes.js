@@ -78,6 +78,8 @@ const MerchRoutePlans = () => {
     ), [managers]);
 
     const fetchData = async () => {
+        setIsLoading(true);
+
         try {
             const response = await fetch(`${ROUTES_URL}/${userId}`, {
                 method: 'GET',
@@ -231,7 +233,6 @@ const MerchRoutePlans = () => {
         const notificationSent = await handleSubmit();
 
         if (instructionUpdated && notificationSent) {
-            setIsLoading(true);
             await fetchData();
         }
     };
