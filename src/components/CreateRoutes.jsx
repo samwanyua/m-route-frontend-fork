@@ -101,7 +101,7 @@ const CreateRoutes = () => {
 
         const routes = {
             manager_id: userId,
-            merchandiser_id: selectedMerchandiser,
+            staff_no: selectedMerchandiser,
             status: "pending",
             date_range: {
                 start_date: dateRange.startDate,
@@ -238,7 +238,7 @@ const CreateRoutes = () => {
                 <div className="mb-5">
                     <label htmlFor="merchandiser" className="font-bold mb-1 block">Select Merchandiser</label>
                     <select
-                        name="merchandiser"
+                        name="staff_no"
                         value={selectedMerchandiser}
                         onChange={(e) => setSelectedMerchandiser(e.target.value)}
                         required
