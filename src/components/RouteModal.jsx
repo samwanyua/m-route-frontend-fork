@@ -21,6 +21,7 @@ const RouteModal = ({ route, onClose }) => {
                             <p><span className="font-bold">End Time:</span> {endTimeString}</p>
                             <p><span className="font-bold">Instructions:</span> {instruction.instructions}</p>
                             <p><span className="font-bold">Facility:</span> {instruction.facility}</p>
+                            <p><span className="font-bold">Status:</span> {instruction.status}</p>
                         </div>
                     );
                 })}
