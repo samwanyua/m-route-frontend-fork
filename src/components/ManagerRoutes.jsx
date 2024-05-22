@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import RouteModal from "./RouteModal";
 import { AiOutlineCaretRight, AiOutlineCaretLeft } from "react-icons/ai";
@@ -20,7 +20,6 @@ const ManagerRoutes = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const routesPerPage = 12;
 
-
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
         const userData = localStorage.getItem("user_data");
@@ -29,7 +28,6 @@ const ManagerRoutes = () => {
         if (userData) setUserId(JSON.parse(userData).id);
     }, []);
 
-    // Fetch routes when token and userId are set
     useEffect(() => {
         if (token && userId) getManagerRoutes();
     }, [token, userId]);
@@ -56,11 +54,19 @@ const ManagerRoutes = () => {
         }
     };
 
+    const updateRoute = (routeId, updatedInstructions) => {
+        setRoutes(prevRoutes => prevRoutes.map(route => {
+            if (route.id === routeId) {
+                return { ...route, instructions: JSON.stringify(updatedInstructions) };
+            }
+            return route;
+        }));
+    };
+
     const filterRoutesByMerchandiserName = (searchTerm) => {
         const filtered = routes.filter(route => route.merchandiser_name.toLowerCase().includes(searchTerm.toLowerCase()));
         return filtered;
     };
-
 
     const filteredRoutesByStatus = (routes) => {
         return routes.filter(route => {
@@ -82,33 +88,34 @@ const ManagerRoutes = () => {
     const { displayedRoutes, totalPages, totalFilteredRoutes } = getDisplayedRoutes();
 
     const handleComplete = async (routeId) => {
-
         try {
             const response = await fetch(`${MODIFY_ROUTE}/${routeId}`, {
                 method: "PUT",
-                headers: { "Authorization": `Bearer ${token}` }
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json" // Add this line to specify the content type
+                },
+                body: JSON.stringify({ status: 'complete' }) // Send the new status as JSON
             });
             const data = await response.json();
-
-
+    
             setErrorMessage(data.message);
-            if (data.status_code === 201) getManagerRoutes();
+            if (data.status_code === 200) getManagerRoutes();
         } catch (error) {
             setErrorMessage("There was an error completing the task");
         } finally {
             setTimeout(() => setErrorMessage(""), 5000);
         }
     };
+    
 
     const handleDeleteRoute = async (routeId) => {
-
         try {
             const response = await fetch(`${DELETE_ROUTE_URL}/${routeId}`, {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` }
             });
 
-    
             if (response.ok) {
                 setRoutes(prevRoutes => prevRoutes.filter(route => route.id !== routeId));
                 setErrorMessage("Route deleted successfully.");
@@ -122,8 +129,6 @@ const ManagerRoutes = () => {
             setTimeout(() => setErrorMessage(""), 5000);
         }
     };
-    
-
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -142,16 +147,13 @@ const ManagerRoutes = () => {
     return (
         <div className="max-w-7xl mx-auto mt-5 p-5 rounded-lg shadow-lg bg-white flex flex-col min-h-screen">
             <div className="flex justify-between items-center mb-4">
-            <FaSearch className="text-gray-900 mr-2" />
-
+                <FaSearch className="text-gray-900 mr-2" />
                 <div className="relative w-full">
-
                     <input
                         type="text"
                         placeholder="Search by merchandiser name..."
                         value={searchTerm}
                         onChange={handleSearch}
-
                         className="border border-gray-300 rounded pl-10 pr-3 py-1 w-full"
                     />
                     <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
@@ -196,6 +198,7 @@ const ManagerRoutes = () => {
                     </div>
                 </div>
             )}
+
             <div className="flex justify-between items-center mt-4">
                 <div className="flex space-x-2">
                     {totalPages > 2 && (
@@ -233,9 +236,18 @@ const ManagerRoutes = () => {
                     )}
                 </div>
             </div>
-            {modalData && <RouteModal route={modalData} onClose={() => setModalData(null)} />}
+
+            {modalData && (
+                <RouteModal
+                    route={modalData}
+                    onClose={() => setModalData(null)}
+                    token={token}
+                    updateRoute={updateRoute}
+                />
+            )}
         </div>
     );
-}
+};
 
 export default ManagerRoutes;
+
