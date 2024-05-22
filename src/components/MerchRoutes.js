@@ -90,6 +90,7 @@ const MerchRoutePlans = () => {
 
             if (data.successful) {
                 setRoutePlans(data.message);
+                setIsLoading(false);
 
             } else {
                 setError(data.message);
