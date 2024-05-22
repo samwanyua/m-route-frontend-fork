@@ -110,6 +110,8 @@ const CreateRoutes = () => {
             instructions: instructionSets,
         };
 
+        console.log("Route plans", routes)
+
         try {
             const response = await fetch(ROUTES_URL, {
                 method: "POST",
