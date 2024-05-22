@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const ROUTES_URL = "https://m-route-backend.onrender.com/users/route-plans";
 const USERS_URL = "https://m-route-backend.onrender.com/users"; 
@@ -83,8 +84,16 @@ const CreateRoutes = () => {
         setInstructionSets(updatedInstructionSets);
     };
 
+
     const handleAddInstructionSet = () => {
-        setInstructionSets([...instructionSets, { start: "", end: "", instructions: "", facility: "" }]);
+        setInstructionSets([...instructionSets, { 
+            start: "", 
+            end: "", 
+            instructions: "", 
+            facility: "", 
+            status: "pending", 
+            id: uuidv4() 
+        }]);
     };
 
     const handleSubmitRoutes = async (event) => {
@@ -251,3 +260,6 @@ const CreateRoutes = () => {
 };
 
 export default CreateRoutes;
+
+
+
