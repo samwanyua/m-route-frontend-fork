@@ -23,7 +23,9 @@ const Home = ({ authorized }) => {
           <img src="https://cdn.mos.cms.futurecdn.net/VXGoaHKJSvXPqeDrif67Wa.jpg" alt="mockup" className="mx-auto" />
         </div>
       </div>
-      
+      <ContactUs />
+      <Testimonials/>
+      <OurClients />
     </section>
   );
 }
